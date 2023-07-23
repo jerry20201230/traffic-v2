@@ -386,6 +386,7 @@ function TraTrain() {
   React.useEffect(() => {
     var trainNum = UrlParam("q")
     if (!trainNum) {
+      setTrainOnlineBool‎(false)
       setTrainCardTitle("找不到列車")
       setTrainCardSubTitle("無資料")
       setTrainCardBody("請檢查搜尋條件")
@@ -418,6 +419,7 @@ function TraTrain() {
               setTrainDataRes(res)
               setCountdown(30)
             } else {
+              setTrainOnlineBool‎(false)
               setTrainCardTitle("找不到列車")
               setTrainCardSubTitle("無資料")
               setTrainCardBody("請檢查搜尋條件")

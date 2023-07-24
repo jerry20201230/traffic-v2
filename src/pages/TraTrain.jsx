@@ -341,8 +341,10 @@ function TraTrain() {
         if (delayDataRes.TrainLiveBoards.length) {
           timeDiff[1] = isTimeInRange(getTime("time-s"), dataStruct[0].DepartureTime, addMinutesToTime(dataStruct[dataStruct.length - 1].ArrivalTime, delayDataRes.TrainLiveBoards[0].DelayTime))
         }
-        if (dataType === "DailyTimetable" && dataStruct2.OverNightStationID !== "") { //跨夜前的跨夜車
+        if (dataType === "DailyTimetable" && dataStruct2.OverNightStationID !== "" && dataStruct2.OverNightStationID !== undefined) { //跨夜前的跨夜車
+          console.log(dataStruct2.OverNightStationID)
           timeDiff[0] = calculateTimeDifference(getTime("time-s"), "24:00")
+          console.log("A")
         } else {
           if (delayDataRes.TrainLiveBoards.length) {
             timeDiff[1] = isTimeInRange(getTime("time-s"), "24:00", addMinutesToTime(dataStruct[dataStruct.length - 1].ArrivalTime, delayDataRes.TrainLiveBoards[0].DelayTime))
@@ -351,6 +353,7 @@ function TraTrain() {
           }
         }
 
+        console.log(timeDiff)
         setTrainCardBody(
           timeDiff[0] <= 0 && !isTimeInRange(getTime("time-s"), dataStruct[0].DepartureTime, dataStruct[dataStruct.length - 1].ArrivalTime)
             ? <Alert severity="info"><h3 style={{ margin: 0, padding: 0 }}>列車已經收班</h3><Typography>{displayTrainNum} 次已經於<b>{dataStruct[dataStruct.length - 1].ArrivalTime}</b>抵達終點<b>{dataStruct[dataStruct.length - 1].StationName.Zh_tw}</b></Typography></Alert>

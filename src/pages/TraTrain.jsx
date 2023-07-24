@@ -330,6 +330,7 @@ function TraTrain() {
 
         } else if (delayDataRes.TrainLiveBoards[0].DelayTime <= 0) {//&& calculateTimeDifference(getTime("time-s"), dataStruct[0].DepartureTime) >= 0 && !isTimeInRange(getTime("time-s"), dataStruct[0].DepartureTime, dataStruct[dataStruct.length - 1].ArrivalTime)) {
           alertBox = <Alert severity="success"><h3 style={{ margin: 0, padding: 0 }}>列車目前準點</h3><Typography>{displayTrainNum} 次 {liveInfo}<br />最後更新:{getTime("time", delayDataRes.UpdateTime)}</Typography></Alert>
+          setDelayAlert(<></>)
         }
         setTrainCardBody(alertBox)
       } else {

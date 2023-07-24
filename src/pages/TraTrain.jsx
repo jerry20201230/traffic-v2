@@ -166,7 +166,7 @@ function TraTrain() {
                 抵達:{dataStruct[i].ArrivalTime}
               </TimelineOppositeContent>
               <TimelineSeparator>
-                <TimelineDot color={timecolor} />
+                <TimelineDot/>
               </TimelineSeparator>
               <TimelineContent>
                 {dataStruct[i].StationName.Zh_tw} (終點)
@@ -191,10 +191,10 @@ function TraTrain() {
           i === dataStruct.length - 1 ?
             <>
               <TimelineOppositeContent color="textSecondary">
-                {dataStruct[i].DepartureTime}
+                {dataStruct[i].ArrivalTime}
               </TimelineOppositeContent>
               <TimelineSeparator>
-                <TimelineDot color={timecolor} />
+                <TimelineDot/>
               </TimelineSeparator>
               <TimelineContent>
                 {dataStruct[i].StationName.Zh_tw} (終點)
@@ -386,10 +386,10 @@ function TraTrain() {
   React.useEffect(() => {
     var trainNum = UrlParam("q")
     if (!trainNum) {
-      setTrainOnlineBool‎(false)
       setTrainCardTitle("找不到列車")
       setTrainCardSubTitle("無資料")
       setTrainCardBody("請檢查搜尋條件")
+      setTrainOnlineBool(false)
     }
     else {
       setDisplayTrainNum(trainNum)
@@ -419,10 +419,10 @@ function TraTrain() {
               setTrainDataRes(res)
               setCountdown(30)
             } else {
-              setTrainOnlineBool‎(false)
               setTrainCardTitle("找不到列車")
               setTrainCardSubTitle("無資料")
               setTrainCardBody("請檢查搜尋條件")
+              setTrainOnlineBool(false)
             }
           }, { useLocalCatch: false })
         }
@@ -443,7 +443,7 @@ function TraTrain() {
     const intervalId = setInterval(() => {
 
       console.log(trainOnlineBool)
-      if (!trainOnlineBool) {
+      if (!trainOnlineBool ) {
         setCountdown(-1)
         clearInterval(intervalId);
       }

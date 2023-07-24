@@ -9,6 +9,7 @@ import { Route, Routes } from 'react-router-dom'
 import BikeRoot from './pages/BikeRoot';
 import SettingRoot from './pages/SettingRoot';
 import SettingAbout from './pages/SettingAbout';
+import HsrRoot from './pages/HsrRoot';
 
 function App() {
   return (
@@ -24,16 +25,20 @@ function App() {
           <Route path='train' element=<TraTrain />></Route>
         </Route>
 
+        <Route path='/hsr'>
+          <Route index element=<HsrRoot/>></Route>
+        </Route>
+
         <Route path='/bike'>
-          <Route index element={<BikeRoot/>}></Route>
+          <Route index element={<BikeRoot />}></Route>
         </Route>
 
 
         <Route path='/setting'>
-          <Route index element={<SettingRoot/>}></Route>
-          <Route path='about' element={<SettingAbout/>}></Route>
+          <Route index element={<SettingRoot />}></Route>
+          <Route path='about' element={<SettingAbout />}></Route>
         </Route>
-        
+
         <Route path='*' element=<Err404 /> ></Route>
 
       </Routes>

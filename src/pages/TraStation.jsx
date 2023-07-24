@@ -89,7 +89,7 @@ function TraStation() {
       if (!found) {
         setStationCardTitle("找不到車站")
         setStationCardBody("請確認你的條件")
-        setStationCardAction(<><Button size='small' component={Link} to="/tra">修改條件</Button></>)
+        setStationCardAction(<><Button size='small' component={Link} to="/tra?sw=station">修改條件</Button></>)
       } else {
         console.log(TRA_Station_Data[DataIndex])
         setStationName(station.split("(")[0])
@@ -108,7 +108,7 @@ function TraStation() {
               />
               <Marker position={[TRA_Station_Data[DataIndex].StationPosition.PositionLat, TRA_Station_Data[DataIndex].StationPosition.PositionLon]} icon={redIcon}>
                 <Popup>
-                  {stationName}車站
+                {station.split("(")[0]}車站
                 </Popup>
               </Marker>
             </MapContainer>
@@ -131,6 +131,8 @@ function TraStation() {
         <Card>
           <CardContent>
             <Typography variant="h5" component="div">
+            
+            <Typography sx={{mr:1,display:"inline-block",width:"1.5rem",height:"1.5rem",borderRadius:"5px",verticalAlign:"text-top",background: "linear-gradient(315deg, #004da7, #7fa9d9)"}} variant='div' ></Typography>
               {stationCardTitle}
             </Typography>
             <Typography sx={{ mb: 1.5 }} color="text.secondary">
@@ -144,8 +146,6 @@ function TraStation() {
             {stationCardAction}
           </CardActions>
         </Card>
-
-        
       </Box>
     </>
   )

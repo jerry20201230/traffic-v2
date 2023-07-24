@@ -491,6 +491,7 @@ function TraTrain() {
         <Card>
           <CardContent>
             <Typography variant="h5" component="div">
+            <Typography sx={{mr:1,display:"inline-block",width:"1.5rem",height:"1.5rem",borderRadius:"5px",verticalAlign:"text-top",background: "linear-gradient(315deg, #004da7, #7fa9d9)"}} variant='div' ></Typography>
               {trainCardTitle}
             </Typography>
             <Typography sx={{ mb: 1.5 }} color="text.secondary" component="div">

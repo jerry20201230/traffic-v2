@@ -101,14 +101,14 @@ function TraStation() {
             <p></p>
             <PhoneIcon sx={{ verticalAlign: "bottom" }} /> {TRA_Station_Data[DataIndex].StationPhone}
             <p></p>
-            <MapContainer center={[TRA_Station_Data[DataIndex].StationPosition.PositionLat, TRA_Station_Data[DataIndex].StationPosition.PositionLon]} zoom={18} style={{ width: "100%", height: "35vh",borderRadius:"5px" }}>
+            <MapContainer center={[TRA_Station_Data[DataIndex].StationPosition.PositionLat, TRA_Station_Data[DataIndex].StationPosition.PositionLon]} zoom={18} style={{ width: "100%", height: "35vh", borderRadius: "5px" }}>
               <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
               <Marker position={[TRA_Station_Data[DataIndex].StationPosition.PositionLat, TRA_Station_Data[DataIndex].StationPosition.PositionLon]} icon={redIcon}>
                 <Popup>
-                {station.split("(")[0]}車站
+                  {station.split("(")[0]}車站
                 </Popup>
               </Marker>
             </MapContainer>
@@ -131,8 +131,7 @@ function TraStation() {
         <Card>
           <CardContent>
             <Typography variant="h5" component="div">
-            
-            <Typography sx={{mr:1,display:"inline-block",width:"1.5rem",height:"1.5rem",borderRadius:"5px",verticalAlign:"text-top",background: "linear-gradient(315deg, #004da7, #7fa9d9)"}} variant='div' ></Typography>
+              <Typography sx={{ mr: 1, display: "inline-block", width: "1.5rem", height: "1.5rem", borderRadius: "5px", verticalAlign: "text-top", background: "linear-gradient(315deg, #004da7, #7fa9d9)" }} variant='div' ></Typography>
               {stationCardTitle}
             </Typography>
             <Typography sx={{ mb: 1.5 }} color="text.secondary">

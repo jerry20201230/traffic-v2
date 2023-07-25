@@ -27,13 +27,13 @@ function HsrRoot() {
     return result
   }
   React.useLayoutEffect(() => {
-    getTdxData("https://tdx.transportdata.tw/api/basic/v2/Rail/TRA/Station?%24format=JSON", function (res) {
-      var TRA_Station_Data = res
-      console.log(TRA_Station_Data)
+    getTdxData("https://tdx.transportdata.tw/api/basic/v2/Rail/THSR/Station?%24format=JSON", function (res) {
+      var HSR_Station_Data = res
+      console.log(HSR_Station_Data)
 
       var temparr = []
-      for (var i = 0; i < TRA_Station_Data.length; i++) {
-        temparr.push(`${TRA_Station_Data[i].StationName.Zh_tw}(${TRA_Station_Data[i].StationID})`)
+      for (var i = 0; i < HSR_Station_Data.length; i++) {
+        temparr.push(`${HSR_Station_Data[i].StationName.Zh_tw}(${HSR_Station_Data[i].StationID})`)
       }
       setstationDataInput(temparr)
     }, {
@@ -93,7 +93,7 @@ function HsrRoot() {
           <TextField ref={trainInput} label="車次" sx={{ width: "100%" }} onChange={(e, v) => setTrainNum(e.target.value)}></TextField>
         </div>
         <p></p>
-        <Button variant="contained" ref={submitButton} component={Link} to={"/tra/" + radioValue + "/?q=" + (radioValue === "station" ? selected : trainNum) + "&f=traroot"}>繼續</Button>
+        <Button variant="contained" ref={submitButton} component={Link} to={"/hsr/" + radioValue + "/?q=" + (radioValue === "station" ? selected : trainNum) + "&t=fulldata"}>繼續</Button>
       </Box>
     </>
   )

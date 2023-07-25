@@ -94,7 +94,7 @@ function TraRoot() {
           <TextField ref={trainInput} label="車次" sx={{ width: "100%" }} onChange={(e, v) => setTrainNum(e.target.value)}></TextField>
         </div>
         <p></p>
-        <Button variant="contained" ref={submitButton} component={Link} to={"/tra/" + radioValue + "/?q=" + (radioValue === "station" ? selected : trainNum) + "&f=traroot"}>繼續</Button>
+        <Button variant="contained" ref={submitButton} component={Link} to={"/tra/" + radioValue + "/?q=" + (radioValue === "station" ? selected : trainNum) + "&t=fulldata"}>繼續</Button>
       </Box>
     </>
   )

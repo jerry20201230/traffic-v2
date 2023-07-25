@@ -70,6 +70,8 @@ function TraStation() {
   React.useEffect(() => {
     var station = UrlParam("q")
     if (!station) { station = "()" }
+    
+    if(station.includes("(")){station = station.split("(")[1].split(")")[0]} //車站ID
     console.log(station)
     getTdxData("https://tdx.transportdata.tw/api/basic/v2/Rail/TRA/Station?%24format=JSON", function (res) {
       var TRA_Station_Data = res
@@ -77,23 +79,21 @@ function TraStation() {
       var found = false, DataIndex = 0
       for (var i = 0; i < TRA_Station_Data.length; i++) {
         temparr.push(`${TRA_Station_Data[i].StationName.Zh_tw}(${TRA_Station_Data[i].StationID})`)
-        if (TRA_Station_Data[i].StationName.Zh_tw === station.split("(")[0]) {
+        if (TRA_Station_Data[i].StationID === station) {
           DataIndex = i
           found = true
           break
         }
       }
       // var finder = temparr.filter(function (ele) { return (ele === station) })
-
-
       if (!found) {
         setStationCardTitle("找不到車站")
         setStationCardBody("請確認你的條件")
         setStationCardAction(<><Button size='small' component={Link} to="/tra?sw=station">修改條件</Button></>)
       } else {
         console.log(TRA_Station_Data[DataIndex])
-        setStationName(station.split("(")[0])
-        setStationCardTitle(station.split("(")[0] + "車站")
+        setStationName(TRA_Station_Data[DataIndex].StationName.Zh_tw)
+        setStationCardTitle(TRA_Station_Data[DataIndex].StationName.Zh_tw + "車站")
         setStationCardSubTitle(<>{TRA_Station_Data[DataIndex].StationID} / {stationClass(TRA_Station_Data[DataIndex].StationClass)}</>)
         setStationCardBody(
           <>
@@ -115,7 +115,7 @@ function TraStation() {
           </>)
         setStationCardAction(<>
           <Button size='small' component="a" href={`tel:${TRA_Station_Data[DataIndex].StationPhone}`}>撥打電話</Button>
-          <Button size='small' component="a" href={`https://maps.google.com/?q=${TRA_Station_Data[DataIndex].StationPosition.PositionLat},${TRA_Station_Data[DataIndex].StationPosition.PositionLon}`} target='_blank'>在Google Maps中查看</Button>
+          <Button size='small' component="a" href={`https://maps.google.com/?q=${TRA_Station_Data[DataIndex].StationPosition.PositionLat},${TRA_Station_Data[DataIndex].StationPosition.PositionLon}`} target='_blank'>Google Maps</Button>
         </>)
       }
     }, {
@@ -144,6 +144,15 @@ function TraStation() {
           <CardActions>
             {stationCardAction}
           </CardActions>
+        </Card>
+
+
+        <Card>
+          <CardContent>
+            <Typography variant='h5' component='div'>
+              即時資料
+            </Typography>
+          </CardContent>
         </Card>
       </Box>
     </>

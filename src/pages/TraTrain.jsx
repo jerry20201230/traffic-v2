@@ -42,6 +42,7 @@ function TraTrain() {
   const [resData, setResData] = React.useState()
   const [loaded, setLoaded] = React.useState(false)
   const [delayAlert, setDelayAlert] = React.useState(<></>)
+  const [delayCheckBox, setDelayCheckBox] = React.useState(<></>)
   const [progress, setProgress] = React.useState(0);
 
   const [countdown, setCountdown] = React.useState(0)
@@ -52,6 +53,9 @@ function TraTrain() {
   const [dataType, setDatatype] = React.useState()
   const [trainOnlineBool, setTrainOnlineBool] = React.useState(true)
   const [timerStopped, setTimsrStop] = React.useState(false)
+
+  const arrivalCheckRef = React.useRef()
+  const delayTimeCheckRef = React.useRef()
 
   function UrlParam(name) {
     var url = new URL(window.location.href),
@@ -145,6 +149,7 @@ function TraTrain() {
 
   //畫時間線的part.
   function reRenderTimeLine(t, data) {
+    console.log()
     var res = trainDataRes || data, stationTimeline = [], dataStruct;
     try {
       dataStruct = res[0].GeneralTimetable.StopTimes
@@ -152,21 +157,33 @@ function TraTrain() {
     catch (e) {
       dataStruct = res[0].StopTimes
     }
+
+
+
     for (let i = 0; i < dataStruct.length; i++) {
       var timecolor = "grey"
       if (calculateTimeDifference(dataStruct[i].ArrivalTime, dataStruct[i].DepartureTime) >= 3) {
         timecolor = "primary"
       }
-      if (t) {
+      var time = [dataStruct[i].ArrivalTime, dataStruct[i].DepartureTime]
+      try {
+        if (delayTimeCheckRef.current.checked) {
+          time[0] = <Typography sx={{display:'inline'}} color="red">{addMinutesToTime(time[0],delayDataRes.TrainLiveBoards[0].DelayTime)}</Typography>
+          time[1] = <Typography sx={{display:'inline'}} color="red">{addMinutesToTime(time[1],delayDataRes.TrainLiveBoards[0].DelayTime)}</Typography>
+        }
+      } catch {
+
+      }
+      if (arrivalCheckRef.current.checked) {
         setDisplayArrivalTime("目前顯示抵達時間和發車時間")
         var newStation =
           i === dataStruct.length - 1 ?
             <>
               <TimelineOppositeContent color="textSecondary">
-                抵達:{dataStruct[i].ArrivalTime}
+                抵達:{time[0]}
               </TimelineOppositeContent>
               <TimelineSeparator>
-                <TimelineDot/>
+                <TimelineDot />
               </TimelineSeparator>
               <TimelineContent>
                 {dataStruct[i].StationName.Zh_tw} (終點)
@@ -175,8 +192,8 @@ function TraTrain() {
             :
             <>
               <TimelineOppositeContent color="textSecondary" >
-                <Typography>抵達:{dataStruct[i].ArrivalTime}</Typography>
-                <Typography>發車:{dataStruct[i].DepartureTime}</Typography>
+                <Typography>抵達:{time[0]}</Typography>
+                <Typography>發車:{time[1]}</Typography>
               </TimelineOppositeContent>
               <TimelineSeparator>
                 <TimelineDot color={timecolor} />
@@ -191,10 +208,10 @@ function TraTrain() {
           i === dataStruct.length - 1 ?
             <>
               <TimelineOppositeContent color="textSecondary">
-                {dataStruct[i].ArrivalTime}
+                {time[0]}
               </TimelineOppositeContent>
               <TimelineSeparator>
-                <TimelineDot/>
+                <TimelineDot />
               </TimelineSeparator>
               <TimelineContent>
                 {dataStruct[i].StationName.Zh_tw} (終點)
@@ -203,7 +220,7 @@ function TraTrain() {
             :
             <>
               <TimelineOppositeContent color="textSecondary" >
-                <Typography>{dataStruct[i].DepartureTime}</Typography>
+                <Typography>{time[1]}</Typography>
               </TimelineOppositeContent>
               <TimelineSeparator>
                 <TimelineDot color={timecolor} />
@@ -238,7 +255,7 @@ function TraTrain() {
     else {
       setTrainOnlineBool(isTimeInRange(getTime("time-s"), dataStruct[0].DepartureTime, (dataStruct[dataStruct.length - 1].ArrivalTime)))
     }
-    reRenderTimeLine(true, trainDataRes)
+ 
 
     var dataStruct2 = (dataType === "GeneralTimetable" ? trainDataRes[0].DailyTrainInfo : trainDataRes[0].DailyTrainInfo)
 
@@ -326,11 +343,13 @@ function TraTrain() {
 
         if (delayDataRes.TrainLiveBoards[0].DelayTime > 0) { //誤點
           alertBox = <Alert severity="error"><h3 style={{ margin: 0, padding: 0 }}>列車目前誤點 {delayDataRes.TrainLiveBoards[0].DelayTime}分</h3><Typography>{displayTrainNum} 次 {liveInfo}<br />最後更新:{getTime("time", delayDataRes.UpdateTime)}</Typography></Alert>
-          setDelayAlert(<Alert severity="warning"><h3 style={{ margin: 0, padding: 0 }}>資訊為準點時刻</h3>列車目前誤點 {delayDataRes.TrainLiveBoards[0].DelayTime}分</Alert>)
+         // setDelayAlert(<Alert severity="warning"><h3 style={{ margin: 0, padding: 0 }}>資訊為準點時刻</h3>列車目前誤點 {delayDataRes.TrainLiveBoards[0].DelayTime}分</Alert>)
+          setDelayCheckBox(<FormControlLabel control={<Checkbox inputRef={delayTimeCheckRef} />} label={`顯示誤點時間 (${delayDataRes.TrainLiveBoards[0].DelayTime}分)`} onChange={(e) => { reRenderTimeLine({ delaytime: e.target.checked }); }} />)
 
         } else if (delayDataRes.TrainLiveBoards[0].DelayTime <= 0) {//&& calculateTimeDifference(getTime("time-s"), dataStruct[0].DepartureTime) >= 0 && !isTimeInRange(getTime("time-s"), dataStruct[0].DepartureTime, dataStruct[dataStruct.length - 1].ArrivalTime)) {
           alertBox = <Alert severity="success"><h3 style={{ margin: 0, padding: 0 }}>列車目前準點</h3><Typography>{displayTrainNum} 次 {liveInfo}<br />最後更新:{getTime("time", delayDataRes.UpdateTime)}</Typography></Alert>
           setDelayAlert(<></>)
+          setDelayCheckBox(<></>)
         }
         setTrainCardBody(alertBox)
       } else {
@@ -379,7 +398,7 @@ function TraTrain() {
       setTrainOnlineBool(false)
     }
 
-
+    reRenderTimeLine(true, trainDataRes)
   }
 
 
@@ -402,26 +421,26 @@ function TraTrain() {
         if (res.length) {
           setDatatype("DailyTimetable")
           setTrainDataRes(res)
-          setCountdown(30)
+          setCountdown(60)
         } else {
           var today = new Date();
           var yesterday = new Date(today);
           yesterday.setDate(today.getDate() - 1);
-          
+
           // 获取昨天的年、月、日
           var year = yesterday.getFullYear();
           var month = yesterday.getMonth() + 1; // 月份从0开始，所以要加1
           var day = yesterday.getDate();
-          
+
           // 格式化输出昨天的日期（可根据需要自行调整格式）
           var formattedYesterday = year + "-" + (month < 10 ? "0" + month : month) + "-" + (day < 10 ? "0" + day : day);
 
-          
+
           getTdxData(`https://tdx.transportdata.tw/api/basic/v2/Rail/TRA/DailyTimetable/TrainNo/${trainNum}/TrainDate/${formattedYesterday}?%24format=JSON`, function (res) {
             if (res.length) {
               setDatatype("GeneralTimetable")
               setTrainDataRes(res)
-              setCountdown(30)
+              setCountdown(60)
             } else {
               setTrainCardTitle("找不到列車")
               setTrainCardSubTitle("無資料")
@@ -447,7 +466,7 @@ function TraTrain() {
     const intervalId = setInterval(() => {
 
       console.log(trainOnlineBool)
-      if (!trainOnlineBool ) {
+      if (!trainOnlineBool) {
         setCountdown(-1)
         clearInterval(intervalId);
       }
@@ -466,9 +485,9 @@ function TraTrain() {
       getTdxData(`https://tdx.transportdata.tw/api/basic/v3/Rail/TRA/TrainLiveBoard/TrainNo/${displayTrainNum}?%24format=JSON`, function (res) {
         setDelayDataRes(res)
       }, { useLocalCatch: false })
-      setCountdown(30)
+      setCountdown(60)
     } else if (countdown > 0) {
-      setProgress((30 - countdown) * (100 / 30))
+      setProgress((60 - countdown) * (100 / 60))
     } else {
 
     }
@@ -495,7 +514,7 @@ function TraTrain() {
         <Card>
           <CardContent>
             <Typography variant="h5" component="div">
-            <Typography sx={{mr:1,display:"inline-block",width:"1.5rem",height:"1.5rem",borderRadius:"5px",verticalAlign:"text-top",background: "linear-gradient(315deg, #004da7, #7fa9d9)"}} variant='div' ></Typography>
+              <Typography sx={{ mr: 1, display: "inline-block", width: "1.5rem", height: "1.5rem", borderRadius: "5px", verticalAlign: "text-top", background: "linear-gradient(315deg, #004da7, #7fa9d9)" }} variant='div' ></Typography>
               {trainCardTitle}
             </Typography>
             <Typography sx={{ mb: 1.5 }} color="text.secondary" component="div">
@@ -517,12 +536,16 @@ function TraTrain() {
                 沿途停靠 共 {trainPortStations} 站
               </Typography>
               <FormGroup>
-                <FormControlLabel control={<Checkbox defaultChecked disabled={!loaded} />} label="顯示抵達時間" onChange={(e) => { reRenderTimeLine(e.target.checked); }} />
+                <FormControlLabel control={<Checkbox defaultChecked disabled={!loaded} inputRef={arrivalCheckRef} />} label="顯示抵達時間" onChange={(e) => { reRenderTimeLine({ arrivalTime: e.target.checked }); }} />
+                {delayCheckBox}
               </FormGroup>
-              <Typography hidden={!loaded}>{displayArrivalTime}</Typography>
-              <Typography component="div">
 
-                <TimelineDot color="primary" sx={{ m: 0 }} style={{ display: "inline-block", verticalAlign: "buttom" }} />&nbsp;&nbsp;表示停車時間超過三分鐘
+              <Typography component="div">
+                <Alert severity="info"><h3 style={{ margin: 0, padding: 0 }}>說明</h3>
+                  <Typography hidden={!loaded}>{displayArrivalTime}</Typography>
+                  <Typography><TimelineDot color="primary" sx={{ m: 0 }} style={{ display: "inline-block", verticalAlign: "buttom" }} />&nbsp;表示停車時間超過三分鐘</Typography>
+                </Alert>
+                <p></p>
                 {delayAlert}
               </Typography>
               <Typography variant="div" sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>

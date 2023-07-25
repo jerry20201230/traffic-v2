@@ -87,6 +87,7 @@ function HsrRoot() {
             renderInput={(params) => <TextField {...params} label="車站名稱" ref={stationInput} />}
           />
           <p></p>
+          <Alert severity="warning">注意: 區分 "台" 和 "臺"! 高鐵資料使用的是"台"</Alert>
         </div>
 
         <div hidden={radioValue === "station"} style={{ width: "100%" }}>

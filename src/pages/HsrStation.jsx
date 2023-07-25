@@ -13,14 +13,13 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import L from 'leaflet'
 
 
-function TraStation() {
+function HsrStation() {
   const [stationCardTitle, setStationCardTitle] = React.useState("")
   const [stationCardSubTitle, setStationCardSubTitle] = React.useState("")
   const [stationCardBody, setStationCardBody] = React.useState("")
   const [stationCardAction, setStationCardAction] = React.useState("")
 
-  const [title, setTitle] = React.useState(<></>)
-
+  const [title,setTitle] = React.useState()
   const [stationName, setStationName] = React.useState("")
   const redIcon = new L.Icon({
     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
@@ -38,50 +37,20 @@ function TraStation() {
     return result
   }
 
-  function stationClass(n) {
-    var stationLvL = ""
-    if (n === "0" || n === 0) {
-      stationLvL = "特等站"
-    } else if (n === "1" || n === 1) {
-      stationLvL = "一等站"
-    } else if (n === "2" || n === 2) {
-      stationLvL = "二等站"
-    } else if (n === "3" || n === 3) {
-      stationLvL = "三等站"
-    }
-    else if (n === "4" || n === 4) {
-      stationLvL = "簡易站"
-    }
-    else if (n === "5" || n === 5) {
-      stationLvL = "招呼站"
-    }
-    else if (n === "6" || n === 6) {
-      stationLvL = "號誌站"
-    }
-    else if (n === "A") {
-      stationLvL = "貨運站"
-    }
-    else if (n === "B") {
-      stationLvL = "基地"
-    }
-    else if (n === "X") {
-      stationLvL = "非車站"
-    }
-    return stationLvL
-  }
+
   React.useEffect(() => {
     var station = UrlParam("q")
     if (!station) { station = "()" }
 
     if (station.includes("(")) { station = station.split("(")[1].split(")")[0] } //車站ID
     console.log(station)
-    getTdxData("https://tdx.transportdata.tw/api/basic/v2/Rail/TRA/Station?%24format=JSON", function (res) {
-      var TRA_Station_Data = res
+    getTdxData("https://tdx.transportdata.tw/api/basic/v2/Rail/THSR/Station?%24format=JSON", function (res) {
+      var HSR_Station_Data = res
       var temparr = []
       var found = false, DataIndex = 0
-      for (var i = 0; i < TRA_Station_Data.length; i++) {
-        temparr.push(`${TRA_Station_Data[i].StationName.Zh_tw}(${TRA_Station_Data[i].StationID})`)
-        if (TRA_Station_Data[i].StationID === station) {
+      for (var i = 0; i < HSR_Station_Data.length; i++) {
+        temparr.push(`${HSR_Station_Data[i].StationName.Zh_tw}(${HSR_Station_Data[i].StationID})`)
+        if (HSR_Station_Data[i].StationID === station) {
           DataIndex = i
           found = true
           break
@@ -91,35 +60,32 @@ function TraStation() {
       if (!found) {
         setStationCardTitle("找不到車站")
         setStationCardBody("請確認你的條件")
-        setStationCardAction(<><Button size='small' component={Link} to="/tra?sw=station">修改條件</Button></>)
+        setStationCardAction(<><Button size='small' component={Link} to="/hsr?sw=station">修改條件</Button></>)
       } else {
-        console.log(TRA_Station_Data[DataIndex])
-        setTitle(<TopBar title={`台鐵${TRA_Station_Data[DataIndex].StationName.Zh_tw}車站`} />)
-        setStationName(TRA_Station_Data[DataIndex].StationName.Zh_tw)
-        setStationCardTitle(TRA_Station_Data[DataIndex].StationName.Zh_tw + "車站")
-        setStationCardSubTitle(<>{TRA_Station_Data[DataIndex].StationID} / {stationClass(TRA_Station_Data[DataIndex].StationClass)}</>)
+        console.log(HSR_Station_Data[DataIndex])
+        setStationName(HSR_Station_Data[DataIndex].StationName.Zh_tw)
+        setStationCardTitle("高鐵" + HSR_Station_Data[DataIndex].StationName.Zh_tw + "站")
+        setStationCardSubTitle(<>代碼 / {HSR_Station_Data[DataIndex].StationID}</>)
         setStationCardBody(
           <>
-            <LocationOnIcon sx={{ verticalAlign: "bottom" }} /> {TRA_Station_Data[DataIndex].StationAddress}<br />
+            <LocationOnIcon sx={{ verticalAlign: "bottom" }} /> {HSR_Station_Data[DataIndex].StationAddress}<br />
             <p></p>
-            <PhoneIcon sx={{ verticalAlign: "bottom" }} /> {TRA_Station_Data[DataIndex].StationPhone}
-            <p></p>
-            <MapContainer center={[TRA_Station_Data[DataIndex].StationPosition.PositionLat, TRA_Station_Data[DataIndex].StationPosition.PositionLon]} zoom={18} style={{ width: "100%", height: "35vh", borderRadius: "5px" }}>
+            <MapContainer center={[HSR_Station_Data[DataIndex].StationPosition.PositionLat, HSR_Station_Data[DataIndex].StationPosition.PositionLon]} zoom={18} style={{ width: "100%", height: "35vh", borderRadius: "5px" }}>
               <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-              <Marker position={[TRA_Station_Data[DataIndex].StationPosition.PositionLat, TRA_Station_Data[DataIndex].StationPosition.PositionLon]} icon={redIcon}>
+              <Marker position={[HSR_Station_Data[DataIndex].StationPosition.PositionLat, HSR_Station_Data[DataIndex].StationPosition.PositionLon]} icon={redIcon}>
                 <Popup>
-                  {stationName}車站
+                  高鐵{stationName}站
                 </Popup>
               </Marker>
             </MapContainer>
           </>)
-        setStationCardAction(<>
-          <Button size='small' component="a" href={`tel:${TRA_Station_Data[DataIndex].StationPhone}`}>撥打電話</Button>
-          <Button size='small' component="a" href={`https://maps.google.com/?q=${TRA_Station_Data[DataIndex].StationPosition.PositionLat},${TRA_Station_Data[DataIndex].StationPosition.PositionLon}`} target='_blank'>Google Maps</Button>
-        </>)
+        setStationCardAction(
+          <>
+            <Button size='small' component="a" href={`https://maps.google.com/?q=${HSR_Station_Data[DataIndex].StationPosition.PositionLat},${HSR_Station_Data[DataIndex].StationPosition.PositionLon}`} target='_blank'>Google Maps</Button>
+          </>)
       }
     }, {
       useLocalCatch: true,
@@ -129,12 +95,12 @@ function TraStation() {
 
   return (
     <>
-      {title}
+      <TopBar title={`高鐵${stationName}站`} />
       <Box sx={{ p: 3 }}>
         <Card>
           <CardContent>
             <Typography variant="h5" component="div">
-              <Typography sx={{ mr: 1, display: "inline-block", width: "1.5rem", height: "1.5rem", borderRadius: "5px", verticalAlign: "text-top", background: "linear-gradient(315deg, #004da7, #7fa9d9)" }} variant='div' ></Typography>
+              <Typography sx={{ mr: 1, display: "inline-block", width: "1.5rem", height: "1.5rem", borderRadius: "5px", verticalAlign: "text-top", background: "linear-gradient(315deg, #ca4f0f, #f89867)" }} variant='div' ></Typography>
               {stationCardTitle}
             </Typography>
             <Typography sx={{ mb: 1.5 }} color="text.secondary">
@@ -161,4 +127,4 @@ function TraStation() {
   )
 }
 
-export default TraStation;
+export default HsrStation;

@@ -168,8 +168,8 @@ function TraTrain() {
       var time = [dataStruct[i].ArrivalTime, dataStruct[i].DepartureTime]
       try {
         if (delayTimeCheckRef.current.checked) {
-          time[0] = <Typography sx={{display:'inline'}} color="red">{addMinutesToTime(time[0],delayDataRes.TrainLiveBoards[0].DelayTime)}</Typography>
-          time[1] = <Typography sx={{display:'inline'}} color="red">{addMinutesToTime(time[1],delayDataRes.TrainLiveBoards[0].DelayTime)}</Typography>
+          time[0] = <Typography variant='span' sx={{display:'inline'}} color="red">{addMinutesToTime(time[0],delayDataRes.TrainLiveBoards[0].DelayTime)}</Typography>
+          time[1] = <Typography variant='span' sx={{display:'inline'}} color="red">{addMinutesToTime(time[1],delayDataRes.TrainLiveBoards[0].DelayTime)}</Typography>
         }
       } catch {
 

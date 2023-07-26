@@ -19,7 +19,8 @@ function HsrStation() {
   const [stationCardBody, setStationCardBody] = React.useState("")
   const [stationCardAction, setStationCardAction] = React.useState("")
 
-  const [title,setTitle] = React.useState()
+  const [title,setTitle] = React.useState(<></>)
+
   const [stationName, setStationName] = React.useState("")
   const redIcon = new L.Icon({
     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
@@ -63,6 +64,7 @@ function HsrStation() {
         setStationCardAction(<><Button size='small' component={Link} to="/hsr?sw=station">修改條件</Button></>)
       } else {
         console.log(HSR_Station_Data[DataIndex])
+        setTitle(<TopBar title={`高鐵${HSR_Station_Data[DataIndex].StationName.Zh_tw}站`} />)
         setStationName(HSR_Station_Data[DataIndex].StationName.Zh_tw)
         setStationCardTitle("高鐵" + HSR_Station_Data[DataIndex].StationName.Zh_tw + "站")
         setStationCardSubTitle(<>代碼 / {HSR_Station_Data[DataIndex].StationID}</>)
@@ -77,7 +79,7 @@ function HsrStation() {
               />
               <Marker position={[HSR_Station_Data[DataIndex].StationPosition.PositionLat, HSR_Station_Data[DataIndex].StationPosition.PositionLon]} icon={redIcon}>
                 <Popup>
-                  高鐵{stationName}站
+                  高鐵{HSR_Station_Data[DataIndex].StationName.Zh_tw}站
                 </Popup>
               </Marker>
             </MapContainer>
@@ -95,7 +97,7 @@ function HsrStation() {
 
   return (
     <>
-      <TopBar title={`高鐵${stationName}站`} />
+      {title}
       <Box sx={{ p: 3 }}>
         <Card>
           <CardContent>

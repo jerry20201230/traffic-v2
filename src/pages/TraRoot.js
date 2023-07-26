@@ -68,7 +68,6 @@ function TraRoot() {
         <FormControl>
           <RadioGroup
             row
-            aria-labelledby="demo-row-radio-buttons-group-label"
             name="row-radio-buttons-group"
             value={radioValue}
             onChange={(e) => handleChange(e)}
@@ -85,6 +84,8 @@ function TraRoot() {
             options={stationDataInput}
             onChange={(e, v) => setSelected(v)}
             renderInput={(params) => <TextField {...params} label="車站名稱" ref={stationInput} />}
+            noOptionsText="無資料"
+            freeSolo
           />
           <p></p>
           <Alert severity="warning">注意: 區分 "台" 和 "臺"! 台鐵資料使用的是"臺"</Alert>

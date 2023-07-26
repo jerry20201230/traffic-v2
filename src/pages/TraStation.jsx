@@ -191,9 +191,9 @@ function TraStation() {
             <p></p>
             <PhoneIcon sx={{ verticalAlign: "bottom" }} /> {TRA_Station_Data[DataIndex].StationPhone}
             <p></p>
-            <MapContainer dragging={false} scrollWheelZoom={false} center={[TRA_Station_Data[DataIndex].StationPosition.PositionLat, TRA_Station_Data[DataIndex].StationPosition.PositionLon]} zoom={18} style={{ width: "100%", height: "35vh", borderRadius: "5px" }}>
+            <MapContainer dragging={!L.Browser.mobile} scrollWheelZoom={false} center={[TRA_Station_Data[DataIndex].StationPosition.PositionLat, TRA_Station_Data[DataIndex].StationPosition.PositionLon]} zoom={18} style={{ width: "100%", height: "35vh", borderRadius: "5px" }}>
               <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors<br/>使用兩指移動與縮放地圖'
+                attribution={`&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors${L.Browser.mobile?"<br/>使用兩指移動與縮放地圖":""}`}
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
               <Marker position={[TRA_Station_Data[DataIndex].StationPosition.PositionLat, TRA_Station_Data[DataIndex].StationPosition.PositionLon]} icon={redIcon}>

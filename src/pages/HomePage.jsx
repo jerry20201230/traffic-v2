@@ -14,9 +14,14 @@ import FmdGoodIcon from '@mui/icons-material/FmdGood';
 import TopBar from '../TopBar';
 import getData from '../getData';
 import getWeather from '../getWeather';
-
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 export default function HomePage() {
+  const [dialogOpen, setDialogOpen] = React.useState(false);
   const [city, setCity] = React.useState("")
   const [weatherCardTitle, setWeatherCardTitle] = React.useState(<><FmdGoodIcon />請允許定位</>)
   const [weatherCardBody, setWeatherCardBody] = React.useState(<>請允許我們使用定位，才能獲取你所在地點的天氣資料<br />如果你拒絕過我們的定位要求，你可能需要前往 設定&gt;網站設定 重新開啟</>)
@@ -82,12 +87,12 @@ export default function HomePage() {
               <Box>
                 <p>到 {res.weatherElement[0].time[0].endTime} 為止的天氣預報</p>
                 <p><b>{res.weatherElement[0].time[0].parameter.parameterName} / {res.weatherElement[3].time[0].parameter.parameterName}</b></p>
-                <p><img src='/weather/hot_6142944.png' style={{maxHeight:"2.5em",verticalAlign: "middle"}}/>最高溫 / {res.weatherElement[4].time[0].parameter.parameterName}℃</p>
-                <p><img src='/weather/cold_6142961.png' style={{maxHeight:"2.5em",verticalAlign: "middle"}}/>最低溫 / {res.weatherElement[2].time[0].parameter.parameterName}℃</p>
-                <p><img src='/weather/umbrella_6143012.png' style={{maxHeight:"1em",verticalAlign: "middle"}}/>降雨機率 / {res.weatherElement[1].time[0].parameter.parameterName}℃</p>
+                <p style={{ paddingBottom: 0, marginBottom: 0 }}>
+                  <span style={{ fontSize: "5rem" }}>{res.weatherElement[2].time[0].parameter.parameterName}~{res.weatherElement[4].time[0].parameter.parameterName}</span><span style={{ fontSize: "3rem", verticalAlign: "top" }}>℃</span>
+                </p>
+                <img src='/weather/umbrella_6143012.png' style={{ maxHeight: "2.5em", verticalAlign: "middle" }} /> 降雨機率 / {res.weatherElement[1].time[0].parameter.parameterName}%
               </Box>
               <Box><WeatherIcon res={res} /></Box>
-
             </Box>)
         })
         setWeatherCardAction(<></>)
@@ -97,6 +102,7 @@ export default function HomePage() {
 
     function errorFunction() {
       console.log("Unable to retrieve your location.");
+      setDialogOpen(true)
     }
   }
 
@@ -211,7 +217,7 @@ export default function HomePage() {
           >
             <h2>{steps[activeStep].label}</h2>
           </Paper>
-          <Box sx={{ height: "18em", width: '100%' }}>
+          <Box sx={{ height: "22em", width: '100%' }}>
             {steps[activeStep].description}
           </Box>
           <MobileStepper
@@ -247,6 +253,30 @@ export default function HomePage() {
         </Box>
       </Box>
 
+
+
+
+      <Dialog
+        open={dialogOpen}
+        onClose={()=>setDialogOpen(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"無法使用你的定位資訊"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            我們無法使用你的定位資訊，這表示需要使用位置資訊的功能將<b>無法使用</b><br/>
+            如果要啟用定位，請到瀏覽器設定&gt;網站設定&gt;{window.location.origin}，開啟定位服務
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={()=>setDialogOpen(false)}>
+            確定
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }

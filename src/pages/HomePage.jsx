@@ -118,7 +118,7 @@ export default function HomePage() {
                   <Box>
                     <p style={{ fontSize: "1.1rem" }}><b>{res.weatherElement[0].time[0].parameter.parameterName} <br /> {res.weatherElement[3].time[0].parameter.parameterName}</b></p>
                     <p style={{ paddingBottom: 0, marginBottom: 0 }}>
-                      <span style={{ fontSize: "3rem" }}>{res.weatherElement[2].time[0].parameter.parameterName}~{res.weatherElement[4].time[0].parameter.parameterName}<sup><small>℃</small></sup></span>
+                      <span style={{ fontSize: "3rem" }}>{res.weatherElement[2].time[0].parameter.parameterName}~{res.weatherElement[4].time[0].parameter.parameterName}<sup style={{fontSize:"1.5rem"}}>℃</sup></span>
                     </p>
 
                     <img src='/weather/umbrella_6143012.png' style={{ maxHeight: "2.5em", verticalAlign: "middle" }} /> 降雨機率 / {res.weatherElement[1].time[0].parameter.parameterName}%<br/>

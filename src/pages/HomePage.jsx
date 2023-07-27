@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material/styles';
 import MobileStepper from '@mui/material/MobileStepper';
@@ -19,6 +19,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import dayjs from 'dayjs';
 
 export default function HomePage() {
   const [dialogOpen, setDialogOpen] = React.useState(false);
@@ -68,6 +69,26 @@ export default function HomePage() {
 
   const [activeStep, setActiveStep] = React.useState(0);
   const maxSteps = steps.length;
+  function timeToMinutes(time) {
+    const [hours, minutes] = time.split(':').map(Number);
+    return hours * 60 + minutes;
+  }
+
+  // 判断时间点是否在时间线上的函数
+  function isTimeInRange(time, startTime, endTime) {
+    const timeInMinutes = timeToMinutes(time);
+    const startInMinutes = timeToMinutes(startTime);
+    const endInMinutes = timeToMinutes(endTime);
+
+    // 检查时间是否在时间线的范围内，需要考虑时间线跨夜的情况
+    if (startInMinutes <= endInMinutes) {
+      // 时间线不跨夜的情况
+      return timeInMinutes >= startInMinutes && timeInMinutes <= endInMinutes;
+    } else {
+      // 时间线跨夜的情况
+      return timeInMinutes >= startInMinutes || timeInMinutes <= endInMinutes;
+    }
+  }
   function getLocation() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(successFunction, errorFunction);
@@ -82,23 +103,32 @@ export default function HomePage() {
         setWeatherCardTitle(`${res[0].CityName} 的天氣`)
 
         getWeather(res[0].CityName, function (res) {
-          setWeatherCardBody(
-            <>
-            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-              <Box>
-                <p style={{ fontSize: "1.1rem" }}><b>{res.weatherElement[0].time[0].parameter.parameterName} <br/> {res.weatherElement[3].time[0].parameter.parameterName}</b></p>
-                <p style={{ paddingBottom: 0, marginBottom: 0 }}>
-                  <span style={{ fontSize: "3rem" }}>{res.weatherElement[2].time[0].parameter.parameterName}~{res.weatherElement[4].time[0].parameter.parameterName}<sup><small>℃</small></sup></span>
-                </p>
 
-                <img src='/weather/umbrella_6143012.png' style={{ maxHeight: "2.5em", verticalAlign: "middle" }} /> 降雨機率 / {res.weatherElement[1].time[0].parameter.parameterName}%
-              </Box>
-              <Box><WeatherIcon res={res} /></Box>
-              
-          
-            </Box>
-            <p>到 {res.weatherElement[0].time[0].endTime} 為止的天氣預報</p>
-            </>)
+          getData(`https://opendata.cwb.gov.tw/api/v1/rest/datastore/A-B0062-001?Authorization=CWB-F29A34D9-5547-4A00-BA43-CDA0C1416940&format=JSON&CountyName=${window.encodeURI(res.locationName)}&timeFrom=${dayjs(new Date()).format("YYYY-MM-DD")}&timeTo=${dayjs().date(dayjs().date() + 1).format("YYYY-MM-DD")}`, function (res2) {
+            console.log(res2)
+            console.log(dayjs().date(dayjs().date() + 1).format("YYYY-MM-DD"))
+
+            console.log(isTimeInRange(dayjs(new Date()).format("HH:MM"), res2.records.locations.location[0].time[0].SunRiseTime, res2.records.locations.location[0].time[0].SunSetTime))
+            console.log(dayjs(new Date()).format("HH:MM"))
+            console.log(res2.records.locations.location[0].time[0].SunRiseTime)
+            console.log(res2.records.locations.location[0].time[0].SunSetTime)
+            setWeatherCardBody(
+              <>
+                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                  <Box>
+                    <p style={{ fontSize: "1.1rem" }}><b>{res.weatherElement[0].time[0].parameter.parameterName} <br /> {res.weatherElement[3].time[0].parameter.parameterName}</b></p>
+                    <p style={{ paddingBottom: 0, marginBottom: 0 }}>
+                      <span style={{ fontSize: "3rem" }}>{res.weatherElement[2].time[0].parameter.parameterName}~{res.weatherElement[4].time[0].parameter.parameterName}<sup><small>℃</small></sup></span>
+                    </p>
+
+                    <img src='/weather/umbrella_6143012.png' style={{ maxHeight: "2.5em", verticalAlign: "middle" }} /> 降雨機率 / {res.weatherElement[1].time[0].parameter.parameterName}%<br/>
+                  </Box>
+                  <Box><WeatherIcon res={res} isNight={!isTimeInRange(dayjs(new Date()).format("HH:MM"), res2.records.locations.location[0].time[0].SunRiseTime, res2.records.locations.location[0].time[0].SunSetTime)} /></Box>
+                </Box>
+                <p>到 {res.weatherElement[0].time[0].endTime} 為止的天氣預報</p>
+              </>)
+          }, { useLocalCatch: true })
+
         })
         setWeatherCardAction(<></>)
 
@@ -111,10 +141,8 @@ export default function HomePage() {
     }
   }
 
-  function WeatherIcon({ res }) {
+  function WeatherIcon({ res, isNight }) {
     //referrence:https://pjchender.dev/react-bootcamp/docs/book/ch6/6-1/#%E6%8F%9B%E4%BD%A0%E4%BA%86%EF%BC%81%E6%8A%8A%E5%A4%A9%E6%B0%A3%E4%BB%A3%E7%A2%BC%E8%BD%89%E6%8F%9B%E6%88%90%E5%A4%A9%E6%B0%A3%E5%9E%8B%E6%85%8B
-
-    console.log("reS", res)
     const weatherTypes = {
       isThunderstorm: [15, 16, 17, 18, 21, 22, 33, 34, 35, 36, 41],
       isClear: [1],
@@ -169,7 +197,11 @@ export default function HomePage() {
 
       return weatherType;
     };
-    return <>{weatherIcons.day[weatherCode2Type(res.weatherElement[0].time[0].parameter.parameterValue)]}</>
+    if (isNight) {
+      return <>{weatherIcons.night[weatherCode2Type(res.weatherElement[0].time[0].parameter.parameterValue)]}</>
+    } else {
+      return <>{weatherIcons.day[weatherCode2Type(res.weatherElement[0].time[0].parameter.parameterValue)]}</>
+    }
   }
 
 
@@ -263,7 +295,7 @@ export default function HomePage() {
 
       <Dialog
         open={dialogOpen}
-        onClose={()=>setDialogOpen(false)}
+        onClose={() => setDialogOpen(false)}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -272,12 +304,12 @@ export default function HomePage() {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            我們無法使用你的定位資訊，這表示需要使用位置資訊的功能將<b>無法使用</b><br/>
+            我們無法使用你的定位資訊，這表示需要使用位置資訊的功能將<b>無法使用</b><br />
             如果要啟用定位，請到瀏覽器設定&gt;網站設定&gt;{window.location.origin}，開啟定位服務
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={()=>setDialogOpen(false)}>
+          <Button onClick={() => setDialogOpen(false)}>
             確定
           </Button>
         </DialogActions>

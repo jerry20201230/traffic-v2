@@ -83,18 +83,22 @@ export default function HomePage() {
 
         getWeather(res[0].CityName, function (res) {
           setWeatherCardBody(
+            <>
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
               <Box>
-                <p>到 {res.weatherElement[0].time[0].endTime} 為止的天氣預報</p>
-                <p style={{ paddingBottom: 0, marginBottom: 0 }}>
-                  <span style={{ fontSize: "3rem" }}>{res.weatherElement[2].time[0].parameter.parameterName}~{res.weatherElement[4].time[0].parameter.parameterName}</span><span style={{ fontSize: "2rem", verticalAlign: "top" }}>℃</span>
-                </p>
                 <p style={{ fontSize: "1.1rem" }}><b>{res.weatherElement[0].time[0].parameter.parameterName} <br/> {res.weatherElement[3].time[0].parameter.parameterName}</b></p>
+                <p style={{ paddingBottom: 0, marginBottom: 0 }}>
+                  <span style={{ fontSize: "3rem" }}>{res.weatherElement[2].time[0].parameter.parameterName}~{res.weatherElement[4].time[0].parameter.parameterName}<sup><small>℃</small></sup></span>
+                </p>
 
                 <img src='/weather/umbrella_6143012.png' style={{ maxHeight: "2.5em", verticalAlign: "middle" }} /> 降雨機率 / {res.weatherElement[1].time[0].parameter.parameterName}%
               </Box>
               <Box><WeatherIcon res={res} /></Box>
-            </Box>)
+              
+          
+            </Box>
+            <p>到 {res.weatherElement[0].time[0].endTime} 為止的天氣預報</p>
+            </>)
         })
         setWeatherCardAction(<></>)
 

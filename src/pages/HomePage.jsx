@@ -24,7 +24,7 @@ export default function HomePage() {
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const [city, setCity] = React.useState("")
   const [weatherCardTitle, setWeatherCardTitle] = React.useState(<><FmdGoodIcon />請允許定位</>)
-  const [weatherCardBody, setWeatherCardBody] = React.useState(<>請允許我們使用定位，才能獲取你所在地點的天氣資料<br />如果你拒絕過我們的定位要求，你可能需要前往 設定&gt;網站設定 重新開啟</>)
+  const [weatherCardBody, setWeatherCardBody] = React.useState(<>請允許我們使用定位，才能獲取你所在地點的天氣資料</>)
   const [weatherIcon, setWeatherIcon] = React.useState(<></>)
   const [weatherCardAction, setWeatherCardAction] = React.useState(<><Button size="small" onClick={() => getLocation()}>開啟定位</Button></>)
 
@@ -86,10 +86,11 @@ export default function HomePage() {
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
               <Box>
                 <p>到 {res.weatherElement[0].time[0].endTime} 為止的天氣預報</p>
-                <p><b>{res.weatherElement[0].time[0].parameter.parameterName} / {res.weatherElement[3].time[0].parameter.parameterName}</b></p>
                 <p style={{ paddingBottom: 0, marginBottom: 0 }}>
-                  <span style={{ fontSize: "5rem" }}>{res.weatherElement[2].time[0].parameter.parameterName}~{res.weatherElement[4].time[0].parameter.parameterName}</span><span style={{ fontSize: "3rem", verticalAlign: "top" }}>℃</span>
+                  <span style={{ fontSize: "3rem" }}>{res.weatherElement[2].time[0].parameter.parameterName}~{res.weatherElement[4].time[0].parameter.parameterName}</span><span style={{ fontSize: "2rem", verticalAlign: "top" }}>℃</span>
                 </p>
+                <p style={{ fontSize: "1.1rem" }}><b>{res.weatherElement[0].time[0].parameter.parameterName} <br/> {res.weatherElement[3].time[0].parameter.parameterName}</b></p>
+
                 <img src='/weather/umbrella_6143012.png' style={{ maxHeight: "2.5em", verticalAlign: "middle" }} /> 降雨機率 / {res.weatherElement[1].time[0].parameter.parameterName}%
               </Box>
               <Box><WeatherIcon res={res} /></Box>

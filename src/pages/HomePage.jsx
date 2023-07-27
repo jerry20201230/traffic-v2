@@ -82,8 +82,9 @@ export default function HomePage() {
               <Box>
                 <p>到 {res.weatherElement[0].time[0].endTime} 為止的天氣預報</p>
                 <p><b>{res.weatherElement[0].time[0].parameter.parameterName} / {res.weatherElement[3].time[0].parameter.parameterName}</b></p>
-                <p><img src='/weather/temperature_6142979.png' style={{maxHeight:"1em",verticalAlign: "middle"}}/>最高溫 / {res.weatherElement[4].time[0].parameter.parameterName}℃</p>
-
+                <p><img src='/weather/hot_6142944.png' style={{maxHeight:"2.5em",verticalAlign: "middle"}}/>最高溫 / {res.weatherElement[4].time[0].parameter.parameterName}℃</p>
+                <p><img src='/weather/cold_6142961.png' style={{maxHeight:"2.5em",verticalAlign: "middle"}}/>最低溫 / {res.weatherElement[2].time[0].parameter.parameterName}℃</p>
+                <p><img src='/weather/umbrella_6143012.png' style={{maxHeight:"1em",verticalAlign: "middle"}}/>降雨機率 / {res.weatherElement[1].time[0].parameter.parameterName}℃</p>
               </Box>
               <Box><WeatherIcon res={res} /></Box>
 

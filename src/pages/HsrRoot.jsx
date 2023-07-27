@@ -1,6 +1,6 @@
 import * as React from 'react';
 import TopBar from '../TopBar';
-import getTdxData from '../getTdxData';
+import getData from '../getData';
 import { Box, Autocomplete, TextField, Button } from '@mui/material';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
@@ -27,7 +27,7 @@ function HsrRoot() {
     return result
   }
   React.useLayoutEffect(() => {
-    getTdxData("https://tdx.transportdata.tw/api/basic/v2/Rail/THSR/Station?%24format=JSON", function (res) {
+    getData("https://tdx.transportdata.tw/api/basic/v2/Rail/THSR/Station?%24format=JSON", function (res) {
       var HSR_Station_Data = res
       console.log(HSR_Station_Data)
 

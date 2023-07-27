@@ -4,7 +4,7 @@ import { Alert, Box } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { Card, CardActions, CardContent } from '@mui/material'
 import Button from '@mui/material/Button';
-import getTdxData from '../getTdxData';
+import getData from '../getData';
 import { Link } from 'react-router-dom';
 import PhoneIcon from '@mui/icons-material/Phone';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -159,7 +159,7 @@ function TraStation() {
 
     if (station.includes("(")) { station = station.split("(")[1].split(")")[0] } //車站ID
     console.log(station)
-    getTdxData("https://tdx.transportdata.tw/api/basic/v2/Rail/TRA/Station?%24format=JSON", function (res) {
+    getData("https://tdx.transportdata.tw/api/basic/v2/Rail/TRA/Station?%24format=JSON", function (res) {
       var TRA_Station_Data = res
       var temparr = []
       var found = false, DataIndex = 0
@@ -219,7 +219,7 @@ function TraStation() {
 
   React.useEffect(() => {
     if (countdown === 0 && stationID) {
-      getTdxData(`https://tdx.transportdata.tw/api/basic/v2/Rail/TRA/LiveBoard/Station/${stationID}?%24format=JSON`, function (res) {
+      getData(`https://tdx.transportdata.tw/api/basic/v2/Rail/TRA/LiveBoard/Station/${stationID}?%24format=JSON`, function (res) {
         setTrainBoard(res)
         readTrainData(res)
       }, { useLocalCatch: false })
@@ -233,7 +233,7 @@ function TraStation() {
 
   React.useEffect(() => {
     if(stationID){
-      getTdxData(`https://tdx.transportdata.tw/api/basic/v2/Rail/TRA/LiveBoard/Station/${stationID}?%24format=JSON`, function (res) {
+      getData(`https://tdx.transportdata.tw/api/basic/v2/Rail/TRA/LiveBoard/Station/${stationID}?%24format=JSON`, function (res) {
         setTrainBoard(res)
         console.log(res)
         setCountdown(60)

@@ -12,7 +12,7 @@ import TimelineSeparator from '@mui/lab/TimelineSeparator';
 import TimelineConnector from '@mui/lab/TimelineConnector';
 import TimelineContent from '@mui/lab/TimelineContent';
 import TimelineDot from '@mui/lab/TimelineDot';
-import getTdxData from '../getTdxData';
+import getData from '../getData';
 import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
 import { Card, CardContent, Stack } from '@mui/material'
 import TrendingFlatIcon from '@mui/icons-material/TrendingFlat';
@@ -417,7 +417,7 @@ function TraTrain() {
     else {
       setDisplayTrainNum(trainNum)
 
-      getTdxData(`https://tdx.transportdata.tw/api/basic/v2/Rail/TRA/DailyTimetable/Today/TrainNo/${trainNum}?%24format=JSON`, function (res) {
+      getData(`https://tdx.transportdata.tw/api/basic/v2/Rail/TRA/DailyTimetable/Today/TrainNo/${trainNum}?%24format=JSON`, function (res) {
         if (res.length) {
           setDatatype("DailyTimetable")
           setTrainDataRes(res)
@@ -436,7 +436,7 @@ function TraTrain() {
           var formattedYesterday = year + "-" + (month < 10 ? "0" + month : month) + "-" + (day < 10 ? "0" + day : day);
 
 
-          getTdxData(`https://tdx.transportdata.tw/api/basic/v2/Rail/TRA/DailyTimetable/TrainNo/${trainNum}/TrainDate/${formattedYesterday}?%24format=JSON`, function (res) {
+          getData(`https://tdx.transportdata.tw/api/basic/v2/Rail/TRA/DailyTimetable/TrainNo/${trainNum}/TrainDate/${formattedYesterday}?%24format=JSON`, function (res) {
             if (res.length) {
               setDatatype("GeneralTimetable")
               setTrainDataRes(res)
@@ -482,7 +482,7 @@ function TraTrain() {
   }, [trainOnlineBool, timerStopped]);
   React.useEffect(() => {
     if (countdown === 0) {
-      getTdxData(`https://tdx.transportdata.tw/api/basic/v3/Rail/TRA/TrainLiveBoard/TrainNo/${displayTrainNum}?%24format=JSON`, function (res) {
+      getData(`https://tdx.transportdata.tw/api/basic/v3/Rail/TRA/TrainLiveBoard/TrainNo/${displayTrainNum}?%24format=JSON`, function (res) {
         setDelayDataRes(res)
       }, { useLocalCatch: false })
       setCountdown(60)

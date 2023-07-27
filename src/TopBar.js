@@ -119,7 +119,7 @@ function TopBar({ title }) {
                 <ListItem disablePadding>
                   <ListItemButton component={Link} to="/bike">
                   <ListItemIcon>
-                      <Typography sx={{ mr: 1, display: "inline-block", width: "1.5rem", height: "1.5rem", borderRadius: "5px", verticalAlign: "text-top", background: "linear-gradient(315deg, #ffef00,#fffdd8)" }} variant='div' ></Typography>
+                      <Typography sx={{ mr: 1, display: "inline-block", width: "1.5rem", height: "1.5rem", borderRadius: "5px", verticalAlign: "text-top", background: "linear-gradient(315deg, #ffef00,#fff647)" }} variant='div' ></Typography>
                     </ListItemIcon>
                     <ListItemText primary="公共自行車" />
                   </ListItemButton>

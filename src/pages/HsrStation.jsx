@@ -4,7 +4,7 @@ import { Box } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { Card, CardActions, CardContent } from '@mui/material'
 import Button from '@mui/material/Button';
-import getTdxData from '../getTdxData';
+import getData from '../getData';
 import { Link } from 'react-router-dom';
 import PhoneIcon from '@mui/icons-material/Phone';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -45,7 +45,7 @@ function HsrStation() {
 
     if (station.includes("(")) { station = station.split("(")[1].split(")")[0] } //車站ID
     console.log(station)
-    getTdxData("https://tdx.transportdata.tw/api/basic/v2/Rail/THSR/Station?%24format=JSON", function (res) {
+    getData("https://tdx.transportdata.tw/api/basic/v2/Rail/THSR/Station?%24format=JSON", function (res) {
       var HSR_Station_Data = res
       var temparr = []
       var found = false, DataIndex = 0

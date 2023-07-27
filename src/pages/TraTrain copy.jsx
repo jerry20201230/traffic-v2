@@ -12,7 +12,7 @@ import TimelineSeparator from '@mui/lab/TimelineSeparator';
 import TimelineConnector from '@mui/lab/TimelineConnector';
 import TimelineContent from '@mui/lab/TimelineContent';
 import TimelineDot from '@mui/lab/TimelineDot';
-import getTdxData from '../getTdxData';
+import getData from '../getData';
 import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
 import { Card, CardContent, Stack } from '@mui/material'
 import TrendingFlatIcon from '@mui/icons-material/TrendingFlat';
@@ -159,7 +159,7 @@ function TraTrain() {
         if (Boolean(displayTrainNum) && Boolean(resData)) {
           if (calculateTimeDifference(getTime("time-s"), resData[0].StopTimes[resData[0].StopTimes.length - 1].ArrivalTime) > 0 && calculateTimeDifference(getTime("time-s"), resData[0].StopTimes[0].DepartureTime) < 0) {
             try {
-              getTdxData(`https://tdx.transportdata.tw/api/basic/v3/Rail/TRA/TrainLiveBoard/TrainNo/${displayTrainNum}?%24format=JSON`, function (res) {
+              getData(`https://tdx.transportdata.tw/api/basic/v3/Rail/TRA/TrainLiveBoard/TrainNo/${displayTrainNum}?%24format=JSON`, function (res) {
                 var liveInfo = "", alertBox = <></>
 
                 console.log(resData[0])
@@ -220,7 +220,7 @@ function TraTrain() {
     if (!trainNum) { trainNum = "" }
     else {
       setDisplayTrainNum(trainNum)
-      getTdxData(`https://tdx.transportdata.tw/api/basic/v2/Rail/TRA/DailyTimetable/Today/TrainNo/${trainNum}?%24format=JSON`, function (res) {
+      getData(`https://tdx.transportdata.tw/api/basic/v2/Rail/TRA/DailyTimetable/Today/TrainNo/${trainNum}?%24format=JSON`, function (res) {
         if (res.length) {
           setResData(res)
           var stationTimeline = []

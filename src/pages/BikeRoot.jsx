@@ -1,6 +1,6 @@
 import * as React from 'react';
 import TopBar from '../TopBar';
-import getTdxData from '../getTdxData';
+import getData from '../getData';
 import { Box, Autocomplete, TextField, Button } from '@mui/material';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';

@@ -11,6 +11,7 @@ import SettingRoot from './pages/SettingRoot';
 import SettingAbout from './pages/SettingAbout';
 import HsrRoot from './pages/HsrRoot';
 import HsrStation from './pages/HsrStation';
+import HsrTrain from './pages/HsrTrain';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path='/hsr'>
           <Route index element=<HsrRoot/>></Route>
           <Route path='station' element=<HsrStation />></Route>
+          <Route path='train' element=<HsrTrain />></Route>
         </Route>
 
         <Route path='/bike'>

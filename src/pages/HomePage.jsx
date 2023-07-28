@@ -171,22 +171,22 @@ export default function HomePage() {
 
     const weatherIcons = {
       day: {
-        isThunderstorm: <img src="/weather/8594648946.png" style={{ maxHeight: "10em" }} />,
-        isClear: <img src="/weather/sun_6142888.png" style={{ maxHeight: "10em" }} />,
-        isCloudyFog: <img src="/weather/sun_6142591.png" style={{ maxHeight: "10em" }} />,
-        isCloudy: <img src="/weather/sun_6142591.png" style={{ maxHeight: "10em" }} />,
-        isFog: <img src="/weather/1655464.png" style={{ maxHeight: "10em" }} />,
-        isPartiallyClearWithRain: <img src="/weather/6142570.png" style={{ maxHeight: "10em" }} />,
-        isSnowing: <img src="/weather/snow_6142805.png" style={{ maxHeight: "10em" }} />,
+        isThunderstorm: <img src="/weather/8594648946.png" style={{ maxHeight: "8em" }} />,
+        isClear: <img src="/weather/sun_6142888.png" style={{ maxHeight: "8em" }} />,
+        isCloudyFog: <img src="/weather/sun_6142591.png" style={{ maxHeight: "8em" }} />,
+        isCloudy: <img src="/weather/sun_6142591.png" style={{ maxHeight: "8em" }} />,
+        isFog: <img src="/weather/1655464.png" style={{ maxHeight: "8em" }} />,
+        isPartiallyClearWithRain: <img src="/weather/6142570.png" style={{ maxHeight: "8em" }} />,
+        isSnowing: <img src="/weather/snow_6142805.png" style={{ maxHeight: "8em" }} />,
       },
       night: {
-        isThunderstorm: <img src="/weather/8594648946.png" style={{ maxHeight: "10em" }} />,
-        isClear: <img src="/weather/489894894894.png" style={{ maxHeight: "10em" }} />,
-        isCloudyFog: <img src="/weather/moon_6142510.png" style={{ maxHeight: "10em" }} />,
-        isCloudy: <img src="/weather/moon_6142510.png" style={{ maxHeight: "10em" }} />,
-        isFog: <img src="/weather/1655464.png" style={{ maxHeight: "10em" }} />,
-        isPartiallyClearWithRain: <img src="/weather/rainy-night_6142492.png" style={{ maxHeight: "10em" }} />,
-        isSnowing: <img src="/weather/snow_6142805.png" style={{ maxHeight: "10em" }} />,
+        isThunderstorm: <img src="/weather/8594648946.png" style={{ maxHeight: "8em" }} />,
+        isClear: <img src="/weather/489894894894.png" style={{ maxHeight: "8em" }} />,
+        isCloudyFog: <img src="/weather/moon_6142510.png" style={{ maxHeight: "8em" }} />,
+        isCloudy: <img src="/weather/moon_6142510.png" style={{ maxHeight: "8em" }} />,
+        isFog: <img src="/weather/1655464.png" style={{ maxHeight: "8em" }} />,
+        isPartiallyClearWithRain: <img src="/weather/rainy-night_6142492.png" style={{ maxHeight: "8em" }} />,
+        isSnowing: <img src="/weather/snow_6142805.png" style={{ maxHeight: "8em" }} />,
       },
     };
     const weatherCode2Type = (weatherCode) => {

@@ -310,12 +310,12 @@ function TraStation() {
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <TableCell sx={{ p: 1 }}>時間</TableCell>
-                      <TableCell sx={{ p: 1 }}>車次</TableCell>
-                      <TableCell sx={{ p: 1 }}>車種</TableCell>
-                      <TableCell sx={{ p: 1 }}>經</TableCell>
-                      <TableCell sx={{ p: 1 }}>往</TableCell>
-                      <TableCell sx={{ p: 1 }}>備註</TableCell>
+                      <TableCell sx={{ p: 0.5 }}>時間</TableCell>
+                      <TableCell sx={{ p: 0.5 }}>車次</TableCell>
+                      <TableCell sx={{ p: 0.5 }}>車種</TableCell>
+                      <TableCell sx={{ p: 0.5 }}>經</TableCell>
+                      <TableCell sx={{ p: 0.5 }}>往</TableCell>
+                      <TableCell sx={{ p: 0.5 }}>備註</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -326,20 +326,21 @@ function TraStation() {
                           sx={{ '&:last-child td, &:last-child th': { border: 0 }, }}
 
                         >
-                          <TableCell component="th" scope="row" sx={{ p: 1 }}>
+                          <TableCell component="th" scope="row" sx={{ p: 0.5 }}>
                             {row.ScheduledDepartureTime.split(":")[0] + ":" + row.ScheduledDepartureTime.split(":")[1]}
                           </TableCell>
-                          <TableCell sx={{ p: 1 }}><Link to={`/tra/train/?q=${row.TrainNo}`}>{row.TrainNo}</Link></TableCell>
-                          <TableCell sx={{ p: 1 }}>{convertTrainType(row.TrainTypeName.Zh_tw)}</TableCell>
-                          <TableCell sx={{ p: 1 }}>{row.TripLine === 0 ? "-" : row.TripLine === 1 ? "山線" : row.TripLine === 2 ? "海線" : "成追線"}</TableCell>
-                          <TableCell sx={{ p: 1 }}>{row.EndingStationName.Zh_tw}</TableCell>
-                          <TableCell sx={{ p: 1 }}>{row.DelayTime === 0 ? <Typography color="green">準點</Typography> : <Typography color="red">晚{row.DelayTime}分</Typography>}</TableCell>
+                          <TableCell sx={{ p: 0.5 }}><Link to={`/tra/train/?q=${row.TrainNo}`}>{row.TrainNo}</Link></TableCell>
+                          <TableCell sx={{ p: 0.5 }}>{convertTrainType(row.TrainTypeName.Zh_tw)}</TableCell>
+                          <TableCell sx={{ p: 0.5}}>{row.TripLine === 0 ? "--" : row.TripLine === 1 ? "山線" : row.TripLine === 2 ? "海線" : "成追"}</TableCell>
+                          <TableCell sx={{ p: 0.5 }}>{row.EndingStationName.Zh_tw}  </TableCell>
+                          <TableCell sx={{ p: 0.5 }}>{row.DelayTime === 0 ? <Typography color="green">準點</Typography> : <Typography color="red">晚{row.DelayTime}分</Typography>}</TableCell>
                         </TableRow>
                         : <TableRow
                           key={0}
+                          
                           sx={{ '&:last-child td, &:last-child th': { border: 0 }, }}
                         >
-                          <TableCell sx={{ p: 1 }}>無資料</TableCell>
+                          <TableCell sx={{ p: 0.5,textAlign:"center" }} colSpan={6}>無資料</TableCell>
                         </TableRow>
                     ))}
                   </TableBody>

@@ -168,8 +168,8 @@ function TraTrain() {
       var time = [dataStruct[i].ArrivalTime, dataStruct[i].DepartureTime]
       try {
         if (delayTimeCheckRef.current.checked) {
-          time[0] = <Typography variant='span' sx={{display:'inline'}} color="red">{addMinutesToTime(time[0],delayDataRes.TrainLiveBoards[0].DelayTime)}</Typography>
-          time[1] = <Typography variant='span' sx={{display:'inline'}} color="red">{addMinutesToTime(time[1],delayDataRes.TrainLiveBoards[0].DelayTime)}</Typography>
+          time[0] = <Typography variant='span' sx={{ display: 'inline' }} color="red">{addMinutesToTime(time[0], delayDataRes.TrainLiveBoards[0].DelayTime)}</Typography>
+          time[1] = <Typography variant='span' sx={{ display: 'inline' }} color="red">{addMinutesToTime(time[1], delayDataRes.TrainLiveBoards[0].DelayTime)}</Typography>
         }
       } catch {
 
@@ -185,8 +185,8 @@ function TraTrain() {
               <TimelineSeparator>
                 <TimelineDot />
               </TimelineSeparator>
-              <TimelineContent>
-                {dataStruct[i].StationName.Zh_tw} (終點)
+              <TimelineContent  color="textSecondary">
+                <Link to={`/tra/station/?q=${dataStruct[i].StationID}`} style={{ color: "currentcolor" }}>{dataStruct[i].StationName.Zh_tw} (終點)</Link>
               </TimelineContent>
             </>
             :
@@ -199,7 +199,9 @@ function TraTrain() {
                 <TimelineDot color={timecolor} />
                 <TimelineConnector />
               </TimelineSeparator>
-              <TimelineContent>{dataStruct[i].StationName.Zh_tw}</TimelineContent>
+              <TimelineContent color="textSecondary">
+                <Link to={`/tra/station/?q=${dataStruct[i].StationID}`} style={{ color: "currentcolor" }}>{dataStruct[i].StationName.Zh_tw}</Link>
+              </TimelineContent>
             </>
         stationTimeline.push(newStation)
       } else {
@@ -213,8 +215,8 @@ function TraTrain() {
               <TimelineSeparator>
                 <TimelineDot />
               </TimelineSeparator>
-              <TimelineContent>
-                {dataStruct[i].StationName.Zh_tw} (終點)
+              <TimelineContent color="textSecondary">
+                <Link to={`/tra/station/?q=${dataStruct[i].StationID}`}  style={{ color: "currentcolor" }}>{dataStruct[i].StationName.Zh_tw} (終點)</Link>
               </TimelineContent>
             </>
             :
@@ -226,7 +228,9 @@ function TraTrain() {
                 <TimelineDot color={timecolor} />
                 <TimelineConnector />
               </TimelineSeparator>
-              <TimelineContent>{dataStruct[i].StationName.Zh_tw}</TimelineContent>
+              <TimelineContent  color="textSecondary">
+                <Link to={`/tra/station/?q=${dataStruct[i].StationID}`} style={{ color: "currentcolor" }}>{dataStruct[i].StationName.Zh_tw}</Link>
+              </TimelineContent>
             </>
         stationTimeline.push(newStation)
       }
@@ -255,7 +259,7 @@ function TraTrain() {
     else {
       setTrainOnlineBool(isTimeInRange(getTime("time-s"), dataStruct[0].DepartureTime, (dataStruct[dataStruct.length - 1].ArrivalTime)))
     }
- 
+
 
     var dataStruct2 = (dataType === "GeneralTimetable" ? trainDataRes[0].DailyTrainInfo : trainDataRes[0].DailyTrainInfo)
 
@@ -343,7 +347,7 @@ function TraTrain() {
 
         if (delayDataRes.TrainLiveBoards[0].DelayTime > 0) { //誤點
           alertBox = <Alert severity="error"><h3 style={{ margin: 0, padding: 0 }}>列車目前誤點 {delayDataRes.TrainLiveBoards[0].DelayTime}分</h3><Typography>{displayTrainNum} 次 {liveInfo}<br />最後更新:{getTime("time", delayDataRes.UpdateTime)}</Typography></Alert>
-         // setDelayAlert(<Alert severity="warning"><h3 style={{ margin: 0, padding: 0 }}>資訊為準點時刻</h3>列車目前誤點 {delayDataRes.TrainLiveBoards[0].DelayTime}分</Alert>)
+          // setDelayAlert(<Alert severity="warning"><h3 style={{ margin: 0, padding: 0 }}>資訊為準點時刻</h3>列車目前誤點 {delayDataRes.TrainLiveBoards[0].DelayTime}分</Alert>)
           setDelayCheckBox(<FormControlLabel control={<Checkbox inputRef={delayTimeCheckRef} />} label={`顯示誤點時間 (${delayDataRes.TrainLiveBoards[0].DelayTime}分)`} onChange={(e) => { reRenderTimeLine({ delaytime: e.target.checked }); }} />)
 
         } else if (delayDataRes.TrainLiveBoards[0].DelayTime <= 0) {//&& calculateTimeDifference(getTime("time-s"), dataStruct[0].DepartureTime) >= 0 && !isTimeInRange(getTime("time-s"), dataStruct[0].DepartureTime, dataStruct[dataStruct.length - 1].ArrivalTime)) {

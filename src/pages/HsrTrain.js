@@ -147,7 +147,6 @@ function HsrTrain() {
 
     //畫時間線的part.
     function reRenderTimeLine(t, data) {
-        console.log()
         var res = trainDataRes || data, stationTimeline = [], dataStruct;
         try {
             dataStruct = res[0].GeneralTimetable.StopTimes
@@ -155,9 +154,6 @@ function HsrTrain() {
         catch (e) {
             dataStruct = res[0].StopTimes
         }
-
-
-
         for (let i = 0; i < dataStruct.length; i++) {
             var timecolor = "grey"
             if (calculateTimeDifference(dataStruct[i].ArrivalTime, dataStruct[i].DepartureTime) >= 3) {
@@ -257,7 +253,7 @@ function HsrTrain() {
         console.log("das3", dataStruct2)
 
         setTrainCardTitle(`${trainNum} 次 高鐵列車`)
-        setTrainCardSubTitle(<>{dataStruct2.Direction === 1?"北上列車":"南下列車"} / 往<Link to={`/hsr/station?q=${dataStruct2.EndingStationID}`}  style={{ color: "currentcolor" }}>{dataStruct2.EndingStationName.Zh_tw}</Link></>)
+        setTrainCardSubTitle(<>{dataStruct2.Direction === 1 ? "北上列車" : "南下列車"} / 往<Link to={`/hsr/station?q=${dataStruct2.EndingStationID}`} style={{ color: "currentcolor" }}>{dataStruct2.EndingStationName.Zh_tw}</Link></>)
         /*  setTrainCardSubTitle(
             <><b>{tripline} {dataStruct2.StartingStationName.Zh_tw}<TrendingFlatIcon sx={{ verticalAlign: "bottom" }} />{dataStruct2.EndingStationName.Zh_tw}</b>
               {traintype === dataStruct2.TrainTypeName.Zh_tw ? "" : <><br /><b>車種: </b>{dataStruct2.TrainTypeName.Zh_tw}</>}
@@ -290,7 +286,7 @@ function HsrTrain() {
 
     //抓資料的part . first.time
     React.useEffect(() => {
-        var trainNum = UrlParam("q")
+        var trainNum = UrlParam("q").length<4?"0"+UrlParam("q"):UrlParam("q")
         if (!trainNum) {
             setTrainCardTitle("找不到列車")
             setTrainCardSubTitle("無資料")
@@ -341,7 +337,6 @@ function HsrTrain() {
                     <CardContent>
                         <Typography variant="h5" component="div">
                             <Typography sx={{ mr: 1, display: "inline-block", width: "1.5rem", height: "1.5rem", borderRadius: "5px", verticalAlign: "text-top", background: "linear-gradient(315deg, #ca4f0f, #f89867)" }} variant='div' ></Typography>
-
                             {trainCardTitle}
                         </Typography>
                         <Typography sx={{ mb: 1.5 }} color="text.secondary" component="div">
@@ -392,19 +387,11 @@ function HsrTrain() {
                         </CardContent>
                     </Card>
                 </div>
-            </Box>
+                <p></p>
+                <Card>
 
-            <AppBar position="fixed" color="secondary" sx={{ top: 'auto', bottom: 0, height: 'auto', display: (countdown < 0 ? "none" : "unset") }} >
-                <Toolbar>
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        <BoltIcon sx={{ verticalAlign: 'middle' }} /> 台鐵車次資料 / {countdown}秒
-                        <Box sx={{ width: '100%' }}>
-                            <LinearProgress variant="determinate" value={progress} />
-                        </Box>
-                    </Typography>
-                </Toolbar>
-            </AppBar>
-            <Toolbar />
+                </Card>
+            </Box>
         </>
     )
 }

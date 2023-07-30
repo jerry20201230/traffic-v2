@@ -72,7 +72,7 @@ function HsrStation() {
           <>
             <LocationOnIcon sx={{ verticalAlign: "bottom" }} /> {HSR_Station_Data[DataIndex].StationAddress}<br />
             <p></p>
-            <MapContainer dragging={!L.Browser.mobile} center={[HSR_Station_Data[DataIndex].StationPosition.PositionLat, HSR_Station_Data[DataIndex].StationPosition.PositionLon]} zoom={18} style={{ width: "100%", height: "35vh", borderRadius: "5px" }}>
+            <MapContainer scrollWheelZoom={false} dragging={!L.Browser.mobile} center={[HSR_Station_Data[DataIndex].StationPosition.PositionLat, HSR_Station_Data[DataIndex].StationPosition.PositionLon]} zoom={18} style={{ width: "100%", height: "35vh", borderRadius: "5px" }}>
             <TileLayer
                 attribution={`&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors${L.Browser.mobile?"<br/>使用兩指移動與縮放地圖":""}`}
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

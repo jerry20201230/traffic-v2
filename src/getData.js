@@ -1,4 +1,6 @@
 import $ from 'jquery'
+import * as React from 'react'
+
 
 function getData(tdxUrl, callback, setting) {
   console.log("[GET DATA]\nfrom: ", tdxUrl, "\nsetting:", setting, "\nlocalStorage:", Boolean(JSON.parse(localStorage.getItem(tdxUrl))), "\ngetData.js")
@@ -70,6 +72,8 @@ function getData(tdxUrl, callback, setting) {
         },
         error: function (xhr, textStatus, thrownError) {
           getapikey()
+          
+          return <></> 
         }
       })
     } else {

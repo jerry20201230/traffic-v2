@@ -1,5 +1,4 @@
-import React from 'react';
-import Box from '@mui/material/Box';
+import React, { useEffect } from 'react';
 import { useTheme } from '@mui/material/styles';
 import MobileStepper from '@mui/material/MobileStepper';
 import Paper from '@mui/material/Paper';
@@ -7,7 +6,6 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import FmdGoodIcon from '@mui/icons-material/FmdGood';
@@ -20,17 +18,52 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import dayjs from 'dayjs';
+import CircularProgress from '@mui/material/CircularProgress';
+import { Box, Autocomplete, TextField, Button, IconButton } from '@mui/material';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 export default function HomePage() {
   const [dialogOpen, setDialogOpen] = React.useState(false);
-  const [city, setCity] = React.useState("")
-  const [weatherCardTitle, setWeatherCardTitle] = React.useState(<><FmdGoodIcon />請允許定位</>)
-  const [weatherCardBody, setWeatherCardBody] = React.useState(<>請允許我們使用定位，才能獲取你所在地點的天氣資料</>)
-  const [weatherIcon, setWeatherIcon] = React.useState(<></>)
+  const [weatherSettingDialogOpen, setWeatherSettingDialogOpen] = React.useState(false)
+  const [currentCity, setCurrentCity] = React.useState("")
+  const [currentCityList, setCurrentCityList] = React.useState([])
+  const [weatherCardTitle, setWeatherCardTitle] = React.useState(<>天氣預報</>)
+  const [weatherCardBody, setWeatherCardBody] = React.useState(
+    <center>
+      <CircularProgress /><br />資料讀取中...
+    </center>
+  )
   const [weatherCardAction, setWeatherCardAction] = React.useState(<><Button size="small" onClick={() => getLocation()}>開啟定位</Button></>)
 
   const [weatherData, setWeatherData] = React.useState([])
-  const [cityList, setCityList] = React.useState([])
+  const [weatherDialogInput,setWeatherDialogInput] = React.useState("")
+
+
+  React.useEffect(() => {
+    getData("https://tdx.transportdata.tw/api/basic/v2/Basic/City?%24format=JSON", function (res) {
+      console.log(res)
+      var list = []
+      for (let i = 0; i < res.length; i++) {
+        list.push(res[i].CityName)
+      }
+      setCurrentCityList(list)
+      getLocation()
+    }, { useLocalCatch: true })
+  }, [])
+
+  React.useEffect(() => {
+    setWeatherCardBody(<>
+      使用裝置定位，或選擇縣市<p></p>
+      <Autocomplete
+        disablePortal
+        options={currentCityList}
+        onChange={(e, v) => setCurrentCity(v)}
+        renderInput={(params) => <TextField {...params} label="選擇縣市" />}
+        noOptionsText="無資料"
+      />
+    </>)
+  }, [currentCityList])
+
 
   const steps = [
     {
@@ -45,7 +78,6 @@ export default function HomePage() {
               <Typography sx={{ mb: 1.5 }} color="text.secondary"></Typography>
               <Typography variant="body2" component="div">
                 {weatherCardBody}
-
               </Typography>
             </CardContent>
             <CardActions>
@@ -93,14 +125,16 @@ export default function HomePage() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(successFunction, errorFunction);
     } else {
-      console.log("Geolocation is not supported by this browser.");
+      setDialogOpen(true)
     }
 
     function successFunction(loc) {
+      setWeatherCardBody(<center><CircularProgress /><br />正在取得天氣資料</center>)
       console.log(loc);
       getData(`https://tdx.transportdata.tw/api/advanced/V3/Map/GeoLocating/District/LocationX/${loc.coords.longitude}/LocationY/${loc.coords.latitude}?%24format=JSON`, function (res) {
-        setCity(<><FmdGoodIcon />{res[0].CityName}</>)
-        setWeatherCardTitle(`${res[0].CityName} 的天氣`)
+        setCurrentCity(<>{res[0].CityName}</>)
+
+        setWeatherCardTitle(<><FmdGoodIcon /> {res[0].CityName} 的天氣 <IconButton onClick={() => setWeatherSettingDialogOpen(true)} title='設定地區' sx={{ float: "right" }}><SettingsIcon /></IconButton></>)
 
         getWeather(res[0].CityName, function (res) {
 
@@ -108,8 +142,7 @@ export default function HomePage() {
             console.log(res2)
             console.log(dayjs().date(dayjs().date() + 1).format("YYYY-MM-DD"))
 
-            console.log(isTimeInRange(dayjs(new Date()).format("HH:MM"), res2.records.locations.location[0].time[0].SunRiseTime, res2.records.locations.location[0].time[0].SunSetTime))
-            console.log(dayjs(new Date()).format("HH:MM"))
+            console.log(isTimeInRange(dayjs(new Date()).format("HH:mm"), res2.records.locations.location[0].time[0].SunRiseTime, res2.records.locations.location[0].time[0].SunSetTime))
             console.log(res2.records.locations.location[0].time[0].SunRiseTime)
             console.log(res2.records.locations.location[0].time[0].SunSetTime)
             setWeatherCardBody(
@@ -118,10 +151,10 @@ export default function HomePage() {
                   <Box>
                     <p style={{ fontSize: "1.1rem" }}><b>{res.weatherElement[0].time[0].parameter.parameterName} <br /> {res.weatherElement[3].time[0].parameter.parameterName}</b></p>
                     <p style={{ paddingBottom: 0, marginBottom: 0 }}>
-                      <span style={{ fontSize: "3rem" }}>{res.weatherElement[2].time[0].parameter.parameterName}~{res.weatherElement[4].time[0].parameter.parameterName}<sup style={{fontSize:"1.5rem"}}>℃</sup></span>
+                      <span style={{ fontSize: "3rem" }}>{res.weatherElement[2].time[0].parameter.parameterName}~{res.weatherElement[4].time[0].parameter.parameterName}<sup style={{ fontSize: "1.5rem" }}>℃</sup></span>
                     </p>
 
-                    <img src='/weather/umbrella_6143012.png' style={{ maxHeight: "2.5em", verticalAlign: "middle" }} /> 降雨機率 / {res.weatherElement[1].time[0].parameter.parameterName}%<br/>
+                    <img src='/weather/umbrella_6143012.png' style={{ maxHeight: "2.5em", verticalAlign: "middle" }} /> 降雨機率 / {res.weatherElement[1].time[0].parameter.parameterName}%<br />
                   </Box>
                   <Box><WeatherIcon res={res} isNight={!isTimeInRange(dayjs(new Date()).format("HH:MM"), res2.records.locations.location[0].time[0].SunRiseTime, res2.records.locations.location[0].time[0].SunSetTime)} /></Box>
                 </Box>
@@ -140,6 +173,47 @@ export default function HomePage() {
       setDialogOpen(true)
     }
   }
+
+
+
+
+  useEffect(() => {
+    if (currentCity.length) {
+      setWeatherCardBody(<center><CircularProgress /><br />正在讀取 {currentCity} 的天氣資料</center>)
+
+      setWeatherCardTitle(<>{currentCity} 的天氣預報<IconButton onClick={() => setWeatherSettingDialogOpen(true)} title='設定地區' sx={{ float: "right" }}><SettingsIcon /></IconButton></>)
+      getWeather(currentCity, function (res) {
+
+        getData(`https://opendata.cwb.gov.tw/api/v1/rest/datastore/A-B0062-001?Authorization=CWB-F29A34D9-5547-4A00-BA43-CDA0C1416940&format=JSON&CountyName=${window.encodeURI(res.locationName)}&timeFrom=${dayjs(new Date()).format("YYYY-MM-DD")}&timeTo=${dayjs().date(dayjs().date() + 1).format("YYYY-MM-DD")}`, function (res2) {
+          console.log(res2)
+          console.log(dayjs().date(dayjs().date() + 1).format("YYYY-MM-DD"))
+
+          console.log(isTimeInRange(dayjs(new Date()).format("HH:mm"), res2.records.locations.location[0].time[0].SunRiseTime, res2.records.locations.location[0].time[0].SunSetTime))
+          console.log(res2.records.locations.location[0].time[0].SunRiseTime)
+          console.log(res2.records.locations.location[0].time[0].SunSetTime)
+          setWeatherCardBody(
+            <>
+              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                <Box>
+                  <p style={{ fontSize: "1.1rem" }}><b>{res.weatherElement[0].time[0].parameter.parameterName} <br /> {res.weatherElement[3].time[0].parameter.parameterName}</b></p>
+                  <p style={{ paddingBottom: 0, marginBottom: 0 }}>
+                    <span style={{ fontSize: "3rem" }}>{res.weatherElement[2].time[0].parameter.parameterName}~{res.weatherElement[4].time[0].parameter.parameterName}<sup style={{ fontSize: "1.5rem" }}>℃</sup></span>
+                  </p>
+
+                  <img src='/weather/umbrella_6143012.png' style={{ maxHeight: "2.5em", verticalAlign: "middle" }} /> 降雨機率 / {res.weatherElement[1].time[0].parameter.parameterName}%<br />
+                </Box>
+                <Box><WeatherIcon res={res} isNight={!isTimeInRange(dayjs(new Date()).format("HH:MM"), res2.records.locations.location[0].time[0].SunRiseTime, res2.records.locations.location[0].time[0].SunSetTime)} /></Box>
+              </Box>
+              <p>到 {res.weatherElement[0].time[0].endTime} 為止的天氣預報</p>
+            </>)
+        }, { useLocalCatch: true })
+
+      })
+      setWeatherCardAction(<></>)
+    }
+  }, [currentCity])
+
+
 
   function WeatherIcon({ res, isNight }) {
     //referrence:https://pjchender.dev/react-bootcamp/docs/book/ch6/6-1/#%E6%8F%9B%E4%BD%A0%E4%BA%86%EF%BC%81%E6%8A%8A%E5%A4%A9%E6%B0%A3%E4%BB%A3%E7%A2%BC%E8%BD%89%E6%8F%9B%E6%88%90%E5%A4%A9%E6%B0%A3%E5%9E%8B%E6%85%8B
@@ -224,16 +298,6 @@ export default function HomePage() {
   };
 
 
-  React.useEffect(() => {
-    getData("https://tdx.transportdata.tw/api/basic/v2/Basic/City?%24format=JSON", function (res) {
-      console.log(res)
-      setCityList(res)
-      getLocation()
-    }, { useLocalCatch: true })
-  }, [])
-
-
-
   return (
     <>
       <TopBar title="首頁" />
@@ -303,13 +367,45 @@ export default function HomePage() {
           {"無法使用你的定位資訊"}
         </DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            我們無法使用你的定位資訊，這表示需要使用位置資訊的功能將<b>無法使用</b><br />
-            如果要啟用定位，請到瀏覽器設定&gt;網站設定&gt;{window.location.origin}，開啟定位服務
+          <DialogContentText id="alert-dialog-description" component="div">
+            我們無法使用你的定位資訊，這可能是因為
+            {navigator.geolocation ? <>你之前拒絕了我們的定位請求<br />如果要啟用定位，請到<Paper sx={{ p: 0.5 }}>瀏覽器設定&gt;網站設定&gt;{window.location.origin}</Paper>開啟定位服務，接著刷新此頁面</> : <>你的裝置不支援我們的技術<br />請嘗試更新瀏覽器，或在其他裝置上再試一次</>}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setDialogOpen(false)}>
+            確定
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+
+      <Dialog
+        open={weatherSettingDialogOpen}
+        onClose={() => setWeatherSettingDialogOpen(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"設定地區"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description" component="div">
+            選擇天氣顯示的地區<br />這些設定只會應用於這一次，我們不會保留此設定<p></p>
+            <Autocomplete
+              disablePortal
+              options={currentCityList}
+              onChange={(e, v) => setWeatherDialogInput(v)}
+              renderInput={(params) => <TextField {...params} label="選擇縣市" />}
+              noOptionsText="無資料"
+            />
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setWeatherSettingDialogOpen(false)}>
+            取消
+          </Button>
+          <Button onClick={() => {setWeatherSettingDialogOpen(false);setCurrentCity(weatherDialogInput)}}>
             確定
           </Button>
         </DialogActions>

@@ -27,6 +27,10 @@ import { AppBar, Toolbar } from '@mui/material'
 import BoltIcon from '@mui/icons-material/Bolt';
 import LinearProgress from '@mui/material/LinearProgress';
 import { TocTwoTone } from '@mui/icons-material';
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import BookmarkAddedIcon from '@mui/icons-material/BookmarkAdded';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+import IconButton from '@mui/material/IconButton';
 
 function TraStation() {
   const [stationCardTitle, setStationCardTitle] = React.useState("")
@@ -193,7 +197,7 @@ function TraStation() {
             <p></p>
             <MapContainer dragging={!L.Browser.mobile} scrollWheelZoom={false} center={[TRA_Station_Data[DataIndex].StationPosition.PositionLat, TRA_Station_Data[DataIndex].StationPosition.PositionLon]} zoom={18} style={{ width: "100%", height: "35vh", borderRadius: "5px" }}>
               <TileLayer
-                attribution={`&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors${L.Browser.mobile?"<br/>使用兩指移動與縮放地圖":""}`}
+                attribution={`&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors${L.Browser.mobile ? "<br/>使用兩指移動與縮放地圖" : ""}`}
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
               <Marker position={[TRA_Station_Data[DataIndex].StationPosition.PositionLat, TRA_Station_Data[DataIndex].StationPosition.PositionLon]} icon={redIcon}>
@@ -232,7 +236,7 @@ function TraStation() {
   }, [countdown]);
 
   React.useEffect(() => {
-    if(stationID){
+    if (stationID) {
       getData(`https://tdx.transportdata.tw/api/basic/v2/Rail/TRA/LiveBoard/Station/${stationID}?%24format=JSON`, function (res) {
         setTrainBoard(res)
         console.log(res)
@@ -242,7 +246,7 @@ function TraStation() {
       const intervalId = setInterval(() => {
         setCountdown((prevCountdown) => prevCountdown - 1);
       }, 1000);
-  
+
       // 组件卸载时清除定时器
       return () => {
         clearInterval(intervalId);
@@ -267,7 +271,11 @@ function TraStation() {
             <Typography variant="h5" component="div">
               <Typography sx={{ mr: 1, display: "inline-block", width: "1.5rem", height: "1.5rem", borderRadius: "5px", verticalAlign: "text-top", background: "linear-gradient(315deg, #004da7, #7fa9d9)" }} variant='div' ></Typography>
               {stationCardTitle}
+              <IconButton aria-label="add bookmark" sx={{float:"right"}}>
+                <BookmarkBorderIcon/>
+              </IconButton>
             </Typography>
+
             <Typography sx={{ mb: 1.5 }} color="text.secondary">
               {stationCardSubTitle}
             </Typography>
@@ -289,7 +297,7 @@ function TraStation() {
               30分鐘內的車次資料
             </Typography>
             <Typography variant="body2" component="div" sx={{ lineHeight: 1.25 }}>
-              <Alert severity='info'>這裡的列車時間是離站時間，如需抵達時間，請選擇該車次，進入車次頁面查詢</Alert>
+              <Alert severity='warning'>這裡的列車時間是表定離站時間<br/>資料可能會延遲，請以車站顯示看板為準</Alert>
               <p></p>
               <FormControl>
                 <FormLabel id="demo-row-radio-buttons-group-label">列車方向</FormLabel>
@@ -331,16 +339,16 @@ function TraStation() {
                           </TableCell>
                           <TableCell sx={{ p: 0.5 }}><Link to={`/tra/train/?q=${row.TrainNo}`}>{row.TrainNo}</Link></TableCell>
                           <TableCell sx={{ p: 0.5 }}>{convertTrainType(row.TrainTypeName.Zh_tw)}</TableCell>
-                          <TableCell sx={{ p: 0.5}}>{row.TripLine === 0 ? "--" : row.TripLine === 1 ? "山線" : row.TripLine === 2 ? "海線" : "成追"}</TableCell>
+                          <TableCell sx={{ p: 0.5 }}>{row.TripLine === 0 ? "--" : row.TripLine === 1 ? "山線" : row.TripLine === 2 ? "海線" : "成追"}</TableCell>
                           <TableCell sx={{ p: 0.5 }}>{row.EndingStationName.Zh_tw}  </TableCell>
                           <TableCell sx={{ p: 0.5 }}>{row.DelayTime === 0 ? <Typography color="green">準點</Typography> : <Typography color="red">晚{row.DelayTime}分</Typography>}</TableCell>
                         </TableRow>
                         : <TableRow
                           key={0}
-                          
+
                           sx={{ '&:last-child td, &:last-child th': { border: 0 }, }}
                         >
-                          <TableCell sx={{ p: 0.5,textAlign:"center" }} colSpan={6}>無資料</TableCell>
+                          <TableCell sx={{ p: 0.5, textAlign: "center" }} colSpan={6}>無資料</TableCell>
                         </TableRow>
                     ))}
                   </TableBody>

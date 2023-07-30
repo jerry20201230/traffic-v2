@@ -6,6 +6,7 @@ import TraRoot from './pages/TraRoot';
 import TraStation from './pages/TraStation';
 import TraTrain from './pages/TraTrain';
 import { Route, Routes } from 'react-router-dom'
+import { Switch } from 'react-router-dom'
 import BikeRoot from './pages/BikeRoot';
 import SettingRoot from './pages/SettingRoot';
 import SettingAbout from './pages/SettingAbout';
@@ -19,18 +20,18 @@ function App() {
       <Routes>
         <Route path='/' element=<HomePage /> ></Route>
         <Route path='/index.html' element=<HomePage /> ></Route>
-        <Route path='/map' element=<Map />></Route>
+        <Route path='/map/*' element=<Map />></Route>
 
         <Route path='/tra'>
           <Route index element=<TraRoot />></Route>
-          <Route path='station' element=<TraStation />></Route>
-          <Route path='train' element=<TraTrain />></Route>
+          <Route path='station/*' element=<TraStation />></Route>
+          <Route path='train/*' element=<TraTrain />></Route>
         </Route>
 
         <Route path='/hsr'>
-          <Route index element=<HsrRoot/>></Route>
-          <Route path='station' element=<HsrStation />></Route>
-          <Route path='train' element=<HsrTrain />></Route>
+          <Route index element=<HsrRoot />></Route>
+          <Route path='station/*' element=<HsrStation />></Route>
+          <Route path='train/*' element=<HsrTrain />></Route>
         </Route>
 
         <Route path='/bike'>

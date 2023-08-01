@@ -21,6 +21,9 @@ import dayjs from 'dayjs';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Box, Autocomplete, TextField, Button, IconButton } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 export default function HomePage() {
   const [dialogOpen, setDialogOpen] = React.useState(false);
@@ -36,7 +39,7 @@ export default function HomePage() {
   const [weatherCardAction, setWeatherCardAction] = React.useState(<><Button size="small" onClick={() => getLocation()}>開啟定位</Button></>)
 
   const [weatherData, setWeatherData] = React.useState([])
-  const [weatherDialogInput,setWeatherDialogInput] = React.useState("")
+  const [weatherDialogInput, setWeatherDialogInput] = React.useState("")
 
 
   React.useEffect(() => {
@@ -53,14 +56,29 @@ export default function HomePage() {
 
   React.useEffect(() => {
     setWeatherCardBody(<>
-      使用裝置定位，或選擇縣市<p></p>
-      <Autocomplete
-        disablePortal
-        options={currentCityList}
-        onChange={(e, v) => setCurrentCity(v)}
-        renderInput={(params) => <TextField {...params} label="選擇縣市" />}
-        noOptionsText="無資料"
-      />
+      使用裝置定位，或選擇縣市
+      <p></p>
+      <FormControl sx={{ m: 1, minWidth: 120 }}>
+        <InputLabel shrink htmlFor="select-multiple-native">
+          選擇縣市
+        </InputLabel>
+        <Select
+          native
+          value={currentCity || "臺北市"}
+          // @ts-ignore Typings are not considering `native`
+          onChange={e => setCurrentCity(e.target.value)}
+          label="選擇縣市"
+          inputProps={{
+            id: 'select-multiple-native',
+          }}
+        >
+          {currentCityList.map((city) => (
+            <option key={city} value={city}>
+              {city}
+            </option>
+          ))}
+        </Select>
+      </FormControl>
     </>)
   }, [currentCityList])
 
@@ -197,14 +215,15 @@ export default function HomePage() {
                 <Box>
                   <p style={{ fontSize: "1.1rem" }}><b>{res.weatherElement[0].time[0].parameter.parameterName} <br /> {res.weatherElement[3].time[0].parameter.parameterName}</b></p>
                   <p style={{ paddingBottom: 0, marginBottom: 0 }}>
-                    <span style={{ fontSize: "3rem" }}>{res.weatherElement[2].time[0].parameter.parameterName}~{res.weatherElement[4].time[0].parameter.parameterName}<sup style={{ fontSize: "1.5rem" }}>℃</sup></span>
+                   
+                    {res.weatherElement[2].time[0].parameter.parameterName !== res.weatherElement[4].time[0].parameter.parameterName ? <span style={{ fontSize: "3rem" }}>{res.weatherElement[2].time[0].parameter.parameterName}~{res.weatherElement[4].time[0].parameter.parameterName}<sup style={{ fontSize: "1.5rem" }}>℃</sup></span>: <span style={{ fontSize: "3rem" }}>{res.weatherElement[2].time[0].parameter.parameterName}<sup style={{ fontSize: "1.5rem" }}>℃</sup></span>}
                   </p>
 
                   <img src='/weather/umbrella_6143012.png' style={{ maxHeight: "2.5em", verticalAlign: "middle" }} /> 降雨機率 / {res.weatherElement[1].time[0].parameter.parameterName}%<br />
                 </Box>
                 <Box><WeatherIcon res={res} isNight={!isTimeInRange(dayjs(new Date()).format("HH:MM"), res2.records.locations.location[0].time[0].SunRiseTime, res2.records.locations.location[0].time[0].SunSetTime)} /></Box>
               </Box>
-              <p>到 {res.weatherElement[0].time[0].endTime} 為止的天氣預報</p>
+              <p>天氣預報有效時間: {res.weatherElement[0].time[0].endTime}</p>
             </>)
         }, { useLocalCatch: true })
 
@@ -392,20 +411,34 @@ export default function HomePage() {
         <DialogContent>
           <DialogContentText id="alert-dialog-description" component="div">
             選擇天氣顯示的地區<br />這些設定只會應用於這一次，我們不會保留此設定<p></p>
-            <Autocomplete
-              disablePortal
-              options={currentCityList}
-              onChange={(e, v) => setWeatherDialogInput(v)}
-              renderInput={(params) => <TextField {...params} label="選擇縣市" />}
-              noOptionsText="無資料"
-            />
+            <FormControl sx={{ m: 1, minWidth: 120 }}>
+              <InputLabel shrink htmlFor="select-multiple-native">
+                選擇縣市
+              </InputLabel>
+              <Select
+                native
+                value={weatherDialogInput || "臺北市"}
+                // @ts-ignore Typings are not considering `native`
+                onChange={e => setWeatherDialogInput(e.target.value)}
+                label="選擇縣市"
+                inputProps={{
+                  id: 'select-multiple-native',
+                }}
+              >
+                {currentCityList.map((city) => (
+                  <option key={city} value={city}>
+                    {city}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setWeatherSettingDialogOpen(false)}>
             取消
           </Button>
-          <Button onClick={() => {setWeatherSettingDialogOpen(false);setCurrentCity(weatherDialogInput)}}>
+          <Button onClick={() => { setWeatherSettingDialogOpen(false); setCurrentCity(weatherDialogInput) }}>
             確定
           </Button>
         </DialogActions>

@@ -24,6 +24,9 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 
 export default function HomePage() {
   const [dialogOpen, setDialogOpen] = React.useState(false);
@@ -40,7 +43,7 @@ export default function HomePage() {
 
   const [weatherData, setWeatherData] = React.useState([])
   const [weatherDialogInput, setWeatherDialogInput] = React.useState("")
-
+  const locationErrorAlertCheckRef = React.useRef()
 
   React.useEffect(() => {
     getData("https://tdx.transportdata.tw/api/basic/v2/Basic/City?%24format=JSON", function (res) {
@@ -64,9 +67,10 @@ export default function HomePage() {
         </InputLabel>
         <Select
           native
-          value={currentCity || "臺北市"}
+          value={currentCity }
           // @ts-ignore Typings are not considering `native`
-          onChange={e => setCurrentCity(e.target.value)}
+          onChange={e => { setWeatherDialogInput(e.target.value); setCurrentCity(e.target.value) }}
+          onBlur={e => { setWeatherDialogInput(e.target.value); setCurrentCity(e.target.value) }}
           label="選擇縣市"
           inputProps={{
             id: 'select-multiple-native',
@@ -78,7 +82,9 @@ export default function HomePage() {
             </option>
           ))}
         </Select>
-      </FormControl>
+
+      </FormControl><br></br>
+
     </>)
   }, [currentCityList])
 
@@ -103,7 +109,7 @@ export default function HomePage() {
             </CardActions></Card></Box>,
     },
     {
-      label: 'Create an ad group',
+      label: '書籤',
       description:
         'An ad group contains one or more ads which target a shared set of keywords.',
     },
@@ -174,9 +180,9 @@ export default function HomePage() {
 
                     <img src='/weather/umbrella_6143012.png' style={{ maxHeight: "2.5em", verticalAlign: "middle" }} /> 降雨機率 / {res.weatherElement[1].time[0].parameter.parameterName}%<br />
                   </Box>
-                  <Box><WeatherIcon res={res} isNight={!isTimeInRange(dayjs(new Date()).format("HH:MM"), res2.records.locations.location[0].time[0].SunRiseTime, res2.records.locations.location[0].time[0].SunSetTime)} /></Box>
+                  <Box><WeatherIcon res={res} isNight={!isTimeInRange(dayjs(new Date()).format("HH:mm"), res2.records.locations.location[0].time[0].SunRiseTime, res2.records.locations.location[0].time[0].SunSetTime)} /></Box>
                 </Box>
-                <p>到 {res.weatherElement[0].time[0].endTime} 為止的天氣預報</p>
+                <p>天氣預報有效時間:  {res.weatherElement[0].time[0].endTime}</p>
               </>)
           }, { useLocalCatch: true })
 
@@ -188,7 +194,10 @@ export default function HomePage() {
 
     function errorFunction() {
       console.log("Unable to retrieve your location.");
+      if(localStorage.getItem("dialog.getLocationError.show") === "true" || !localStorage.getItem("dialog.getLocationError.show")){
       setDialogOpen(true)
+      }
+
     }
   }
 
@@ -215,13 +224,13 @@ export default function HomePage() {
                 <Box>
                   <p style={{ fontSize: "1.1rem" }}><b>{res.weatherElement[0].time[0].parameter.parameterName} <br /> {res.weatherElement[3].time[0].parameter.parameterName}</b></p>
                   <p style={{ paddingBottom: 0, marginBottom: 0 }}>
-                   
-                    {res.weatherElement[2].time[0].parameter.parameterName !== res.weatherElement[4].time[0].parameter.parameterName ? <span style={{ fontSize: "3rem" }}>{res.weatherElement[2].time[0].parameter.parameterName}~{res.weatherElement[4].time[0].parameter.parameterName}<sup style={{ fontSize: "1.5rem" }}>℃</sup></span>: <span style={{ fontSize: "3rem" }}>{res.weatherElement[2].time[0].parameter.parameterName}<sup style={{ fontSize: "1.5rem" }}>℃</sup></span>}
+
+                    {res.weatherElement[2].time[0].parameter.parameterName !== res.weatherElement[4].time[0].parameter.parameterName ? <span style={{ fontSize: "3rem" }}>{res.weatherElement[2].time[0].parameter.parameterName}~{res.weatherElement[4].time[0].parameter.parameterName}<sup style={{ fontSize: "1.5rem" }}>℃</sup></span> : <span style={{ fontSize: "3rem" }}>{res.weatherElement[2].time[0].parameter.parameterName}<sup style={{ fontSize: "1.5rem" }}>℃</sup></span>}
                   </p>
 
                   <img src='/weather/umbrella_6143012.png' style={{ maxHeight: "2.5em", verticalAlign: "middle" }} /> 降雨機率 / {res.weatherElement[1].time[0].parameter.parameterName}%<br />
                 </Box>
-                <Box><WeatherIcon res={res} isNight={!isTimeInRange(dayjs(new Date()).format("HH:MM"), res2.records.locations.location[0].time[0].SunRiseTime, res2.records.locations.location[0].time[0].SunSetTime)} /></Box>
+                <Box><WeatherIcon res={res} isNight={!isTimeInRange(dayjs(new Date()).format("HH:mm"), res2.records.locations.location[0].time[0].SunRiseTime, res2.records.locations.location[0].time[0].SunSetTime)} /></Box>
               </Box>
               <p>天氣預報有效時間: {res.weatherElement[0].time[0].endTime}</p>
             </>)
@@ -390,9 +399,12 @@ export default function HomePage() {
             我們無法使用你的定位資訊，這可能是因為
             {navigator.geolocation ? <>你之前拒絕了我們的定位請求<br />如果要啟用定位，請到<Paper sx={{ p: 0.5 }}>瀏覽器設定&gt;網站設定&gt;{window.location.origin}</Paper>開啟定位服務，接著刷新此頁面</> : <>你的裝置不支援我們的技術<br />請嘗試更新瀏覽器，或在其他裝置上再試一次</>}
           </DialogContentText>
+          <FormGroup>
+            <FormControlLabel control={<Checkbox inputRef={locationErrorAlertCheckRef}/>} label="以後不再顯示" />
+          </FormGroup>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setDialogOpen(false)}>
+          <Button onClick={() => {setDialogOpen(false);window.localStorage.setItem("dialog.getLocationError.show",String(!locationErrorAlertCheckRef.current.checked))}}>
             確定
           </Button>
         </DialogActions>
@@ -419,7 +431,7 @@ export default function HomePage() {
                 native
                 value={weatherDialogInput || "臺北市"}
                 // @ts-ignore Typings are not considering `native`
-                onChange={e => setWeatherDialogInput(e.target.value)}
+                onChange={e => { console.log(e.target.value); setWeatherDialogInput(e.target.value); }}
                 label="選擇縣市"
                 inputProps={{
                   id: 'select-multiple-native',
@@ -438,7 +450,7 @@ export default function HomePage() {
           <Button onClick={() => setWeatherSettingDialogOpen(false)}>
             取消
           </Button>
-          <Button onClick={() => { setWeatherSettingDialogOpen(false); setCurrentCity(weatherDialogInput) }}>
+          <Button onClick={() => { setWeatherSettingDialogOpen(false); setCurrentCity(weatherDialogInput || "臺北市") }}>
             確定
           </Button>
         </DialogActions>

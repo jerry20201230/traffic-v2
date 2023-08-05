@@ -13,6 +13,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from "@mui/material/Divider";
 import { Link } from 'react-router-dom';
+import BookmarkIcon from '@mui/icons-material/BookmarkBorder';
 
 function TopBar({ title }) {
   const [showNavigation, setShowNavigation] = useState(false);
@@ -66,6 +67,14 @@ function TopBar({ title }) {
                       <MapIcon />
                     </ListItemIcon>
                     <ListItemText primary="地圖" />
+                  </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding>
+                  <ListItemButton component={Link} to="/bookmark">
+                    <ListItemIcon>
+                    <BookmarkIcon/>
+                    </ListItemIcon>
+                    <ListItemText primary="書籤" />
                   </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>

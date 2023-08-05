@@ -137,7 +137,6 @@ function TraStation() {
       data = res
     } else {
       data = trainBoard
-      console.log("ppp")
     }
     var query = radioValue
     console.log(query)
@@ -297,7 +296,7 @@ function TraStation() {
               30分鐘內的車次資料
             </Typography>
             <Typography variant="body2" component="div" sx={{ lineHeight: 1.25 }}>
-              <Alert severity='warning'>這裡的列車時間是表定離站時間<br/>資料可能會延遲，請以車站顯示看板為準</Alert>
+              <Alert severity='warning'>這裡的列車時間是表定離站時間<br/>資料可能會延遲，請以車站看板為準</Alert>
               <p></p>
               <FormControl>
                 <FormLabel id="demo-row-radio-buttons-group-label">列車方向</FormLabel>
@@ -332,7 +331,6 @@ function TraStation() {
                         <TableRow
                           key={row.TrainNo}
                           sx={{ '&:last-child td, &:last-child th': { border: 0 }, }}
-
                         >
                           <TableCell component="th" scope="row" sx={{ p: 0.5 }}>
                             {row.ScheduledDepartureTime.split(":")[0] + ":" + row.ScheduledDepartureTime.split(":")[1]}

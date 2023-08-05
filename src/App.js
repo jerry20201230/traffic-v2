@@ -13,6 +13,7 @@ import SettingAbout from './pages/SettingAbout';
 import HsrRoot from './pages/HsrRoot';
 import HsrStation from './pages/HsrStation';
 import HsrTrain from './pages/HsrTrain';
+import { Bookmark } from './pages/Bookmark';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
 
         <Route path='/bike'>
           <Route index element={<BikeRoot />}></Route>
+          <Route path='station/*'></Route>
         </Route>
 
 
@@ -43,6 +45,11 @@ function App() {
           <Route index element={<SettingRoot />}></Route>
           <Route path='about' element={<SettingAbout />}></Route>
         </Route>
+
+      <Route path='/bookmark'>
+        <Route index element={<Bookmark/>}></Route>
+      </Route>
+
 
         <Route path='*' element=<Err404 /> ></Route>
 

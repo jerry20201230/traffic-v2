@@ -27,6 +27,9 @@ import Select from '@mui/material/Select';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
+import "leaflet/dist/leaflet.css";
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import L from 'leaflet'
 
 export default function HomePage() {
   const [dialogOpen, setDialogOpen] = React.useState(false);
@@ -111,14 +114,22 @@ export default function HomePage() {
     {
       label: '書籤',
       description:
-        'An ad group contains one or more ads which target a shared set of keywords.',
+        '你沒有任何書籤',
     },
     {
-      label: 'Create an ad',
-      description: `Try out different ad text to see what brings in the most customers,
-                and learn how to enhance your ads using features like ad extensions.
-                If you run into any problems with your ads, find out how to tell if
-                they're running and how to resolve approval issues.`,
+      label: '附近大眾運輸',
+      description: <>
+        <Box sx={{ width: "100%", m: 0, p: 0 }}>
+          <Card sx={{ mt: 0, pt: 0 }}>
+            <CardContent>
+              <Typography variant="h5" component="div">
+              需要使用定位
+              </Typography>
+              </CardContent>
+              </Card>
+              </Box>
+
+      </>,
     },
   ];
   const theme = useTheme();
@@ -158,7 +169,7 @@ export default function HomePage() {
       getData(`https://tdx.transportdata.tw/api/advanced/V3/Map/GeoLocating/District/LocationX/${loc.coords.longitude}/LocationY/${loc.coords.latitude}?%24format=JSON`, function (res) {
         setCurrentCity(<>{res[0].CityName}</>)
 
-        setWeatherCardTitle(<><FmdGoodIcon /> {res[0].CityName} 的天氣 <IconButton onClick={() => setWeatherSettingDialogOpen(true)} title='設定地區' sx={{ float: "right" }}><SettingsIcon /></IconButton></>)
+        setWeatherCardTitle(<><FmdGoodIcon /> {res[0].CityName} 的天氣預報 <IconButton onClick={() => setWeatherSettingDialogOpen(true)} title='設定地區' sx={{ float: "right" }}><SettingsIcon /></IconButton></>)
 
         getWeather(res[0].CityName, function (res) {
 

@@ -39,6 +39,7 @@ function TopBar({ title }) {
 
   useEffect(() => {
     if (isElementOverflowing(titleRef.current)) {
+      console.log("YEEE")
       wrapContentsInMarquee(titleRef.current);
     }
   }, [titleRef])

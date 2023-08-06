@@ -5,7 +5,7 @@ import MapIcon from '@mui/icons-material/Map';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import HomeIcon from '@mui/icons-material/Home';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -17,12 +17,34 @@ import BookmarkIcon from '@mui/icons-material/BookmarkBorder';
 
 function TopBar({ title }) {
   const [showNavigation, setShowNavigation] = useState(false);
+  const titleRef = useRef()
   useEffect(() => {
     document.title = `${title} - 大眾運輸查詢系統`
   }, [])
+  function isElementOverflowing(element) {
+    var overflowX = element.offsetWidth < element.scrollWidth,
+      overflowY = element.offsetHeight < element.scrollHeight;
+
+    return (overflowX || overflowY);
+  }
+
+  function wrapContentsInMarquee(element) {
+    var marquee = document.createElement('marquee'),
+      contents = element.innerText;
+
+    marquee.innerText = contents;
+    element.innerHTML = '';
+    element.appendChild(marquee);
+  }
+
+  useEffect(() => {
+    if (isElementOverflowing(titleRef.current)) {
+      wrapContentsInMarquee(titleRef.current);
+    }
+  }, [titleRef])
+
   return (
     <>
-
       <Box>
         <AppBar position="fixed" >
           <Toolbar>
@@ -36,7 +58,7 @@ function TopBar({ title }) {
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} ref={titleRef}>
               {title}
             </Typography>
             <IconButton color="inherit" component={Link} to="/map" href="/map"><MapIcon /></IconButton>
@@ -72,7 +94,7 @@ function TopBar({ title }) {
                 <ListItem disablePadding>
                   <ListItemButton component={Link} to="/bookmark">
                     <ListItemIcon>
-                    <BookmarkIcon/>
+                      <BookmarkIcon />
                     </ListItemIcon>
                     <ListItemText primary="書籤" />
                   </ListItemButton>
@@ -119,7 +141,7 @@ function TopBar({ title }) {
                 </ListItem>
                 <ListItem disablePadding>
                   <ListItemButton component={Link} to="/bus">
-                  <ListItemIcon>
+                    <ListItemIcon>
                       <Typography sx={{ mr: 1, display: "inline-block", width: "1.5rem", height: "1.5rem", borderRadius: "5px", verticalAlign: "text-top", background: "linear-gradient(315deg, #8d8d8d,#ccc)" }} variant='div' ></Typography>
                     </ListItemIcon>
                     <ListItemText primary="公車" />
@@ -127,7 +149,7 @@ function TopBar({ title }) {
                 </ListItem>
                 <ListItem disablePadding>
                   <ListItemButton component={Link} to="/bike">
-                  <ListItemIcon>
+                    <ListItemIcon>
                       <Typography sx={{ mr: 1, display: "inline-block", width: "1.5rem", height: "1.5rem", borderRadius: "5px", verticalAlign: "text-top", background: "linear-gradient(315deg, #ffef00,#fff647)" }} variant='div' ></Typography>
                     </ListItemIcon>
                     <ListItemText primary="公共自行車" />

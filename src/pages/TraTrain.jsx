@@ -390,6 +390,7 @@ function TraTrain() {
 
 
     } else {
+      setDelayCheckBox(<></>)
       setTrainCardBody(
         calculateTimeDifference(getTime("time-s"), dataStruct[dataStruct.length - 1].ArrivalTime) <= 0
           ? <Alert severity="info"><h3 style={{ margin: 0, padding: 0 }}>列車已經收班</h3><Typography>{displayTrainNum} 次已經於<b>{dataStruct[dataStruct.length - 1].ArrivalTime}</b>抵達終點<b>{dataStruct[dataStruct.length - 1].StationName.Zh_tw}</b></Typography></Alert>

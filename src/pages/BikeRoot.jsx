@@ -2,10 +2,10 @@ import * as React from "react";
 import TopBar from "../TopBar";
 import getData from "../getData";
 import { Box, Autocomplete, TextField, Button } from "@mui/material";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormControl from "@mui/material/FormControl";
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
 import { Alert } from "@mui/material";
 import { Link } from "react-router-dom";
 import { Paper } from "@mui/material";
@@ -58,6 +58,17 @@ function BikeRoot() {
     popupAnchor: [1, -34],
     shadowSize: [41, 41],
   });
+  const greenIcon = new L.Icon({
+    iconUrl:
+      "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
+    shadowUrl:
+      "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41],
+  });
+
 
   function getLocation() {
     if (navigator.geolocation) {
@@ -80,6 +91,8 @@ function BikeRoot() {
               id: res[i].StationUID,
               name: res[i].StationName.Zh_tw,
             });
+
+
           }
           setStationNearby(res);
           setLocationMark(
@@ -94,7 +107,7 @@ function BikeRoot() {
           );
           mymap.current.setView(
             [loc.coords.latitude, loc.coords.longitude],
-            15
+            14
           );
         },
         { useLocalCatch: true }
@@ -139,69 +152,96 @@ function BikeRoot() {
           style={{ width: "100%", height: "35vh" }}
         >
           <TileLayer
-            attribution={`&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors${
-              L.Browser.mobile ? "<br/>使用兩指移動與縮放地圖" : ""
-            }`}
+            attribution={`&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors${L.Browser.mobile ? "<br/>使用兩指移動與縮放地圖" : ""
+              }`}
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
           {locationMark}
+
+          {
+            stationNearby.map(function (res, index) {
+              return (
+                <Marker
+                  key={"marker-" + index}
+                  position={[res.StationPosition.PositionLat, res.StationPosition.PositionLon]}
+                  icon={greenIcon}
+                >
+                  <Popup>{res.StationName.Zh_tw.replace("_", " ")}</Popup>
+                </Marker>
+              )
+            })
+          }
         </MapContainer>
-
-        <h3>
-          附近站點:
-          <br />
-          {stationNearbyBtn}
-        </h3>
         <p></p>
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell sx={{ p: 0.5 }}>類型</TableCell>
-                <TableCell sx={{ p: 0.5 }}>名稱</TableCell>
-                <TableCell sx={{ p: 0.5 }}>狀態</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {stationNearby.map(function (res, index) {
-                return (
-             
-                    <TableRow
-                      key={res.StationUID}
-                      sx={{
-                        "&:last-child td, &:last-child th": { border: 0 },
-                      }}
-                    >
-                      <TableCell component="th" scope="row" sx={{ p: 0.5 }}>
-                        {res.StationName.Zh_tw.split("_")[0]}
-                      </TableCell>
-                      <TableCell component="th" scope="row" sx={{ p: 0.5 }}>
-                        <Link
-                          to={`/bike/station/?lat=${res.StationPosition.PositionLon}&lon=${res.StationPosition.PositionLat}&uid=${res.StationUID}`}
-                        >
-                          {res.StationName.Zh_tw.split("_")[1]}
-                        </Link>
-                      </TableCell>
-                      <TableCell component="th" scope="row" sx={{ p: 0.5 }}>
-                        {stationNearbyBikes[index] ? (
-                          <>
-                            一般:{stationNearbyBikes[index].AvailableRentBikesDetail.GeneralBikes}<br/>
-                            電輔:{stationNearbyBikes[index].AvailableRentBikesDetail.ElectricBikes}<br/>
-                            空位:{stationNearbyBikes[index].AvailableReturnBikes}<br/>
-                          </>
-                        ) : (
-                          <CircularProgress size="1rem" />
-                        )}
-                      </TableCell>
-                    </TableRow>
-              
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Box>
+        <Box sx={{ width: "100%", m: 0, p: 0 }}>
+          <Card sx={{ mt: 0, pt: 0 }}>
+            <CardContent>
+              <Typography variant="h5" component="div">
+                附近站點:
+              </Typography>
+              <Typography sx={{ mb: 1.5 }} color="text.secondary"></Typography>
+              <Typography variant="body2" component="div">
+                {stationNearbyBtn}
+                <TableContainer component={Paper}>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell sx={{ p: 0.5 }}>類型</TableCell>
+                        <TableCell sx={{ p: 0.5 }}>名稱</TableCell>
+                        <TableCell sx={{ p: 0.5 }}>狀態</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {stationNearby.map(function (res, index) {
+                        return (
 
+                          <TableRow
+                            key={res.StationUID}
+                            sx={{
+                              "&:last-child td, &:last-child th": { border: 0 },
+                            }}
+                          >
+                            <TableCell component="th" scope="row" sx={{ p: 0.5 }}>
+                              {res.StationName.Zh_tw.split("_")[0]}
+                            </TableCell>
+                            <TableCell component="th" scope="row" sx={{ p: 0.5 }}>
+                              <Link
+                                to={`/bike/station/?lat=${res.StationPosition.PositionLon}&lon=${res.StationPosition.PositionLat}&uid=${res.StationUID}`}
+                              >
+                                {res.StationName.Zh_tw.split("_")[1]}
+                              </Link>
+                            </TableCell>
+                            <TableCell component="th" scope="row" sx={{ p: 0.5 }}>
+                              {stationNearbyBikes[index] ? (
+                                stationNearbyBikes[index].ServiceStatus === 1 ?
+                                  (
+                                    <>
+                                      一般:{stationNearbyBikes[index].AvailableRentBikesDetail.GeneralBikes}<br />
+                                      電輔:{stationNearbyBikes[index].AvailableRentBikesDetail.ElectricBikes}<br />
+                                      空位:{stationNearbyBikes[index].AvailableReturnBikes}<br />
+                                    </>
+                                  )
+                                  :
+                                  stationNearbyBikes[index].ServiceStatus === 0 ?
+                                    (
+                                      <>停止營運</>
+                                    )
+                                    : (<>暫停營運</>)
+                              ) : (
+                                <CircularProgress size="1rem" />
+                              )}
+                            </TableCell>
+                          </TableRow>
+
+                        );
+                      })}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Typography>
+            </CardContent>
+          </Card></Box>
+      </Box>
       <Dialog
         open={dialogOpen}
         onClose={() => setDialogOpen(false)}

@@ -24,10 +24,12 @@ class LocateControl extends Component {
 export default LocateControl;*/
 
 
-function LocateControl(props){
-  const { options, startDirectly } = props;
-  const { map } = props.leaflet;
+function LocateControl(props) {
+  console.log(props, "1321321321313")
+  const { options, startDirectly, map } = props;
+  // const { map } = props.leaflet;
 
+  console.log(map)
   const lc = new Locate(options);
   lc.addTo(map);
 

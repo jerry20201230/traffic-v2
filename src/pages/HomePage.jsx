@@ -70,7 +70,7 @@ export default function HomePage() {
         </InputLabel>
         <Select
           native
-          value={currentCity }
+          value={currentCity}
           // @ts-ignore Typings are not considering `native`
           onChange={e => { setWeatherDialogInput(e.target.value); setCurrentCity(e.target.value) }}
           onBlur={e => { setWeatherDialogInput(e.target.value); setCurrentCity(e.target.value) }}
@@ -123,12 +123,11 @@ export default function HomePage() {
           <Card sx={{ mt: 0, pt: 0 }}>
             <CardContent>
               <Typography variant="h5" component="div">
-              需要使用定位
+                需要使用定位
               </Typography>
-              </CardContent>
-              </Card>
-              </Box>
-
+            </CardContent>
+          </Card>
+        </Box>
       </>,
     },
   ];
@@ -205,8 +204,8 @@ export default function HomePage() {
 
     function errorFunction() {
       console.log("Unable to retrieve your location.");
-      if(localStorage.getItem("dialog.getLocationError.show") === "true" || !localStorage.getItem("dialog.getLocationError.show")){
-      setDialogOpen(true)
+      if (localStorage.getItem("dialog.getLocationError.show") === "true" || !localStorage.getItem("dialog.getLocationError.show")) {
+        setDialogOpen(true)
       }
 
     }
@@ -411,11 +410,11 @@ export default function HomePage() {
             {navigator.geolocation ? <>你之前拒絕了我們的定位請求<br />如果要啟用定位，請到<Paper sx={{ p: 0.5 }}>瀏覽器設定&gt;網站設定&gt;{window.location.origin}</Paper>開啟定位服務，接著刷新此頁面</> : <>你的裝置不支援我們的技術<br />請嘗試更新瀏覽器，或在其他裝置上再試一次</>}
           </DialogContentText>
           <FormGroup>
-            <FormControlLabel control={<Checkbox inputRef={locationErrorAlertCheckRef}/>} label="以後不再顯示" />
+            <FormControlLabel control={<Checkbox inputRef={locationErrorAlertCheckRef} />} label="以後不再顯示" />
           </FormGroup>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => {setDialogOpen(false);window.localStorage.setItem("dialog.getLocationError.show",String(!locationErrorAlertCheckRef.current.checked))}}>
+          <Button onClick={() => { setDialogOpen(false); window.localStorage.setItem("dialog.getLocationError.show", String(!locationErrorAlertCheckRef.current.checked)) }}>
             確定
           </Button>
         </DialogActions>

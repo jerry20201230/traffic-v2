@@ -19,7 +19,7 @@ function HsrStation() {
   const [stationCardBody, setStationCardBody] = React.useState("")
   const [stationCardAction, setStationCardAction] = React.useState("")
 
-  const [title,setTitle] = React.useState(<></>)
+  const [title, setTitle] = React.useState(<></>)
 
   const [stationName, setStationName] = React.useState("")
   const redIcon = new L.Icon({
@@ -59,6 +59,7 @@ function HsrStation() {
       }
       // var finder = temparr.filter(function (ele) { return (ele === station) })
       if (!found) {
+        setTitle(<TopBar title="找不到車站" />)
         setStationCardTitle("找不到車站")
         setStationCardBody("請確認你的條件")
         setStationCardAction(<><Button size='small' component={Link} to="/hsr?sw=station">修改條件</Button></>)
@@ -73,8 +74,8 @@ function HsrStation() {
             <LocationOnIcon sx={{ verticalAlign: "bottom" }} /> {HSR_Station_Data[DataIndex].StationAddress}<br />
             <p></p>
             <MapContainer scrollWheelZoom={false} dragging={!L.Browser.mobile} center={[HSR_Station_Data[DataIndex].StationPosition.PositionLat, HSR_Station_Data[DataIndex].StationPosition.PositionLon]} zoom={18} style={{ width: "100%", height: "35vh", borderRadius: "5px" }}>
-            <TileLayer
-                attribution={`&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors${L.Browser.mobile?"<br/>使用兩指移動與縮放地圖":""}`}
+              <TileLayer
+                attribution={`&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors${L.Browser.mobile ? "<br/>使用兩指移動與縮放地圖" : ""}`}
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
               <Marker position={[HSR_Station_Data[DataIndex].StationPosition.PositionLat, HSR_Station_Data[DataIndex].StationPosition.PositionLon]} icon={redIcon}>
@@ -117,10 +118,10 @@ function HsrStation() {
           </CardActions>
         </Card>
         <p></p>
-        <Card>
+        <Card hidden={stationCardTitle === "找不到車站"}>
           <CardContent>
             <Typography variant='h5' component='div'>
-              即時資料
+              時刻表
             </Typography>
           </CardContent>
         </Card>

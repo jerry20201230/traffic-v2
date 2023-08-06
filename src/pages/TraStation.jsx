@@ -176,6 +176,7 @@ function TraStation() {
       }
       // var finder = temparr.filter(function (ele) { return (ele === station) })
       if (!found) {
+        setTitle(<TopBar title="找不到車站" />)
         setStationCardTitle("找不到車站")
         setStationCardBody("請確認你的條件")
         setStationCardAction(<><Button size='small' component={Link} to="/tra?sw=station">修改條件</Button></>)
@@ -270,8 +271,8 @@ function TraStation() {
             <Typography variant="h5" component="div">
               <Typography sx={{ mr: 1, display: "inline-block", width: "1.5rem", height: "1.5rem", borderRadius: "5px", verticalAlign: "text-top", background: "linear-gradient(315deg, #004da7, #7fa9d9)" }} variant='div' ></Typography>
               {stationCardTitle}
-              <IconButton aria-label="add bookmark" sx={{float:"right"}}>
-                <BookmarkBorderIcon/>
+              <IconButton aria-label="add bookmark" sx={{ float: "right" }}>
+                <BookmarkBorderIcon />
               </IconButton>
             </Typography>
 
@@ -287,7 +288,7 @@ function TraStation() {
           </CardActions>
         </Card>
         <p></p>
-        <Card>
+        <Card hidden={stationCardTitle === "找不到車站"}>
           <CardContent>
             <Typography variant='h5' component='div'>
               即時資料
@@ -296,7 +297,7 @@ function TraStation() {
               30分鐘內的車次資料
             </Typography>
             <Typography variant="body2" component="div" sx={{ lineHeight: 1.25 }}>
-              <Alert severity='warning'>這裡的列車時間是表定離站時間<br/>資料可能會延遲，請以車站看板為準</Alert>
+              <Alert severity='warning'>這裡的列車時間是表定離站時間<br />資料可能會延遲，請以車站看板為準</Alert>
               <p></p>
               <FormControl>
                 <FormLabel id="demo-row-radio-buttons-group-label">列車方向</FormLabel>

@@ -20,6 +20,8 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { AppBar, Toolbar } from '@mui/material'
 import BoltIcon from '@mui/icons-material/Bolt';
 import LinearProgress from '@mui/material/LinearProgress';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import Divider from '@mui/material/Divider';
 
 export default function BikeStation() {
   const [pageTitle, setPageTitle] = React.useState("loading")
@@ -67,8 +69,10 @@ export default function BikeStation() {
       getData(
         `https://tdx.transportdata.tw/api/advanced/v2/Bike/Station/NearBy?%24spatialFilter=nearby%28${UrlParam("lon")}%2C%20${UrlParam("lat")}%2C%201%29&%24format=JSON&top=1`,
         (res) => {
-          setTopbar(<TopBar title={res[0].StationName.Zh_tw.replace("_", " ")} />)
           setBikeStationData(res)
+          setTopbar(<TopBar title={res[0].StationName.Zh_tw.replace("_", " ")} />)
+          setBikeStationCardTitle(res[0].StationName.Zh_tw.replace("_", " "))
+          setBikeStationCardSubTitle(<></>)
         }, { useLocalCatch: false })
       getBikeData()
     }
@@ -109,10 +113,16 @@ export default function BikeStation() {
       } else {
         console.log(res)
 
-        setBikeStationCardTitle(res[0].StationName.Zh_tw.replace("_", " "))
-        setBikeStationCardSubTitle()
+        //     if ()
+
+
+
+
+
         setBikeStationCardBody(
           <>
+            <LocationOnIcon sx={{ verticalAlign: "bottom" }} />{res[0].StationAddress.Zh_tw}
+            <p></p>
             <MapContainer
               dragging={!L.Browser.mobile}
               scrollWheelZoom={false}
@@ -131,22 +141,40 @@ export default function BikeStation() {
               </Marker>
             </MapContainer>
             <p></p>
-            <TableContainer component={Paper}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell sx={{ p: 0.5, textAlign: "center" }}><img src='/ubike/YouBike2.0.svg' style={{ maxHeight: "3em" }} alt='可借車輛' /> <br />車輛</TableCell>
-                    <TableCell sx={{ p: 0.5, textAlign: "center" }}><img src='/ubike/2.0-dock.svg' style={{ maxHeight: "3em" }} alt='可還空位' /><br />空位</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow>
-                    <TableCell sx={{ textAlign: "center" }}>{bikeData.StationUID === "" ? <CircularProgress size={"1rem"} /> : <>一般:{bikeData[0].AvailableRentBikesDetail.GeneralBikes}<br />電輔:{bikeData[0].AvailableRentBikesDetail.ElectricBikes}</>}</TableCell>
-                    <TableCell sx={{ textAlign: "center" }}>{bikeData.StationUID === "" ? <CircularProgress size={"1rem"} /> : bikeData[0].AvailableReturnBikes}</TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </TableContainer>
+
+
+
+
+            <Box sx={{
+              display: "flex", justifyContent: "space-between", mt: 2
+            }}>
+              <div style={{ textAlign: "center", flexGrow: "1" }}>
+                <img src='/ubike/YouBike2.0.svg' style={{ height: "3em" }} alt='可借車輛' /><br />一般
+              </div>
+              <div style={{ flexGrow: "1" }}>
+                <Typography sx={{ fontSize: "2.5em", m: 0, p: 1, height: "100%" }}>
+                  {bikeData.StationUID === "" ? <CircularProgress size={"1rem"} /> :
+                    <>{bikeData[0].AvailableRentBikesDetail.GeneralBikes}</>}</Typography>
+              </div>
+              <Divider orientation="vertical" variant="middle" flexItem />
+
+
+              {bikeData[0].AvailableRentBikesDetail.ElectricBikes > 0 ? <>
+                <div style={{ textAlign: "center", flexGrow: "1" }}>
+                  <img src='/ubike/YouBike2.0E.svg' style={{ height: "3em" }} alt='2.0E可借車輛' /><br />電輔
+                </div>
+                <div style={{ flexGrow: "1" }}>
+                  <Typography sx={{ fontSize: "2.5em", m: 0, p: 1 }}>
+                    {bikeData.StationUID === "" ? <CircularProgress size={"1rem"} /> :
+                      <>{bikeData[0].AvailableRentBikesDetail.ElectricBikes}</>}</Typography>
+                </div>
+                <Divider orientation="vertical" variant="middle" flexItem />
+              </> : <></>}
+              <div style={{ textAlign: "center", flexGrow: "1" }}>
+                <img src='/ubike/2.0-dock.svg' style={{ height: "3em" }} alt='可還空位' /><br />車柱</div>
+              <div style={{ flexGrow: "1" }}>
+                <Typography sx={{ fontSize: "2.5em", m: 0, p: 1 }}>{bikeData.StationUID === "" ? <CircularProgress size={"1rem"} /> : bikeData[0].AvailableReturnBikes}</Typography></div>
+            </Box >
           </>)
       }
     }

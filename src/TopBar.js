@@ -20,7 +20,7 @@ function TopBar({ title }) {
   const titleRef = useRef()
   useEffect(() => {
     document.title = `${title} - 大眾運輸查詢系統`
-  }, [])
+  }, [title])
   function isElementOverflowing(element) {
     var overflowX = element.offsetWidth < element.scrollWidth,
       overflowY = element.offsetHeight < element.scrollHeight;
@@ -37,12 +37,12 @@ function TopBar({ title }) {
     element.appendChild(marquee);
   }
 
-  useEffect(() => {
-    if (isElementOverflowing(titleRef.current)) {
-      console.log("YEEE")
-      wrapContentsInMarquee(titleRef.current);
-    }
-  }, [titleRef])
+  // useEffect(() => {
+  //    if (isElementOverflowing(titleRef.current)) {
+  //      console.log("YEEE")
+  //      wrapContentsInMarquee(titleRef.current);
+  //    }
+  //  }, [titleRef])
 
   return (
     <>
@@ -59,7 +59,7 @@ function TopBar({ title }) {
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} ref={titleRef}>
+            <Typography title={title} noWrap variant="h6" component="div" sx={{ flexGrow: 1, textOverflow: 'ellipsis' }} ref={titleRef}>
               {title}
             </Typography>
             <IconButton color="inherit" component={Link} to="/map" href="/map"><MapIcon /></IconButton>

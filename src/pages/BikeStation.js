@@ -23,6 +23,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Divider from '@mui/material/Divider';
 import dayjs from 'dayjs';
+import Chip from '@mui/material/Chip';
 
 export default function BikeStation() {
   const [pageTitle, setPageTitle] = React.useState("loading")
@@ -112,22 +113,20 @@ export default function BikeStation() {
         setBikeStationCardTitle("找不到站點")
         setBikeStationCardSubTitle("請檢查輸入")
       } else {
-
-
         if (bikeData[0].ServiceStatus === 0) {
-          setBikeStationCardSubTitle(<Typography color="red">停止營運</Typography>)
+          setBikeStationCardSubTitle(<Chip color="error" label="停止營運" />)
         } else if (bikeData[0].ServiceStatus === 1) {
           //正常
           if (bikeData[0].AvailableRentBikes === 0) {
-            setBikeStationCardSubTitle(<Typography color="yellow">無車可借</Typography>)
+            setBikeStationCardSubTitle(<Chip color="warning" label="無車可借" />)
           } else if (bikeData[0].AvailableReturnBikes === 0) {
-            setBikeStationCardSubTitle(<Typography color="yellow">車位滿載</Typography>)
+            setBikeStationCardSubTitle(<Chip color="warning" label="車位滿載" />)
           } else {
-            setBikeStationCardSubTitle(<Typography color="green">正常借還</Typography>)
+            setBikeStationCardSubTitle(<Chip color="success" label="正常借還" />)
           }
         }
         else {
-          setBikeStationCardSubTitle(<Typography color="red">暫停營運</Typography>)
+          setBikeStationCardSubTitle(<Chip color="error" label="暫停營運" />)
         }
 
         setBikeStationCardBody(
@@ -155,28 +154,34 @@ export default function BikeStation() {
 
             <Box sx={{
               display: "flex", justifyContent: "space-between", mt: 2
-            }}>
+            }}
+              component="div">
               <div style={{ textAlign: "center", flexGrow: "1" }}>
-                <img src='/ubike/YouBike2.0.svg' style={{ height: "2.5em" }} alt='可借車輛' /><br />一般<br /><Typography sx={{ fontSize: "2.5em", m: 0, p: 1, height: "100%" }}>
+                <img src='/ubike/YouBike2.0.svg' style={{ height: "2.5em" }} alt='可借車輛' /><br />一般<br />
+                <Typography component="div" sx={{ fontSize: "2.5em", m: 0, p: 1, height: "100%" }}>
                   {bikeData.StationUID === "" ? <CircularProgress size={"1rem"} /> :
-                    <>{bikeData[0].AvailableRentBikesDetail.GeneralBikes}</>}</Typography>
+                    <>{
+                      bikeData[0].AvailableRentBikesDetail.GeneralBikes < 1 ? <span style={{ color: "red" }}>{bikeData[0].AvailableRentBikesDetail.GeneralBikes}</span> : bikeData[0].AvailableRentBikesDetail.GeneralBikes
+                    }</>}</Typography>
               </div>
 
-              <Divider orientation="vertical" variant="middle" flexItem />
+              <Divider component="div" orientation="vertical" variant="middle" flexItem />
               {bikeData[0].AvailableRentBikesDetail.ElectricBikes > 0 ? <>
                 <div style={{ textAlign: "center", flexGrow: "1" }}>
                   <img src='/ubike/YouBike2.0E.svg' style={{ height: "2.5em" }} alt='2.0E可借車輛' /><br />電輔<br />
-                  <Typography sx={{ fontSize: "2.5em", m: 0, p: 1 }}>
+                  <Typography component="div" sx={{ fontSize: "2.5em", m: 0, p: 1 }}>
                     {bikeData.StationUID === "" ? <CircularProgress size={"1rem"} /> :
                       <>{bikeData[0].AvailableRentBikesDetail.ElectricBikes}</>}</Typography>
                 </div>
-                <Divider orientation="vertical" variant="middle" flexItem />
+                <Divider component="div" orientation="vertical" variant="middle" flexItem />
               </> : <></>}
               <div style={{ textAlign: "center", flexGrow: "1" }}>
-                <img src='/ubike/2.0-dock.svg' style={{ height: "2.5em" }} alt='可還空位' /><br />車柱<br /><Typography sx={{ fontSize: "2.5em", m: 0, p: 1 }}>{bikeData.StationUID === "" ? <CircularProgress size={"1rem"} /> : bikeData[0].AvailableReturnBikes}</Typography></div>
-
+                <img src='/ubike/2.0-dock.svg' style={{ height: "2.5em" }} alt='可還空位' /><br />車柱<br />
+                <Typography component="div" sx={{ fontSize: "2.5em", m: 0, p: 1 }}>
+                  {bikeData.StationUID === "" ? <CircularProgress size={"1rem"} /> :
+                    bikeData[0].AvailableReturnBikes < 1 ? <span style={{ color: "red" }}>{bikeData[0].AvailableReturnBikes}</span> : bikeData[0].AvailableReturnBikes}</Typography></div>
             </Box>
-            <p>最後更新: {dayjs(bikeData.UpdateTime).format("hh:mm")}</p>
+            <p>最後更新: {dayjs(bikeData.UpdateTime).format("HH:mm")}</p>
           </>)
       }
     }

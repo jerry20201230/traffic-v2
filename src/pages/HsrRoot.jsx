@@ -23,9 +23,9 @@ function HsrRoot() {
       "",
       "",
       window.location.origin +
-        window.location.pathname +
-        "?sw=" +
-        event.target.value
+      window.location.pathname +
+      "?sw=" +
+      event.target.value
     );
   };
   function UrlParam(name) {
@@ -123,6 +123,7 @@ function HsrRoot() {
         <div hidden={radioValue === "station"} style={{ width: "100%" }}>
           <TextField
             ref={trainInput}
+            type="number"
             label="車次"
             sx={{ width: "100%" }}
             onChange={(e, v) => setTrainNum(e.target.value)}

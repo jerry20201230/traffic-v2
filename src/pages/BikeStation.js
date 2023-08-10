@@ -181,7 +181,7 @@ export default function BikeStation() {
                   {bikeData.StationUID === "" ? <CircularProgress size={"1rem"} /> :
                     bikeData[0].AvailableReturnBikes < 1 ? <span style={{ color: "red" }}>{bikeData[0].AvailableReturnBikes}</span> : bikeData[0].AvailableReturnBikes}</Typography></div>
             </Box>
-            <p>最後更新: {dayjs(bikeData.UpdateTime).format("HH:mm")}</p>
+            <p>最後更新: {dayjs(bikeData.UpdateTime).format("HH:mm:ss")}</p>
           </>)
       }
     }

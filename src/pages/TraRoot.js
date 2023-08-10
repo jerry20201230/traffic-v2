@@ -19,7 +19,7 @@ function TraRoot() {
   const [trainNum, setTrainNum] = React.useState()
   const handleChange = (event) => {
     setRadioValue(event.target.value);
-    window.history.pushState("", "", window.location.origin+window.location.pathname+"?sw="+event.target.value);
+    window.history.pushState("", "", window.location.origin + window.location.pathname + "?sw=" + event.target.value);
   };
   function UrlParam(name) {
     var url = new URL(window.location.href),
@@ -42,7 +42,7 @@ function TraRoot() {
   }, []);
 
   React.useEffect(() => {
-    if(UrlParam("sw")){setRadioValue(UrlParam("sw"))}else{setRadioValue("station")}
+    if (UrlParam("sw")) { setRadioValue(UrlParam("sw")) } else { setRadioValue("station") }
     const handleKeyDown = (event) => {
       if (event.keyCode === 13) {
         console.log(submitButton)
@@ -92,7 +92,7 @@ function TraRoot() {
         </div>
 
         <div hidden={radioValue === "station"} style={{ width: "100%" }}>
-          <TextField ref={trainInput} label="車次" sx={{ width: "100%" }} onChange={(e, v) => setTrainNum(e.target.value)}></TextField>
+          <TextField type='number' ref={trainInput} label="車次" sx={{ width: "100%" }} onChange={(e, v) => setTrainNum(e.target.value)}></TextField>
         </div>
         <p></p>
         <Button variant="contained" ref={submitButton} component={Link} to={"/tra/" + radioValue + "/?q=" + (radioValue === "station" ? selected : trainNum) + "&t=fulldata"}>繼續</Button>

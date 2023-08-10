@@ -67,11 +67,12 @@ function TopBar({ title }) {
         </AppBar>
         <Toolbar />
         <SwipeableDrawer
-          sx={{ zIndex: 100000 }}
+          sx={{ zIndex: 100000, height: "100%" }}
           anchor="left"
           open={showNavigation}
           onClose={() => setShowNavigation(false)}
-          onOpen={() => setShowNavigation(true)}>
+          onOpen={() => setShowNavigation(true)}
+        >
 
           <Box sx={{ width: '100%', minWidth: 240, bgcolor: 'background.paper' }}>
             <nav aria-label="main mailbox folders">

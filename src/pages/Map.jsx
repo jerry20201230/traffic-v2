@@ -20,6 +20,8 @@ import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import { RoomPreferencesTwoTone } from '@mui/icons-material';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 
 function Map() {
 
@@ -99,7 +101,7 @@ function Map() {
   const drawerBleeding = 56;
 
   const Root = styled('div')(({ theme }) => ({
-    height: '100%',
+
     backgroundColor:
       theme.palette.mode === 'light' ? grey[100] : theme.palette.background.default,
   }));
@@ -170,11 +172,24 @@ function Map() {
             sx={{
               px: 2,
               pb: 2,
-              height: '100%',
+
               overflow: 'auto',
             }}
           >
-            <Skeleton variant="rectangular" height="100%" />
+            <h4>你的位置資訊</h4>
+            <Tabs
+
+              variant="scrollable"
+              scrollButtons
+              allowScrollButtonsMobile
+              aria-label="scrollable force tabs example"
+            >
+              <Tab label="台鐵" />
+              <Tab label="高鐵" />
+              <Tab label="捷運" />
+              <Tab label="公車" />
+              <Tab label="公共自行車" />
+            </Tabs>
           </StyledBox>
         </SwipeableDrawer>
       </Root>

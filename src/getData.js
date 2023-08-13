@@ -2,9 +2,9 @@ import $ from 'jquery'
 import * as React from 'react'
 
 
-function getData(tdxUrl, callback, setting) {
+function getData(tdxUrl, callback, setting, i) {
   console.log("[GET DATA]\nfrom: ", tdxUrl, "\nsetting:", setting, "\nlocalStorage:", Boolean(JSON.parse(localStorage.getItem(tdxUrl))), "\ngetData.js")
-  function getapikey() {
+  function getapikey(callback) {
     var tdxLogin = {
       grant_type: "client_credentials",
       client_id: "jerry20200815-905e4c2d-f4f9-42dd",
@@ -20,9 +20,11 @@ function getData(tdxUrl, callback, setting) {
       success: function (data) {
         console.log(data)
         localStorage.setItem("loginAccess", JSON.stringify(data))
+        callback(tdxUrl, callback, setting)
+        return data
       },
       error: function (xhr, textStatus, thrownError) {
-        alert("err")
+        alert("發生錯誤\n請刷新網頁")
       }
     });
   }
@@ -30,52 +32,53 @@ function getData(tdxUrl, callback, setting) {
   if (tdxUrl.includes("tdx")) {
     if ((!setting.useLocalCatch || !localStorage.getItem(tdxUrl) || !setting)) {
       if (!localStorage.getItem("loginAccess")) {
-        getapikey()
+        getapikey(getData)
+      } else {
+        var accesstoken = JSON.parse(localStorage.getItem("loginAccess"));
+        $.ajax({
+          url: tdxUrl,
+          method: "GET",
+          dataType: "json",
+          async: true,
+          headers: {
+            "authorization": "Bearer " + accesstoken.access_token,
+          },
+          success: function (res) {
+            if (setting.useLocalCatch) { localStorage.setItem(tdxUrl, JSON.stringify(res)) }
+            callback(res)
+            return res
+          },
+          error: function (xhr, textStatus, thrownError) {
+            getapikey(getData)
+          }
+        })
       }
-      var accesstoken = JSON.parse(localStorage.getItem("loginAccess"));
-      $.ajax({
-        url: tdxUrl,
-        method: "GET",
-        dataType: "json",
-        async: true,
-        headers: {
-          "authorization": "Bearer " + accesstoken.access_token,
-        },
-        success: function (res) {
-          if (setting.useLocalCatch) { localStorage.setItem(tdxUrl, JSON.stringify(res)) }
-          callback(res)
-          return res
-        },
-        error: function (xhr, textStatus, thrownError) {
-          getapikey()
-        }
-      })
     } else {
       callback(JSON.parse(localStorage.getItem(tdxUrl)))
     }
   }
-  else{
+  else {
     if ((!setting.useLocalCatch || !localStorage.getItem(tdxUrl) || !setting)) {
       if (!localStorage.getItem("loginAccess")) {
-        getapikey()
+        getapikey(getData)
+      } else {
+        var accesstoken = JSON.parse(localStorage.getItem("loginAccess"));
+        $.ajax({
+          url: tdxUrl,
+          method: "GET",
+          dataType: "json",
+          async: true,
+          success: function (res) {
+            if (setting.useLocalCatch) { localStorage.setItem(tdxUrl, JSON.stringify(res)) }
+            callback(res)
+            return res
+          },
+          error: function (xhr, textStatus, thrownError) {
+            getapikey(getData)
+            return <></>
+          }
+        })
       }
-      var accesstoken = JSON.parse(localStorage.getItem("loginAccess"));
-      $.ajax({
-        url: tdxUrl,
-        method: "GET",
-        dataType: "json",
-        async: true,
-        success: function (res) {
-          if (setting.useLocalCatch) { localStorage.setItem(tdxUrl, JSON.stringify(res)) }
-          callback(res)
-          return res
-        },
-        error: function (xhr, textStatus, thrownError) {
-          getapikey()
-          
-          return <></> 
-        }
-      })
     } else {
       callback(JSON.parse(localStorage.getItem(tdxUrl)))
     }

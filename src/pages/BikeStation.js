@@ -176,7 +176,7 @@ export default function BikeStation() {
                 <Divider component="div" orientation="vertical" variant="middle" flexItem />
               </> : <></>}
               <div style={{ textAlign: "center", flexGrow: "1" }}>
-                <img src='/ubike/2.0-dock.svg' style={{ height: "2.5em" }} alt='可還空位' /><br />車柱<br />
+                <img src='/ubike/2.0-dock.svg' style={{ height: "2.5em" }} alt='可還空位' /><br />空位<br />
                 <Typography component="div" sx={{ fontSize: "2.5em", m: 0, p: 1 }}>
                   {bikeData.StationUID === "" ? <CircularProgress size={"1rem"} /> :
                     bikeData[0].AvailableReturnBikes < 1 ? <span style={{ color: "red" }}>{bikeData[0].AvailableReturnBikes}</span> : bikeData[0].AvailableReturnBikes}</Typography></div>

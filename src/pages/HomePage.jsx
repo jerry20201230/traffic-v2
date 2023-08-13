@@ -194,7 +194,7 @@ export default function HomePage() {
                 </Box>
                 <p>天氣預報有效時間:  {res.weatherElement[0].time[0].endTime}</p>
               </>)
-          }, { useLocalCatch: true })
+          }, { useLocalCatch: false })
 
         })
         setWeatherCardAction(<></>)

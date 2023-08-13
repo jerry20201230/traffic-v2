@@ -31,6 +31,7 @@ import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkAddedIcon from '@mui/icons-material/BookmarkAdded';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import IconButton from '@mui/material/IconButton';
+import BasicTabs from '../tabs';
 
 function TraStation() {
   const [stationCardTitle, setStationCardTitle] = React.useState("")
@@ -159,8 +160,16 @@ function TraStation() {
   React.useEffect(() => {
     var station = UrlParam("q")
     if (!station) { station = "()" }
-
     if (station.includes("(")) { station = station.split("(")[1].split(")")[0] } //車站ID
+
+    getData("https://tdx.transportdata.tw/api/basic/v3/Rail/TRA/StationTransfer?%24format=JSON", (res) => {
+      for (let i = 0; i < res.StationTransfers.length; i++) {
+        if (res.StationTransfers[i].StationID === station || res.StationTransfers[i].StationName.Zh_tw === station) {
+          console.log(JSON.stringify(res.StationTransfers[i]).toString())
+        }
+      }
+    }, { useLocalCatch: true })
+
     console.log(station)
     getData("https://tdx.transportdata.tw/api/basic/v2/Rail/TRA/Station?%24format=JSON", function (res) {
       var TRA_Station_Data = res
@@ -353,6 +362,17 @@ function TraStation() {
                   </TableBody>
                 </Table>
               </TableContainer>
+            </Typography>
+          </CardContent>
+        </Card>
+        <p></p>
+        <Card hidden={stationCardTitle === "找不到車站"}>
+          <CardContent>
+            <Typography variant='h5' component='div'>
+              跨運具轉乘
+            </Typography>
+            <Typography variant="body2" component="div" sx={{ lineHeight: 1.25 }}>
+              <BasicTabs />
             </Typography>
           </CardContent>
         </Card>

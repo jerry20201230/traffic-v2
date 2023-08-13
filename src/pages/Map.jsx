@@ -22,11 +22,19 @@ import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import { RoomPreferencesTwoTone } from '@mui/icons-material';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
+import { CircularProgress } from '@mui/material';
+import BasicTabs from '../tabs';
+import getData from '../getData';
+import NotListedLocationIcon from '@mui/icons-material/NotListedLocation';
+import LocationOffIcon from '@mui/icons-material/LocationOff';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+
 
 function Map() {
 
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const [locationMark, setLocationMark] = React.useState()
+  const [locationSummery, setLocationSummery] = React.useState(<><NotListedLocationIcon sx={{ verticalAlign: "bottom" }} /> 資料讀取中 <CircularProgress size="1rem" sx={{ verticalAlign: "baseline" }} /></>)
   const mymap = React.useRef()
   var redIcon = new L.Icon({
     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
@@ -53,6 +61,11 @@ function Map() {
       setLocationMark(
         <>
           <Marker
+            eventHandlers={{
+              click: (e) => {
+                console.log('marker clicked', e)
+              },
+            }}
             position={[loc.coords.latitude, loc.coords.longitude]}
             icon={redIcon}
           >
@@ -64,10 +77,13 @@ function Map() {
         [loc.coords.latitude, loc.coords.longitude],
         16
       )
+
+      getData(`https://tdx.transportdata.tw/api/advanced/V3/Map/GeoLocating/Address/LocationX/${loc.coords.longitude}/LocationY/${loc.coords.latitude}?%24format=JSON`, (res) => setLocationSummery(<><LocationOnIcon sx={{ verticalAlign: "bottom" }} /> {res[0].Address}</>), { useLocalCatch: true })
     }
     function errorFunction() {
       //if(localStorage.getItem("dialog.getLocationError.show") === "true" || !localStorage.getItem("dialog.getLocationError.show")){
       setDialogOpen(true); //無論如何
+      setLocationSummery(<><LocationOffIcon sx={{ verticalAlign: "bottom" }} /> 無法取得定位資訊</>)
       //}
     }
   }
@@ -75,16 +91,6 @@ function Map() {
   React.useEffect(() => {
     getLocation()
   }, [])
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -177,19 +183,8 @@ function Map() {
             }}
           >
             <h4>你的位置資訊</h4>
-            <Tabs
-
-              variant="scrollable"
-              scrollButtons
-              allowScrollButtonsMobile
-              aria-label="scrollable force tabs example"
-            >
-              <Tab label="台鐵" />
-              <Tab label="高鐵" />
-              <Tab label="捷運" />
-              <Tab label="公車" />
-              <Tab label="公共自行車" />
-            </Tabs>
+            {locationSummery}
+            <BasicTabs />
           </StyledBox>
         </SwipeableDrawer>
       </Root>

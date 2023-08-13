@@ -58,28 +58,31 @@ function getData(tdxUrl, callback, setting, i) {
     }
   }
   else {
-    if ((!setting.useLocalCatch || !localStorage.getItem(tdxUrl) || !setting)) {
-      if (!localStorage.getItem("loginAccess")) {
-        getapikey(getData)
-      } else {
-        var accesstoken = JSON.parse(localStorage.getItem("loginAccess"));
-        $.ajax({
-          url: tdxUrl,
-          method: "GET",
-          dataType: "json",
-          async: true,
-          success: function (res) {
-            if (setting.useLocalCatch) { localStorage.setItem(tdxUrl, JSON.stringify(res)) }
-            callback(res)
-            return res
-          },
-          error: function (xhr, textStatus, thrownError) {
-            getapikey(getData)
-            return <></>
-          }
-        })
+    try {
+      if ((!setting.useLocalCatch || !localStorage.getItem(tdxUrl) || !setting)) {
+        if (!localStorage.getItem("loginAccess")) {
+          getapikey(getData)
+        } else {
+          var accesstoken = JSON.parse(localStorage.getItem("loginAccess"));
+          $.ajax({
+            url: tdxUrl,
+            method: "GET",
+            dataType: "json",
+            async: true,
+            success: function (res) {
+              if (setting.useLocalCatch) { localStorage.setItem(tdxUrl, JSON.stringify(res)) }
+              callback(res)
+              return res
+            },
+            error: function (xhr, textStatus, thrownError) {
+              getapikey(getData)
+              return <></>
+            }
+          })
+        }
       }
-    } else {
+    }
+    catch (e) {
       callback(JSON.parse(localStorage.getItem(tdxUrl)))
     }
   }

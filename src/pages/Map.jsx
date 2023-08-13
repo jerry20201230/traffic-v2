@@ -28,14 +28,17 @@ import getData from '../getData';
 import NotListedLocationIcon from '@mui/icons-material/NotListedLocation';
 import LocationOffIcon from '@mui/icons-material/LocationOff';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-
+import NearMeIcon from '@mui/icons-material/NearMe';
 
 function Map() {
 
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const [locationMark, setLocationMark] = React.useState()
-  const [locationSummery, setLocationSummery] = React.useState(<><NotListedLocationIcon sx={{ verticalAlign: "bottom" }} /> 資料讀取中 <CircularProgress size="1rem" sx={{ verticalAlign: "baseline" }} /></>)
+  const [locationNear, setLocationNear] = React.useState(<><NotListedLocationIcon sx={{ verticalAlign: "bottom" }} /> 資料讀取中 <CircularProgress size="1rem" sx={{ verticalAlign: "baseline" }} /></>)
+  const [locationSummery, setLocationSummery] = React.useState(<><NearMeIcon sx={{ verticalAlign: "bottom" }} /> 資料讀取中 <CircularProgress size="1rem" sx={{ verticalAlign: "baseline" }} /></>)
+  const [locationXY, setLocationXY] = React.useState([])
   const mymap = React.useRef()
+
   var redIcon = new L.Icon({
     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -77,8 +80,9 @@ function Map() {
         [loc.coords.latitude, loc.coords.longitude],
         16
       )
-
+      setLocationXY([loc.coords.latitude, loc.coords.longitude])
       getData(`https://tdx.transportdata.tw/api/advanced/V3/Map/GeoLocating/Address/LocationX/${loc.coords.longitude}/LocationY/${loc.coords.latitude}?%24format=JSON`, (res) => setLocationSummery(<><LocationOnIcon sx={{ verticalAlign: "bottom" }} /> {res[0].Address}</>), { useLocalCatch: true })
+      getData(`https://tdx.transportdata.tw/api/advanced/V3/Map/GeoLocating/Markname/LocationX/${loc.coords.longitude}/LocationY/${loc.coords.latitude}?%24format=JSON`, (res) => setLocationNear(<><NearMeIcon sx={{ verticalAlign: "bottom" }} /> {res[0].Distance > 0 ? `${res[0].Markname} 附近 (${Math.round(res[0].Distance)}公尺)` : `${res[0].Markname}`} </>), { useLocalCatch: true })
     }
     function errorFunction() {
       //if(localStorage.getItem("dialog.getLocationError.show") === "true" || !localStorage.getItem("dialog.getLocationError.show")){
@@ -183,8 +187,10 @@ function Map() {
             }}
           >
             <h4>你的位置資訊</h4>
-            {locationSummery}
-            <BasicTabs />
+            {locationSummery}<br />
+            {locationNear}
+            <h4>附近大眾運輸</h4>
+            <BasicTabs lat={locationXY[0]} lon={locationXY[1]} />
           </StyledBox>
         </SwipeableDrawer>
       </Root>

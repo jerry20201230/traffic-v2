@@ -1,6 +1,6 @@
 import * as React from 'react';
 import TopBar from '../TopBar';
-import { Alert, Box } from '@mui/material';
+import { Alert, Box, CircularProgress } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { Card, CardActions, CardContent } from '@mui/material'
 import Button from '@mui/material/Button';
@@ -38,11 +38,12 @@ function TraStation() {
   const [stationCardSubTitle, setStationCardSubTitle] = React.useState("")
   const [stationCardBody, setStationCardBody] = React.useState("")
   const [stationCardAction, setStationCardAction] = React.useState("")
+  const [transferTab, setTransferTab] = React.useState(<></>)
 
   const [title, setTitle] = React.useState(<></>)
   const [stationID, setStationID] = React.useState()
   const [stationName, setStationName] = React.useState("")
-
+  const [stationLocation, setStationLocation] = React.useState([])
   const [trainBoard, setTrainBoard] = React.useState([])
   const [trainBoardEle, setTrainBoardEle] = React.useState([])
 
@@ -220,8 +221,7 @@ function TraStation() {
           <Button size='small' component="a" href={`tel:${TRA_Station_Data[DataIndex].StationPhone}`}>撥打電話</Button>
           <Button size='small' component="a" href={`https://maps.google.com/?q=${TRA_Station_Data[DataIndex].StationPosition.PositionLat},${TRA_Station_Data[DataIndex].StationPosition.PositionLon}`} target='_blank'>Google Maps</Button>
         </>)
-
-
+        setTransferTab(<BasicTabs data={{ stationID: TRA_Station_Data[DataIndex].StationID }} spec="tra" lat={TRA_Station_Data[DataIndex].StationPosition.PositionLat} lon={TRA_Station_Data[DataIndex].StationPosition.PositionLon} />)
       }
     }, {
       useLocalCatch: true,
@@ -372,7 +372,7 @@ function TraStation() {
               跨運具轉乘
             </Typography>
             <Typography variant="body2" component="div" sx={{ lineHeight: 1.25 }}>
-              <BasicTabs />
+              {transferTab}
             </Typography>
           </CardContent>
         </Card>

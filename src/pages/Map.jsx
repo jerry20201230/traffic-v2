@@ -102,12 +102,6 @@ function Map() {
 
 
 
-
-
-
-
-
-
   const drawerBleeding = 56;
 
   const Root = styled('div')(({ theme }) => ({
@@ -132,10 +126,11 @@ function Map() {
 
   function SwipeableEdgeDrawer(props) {
     const { window } = props;
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = React.useState(localStorage.getItem("map.drawer.show") === "1" ? true : false);
 
     const toggleDrawer = (newOpen) => () => {
       setOpen(newOpen);
+      localStorage.setItem("map.drawer.show", newOpen === true ? "1" : "0")
     };
 
     return (
@@ -189,20 +184,13 @@ function Map() {
             <h4>你的位置資訊</h4>
             {locationSummery}<br />
             {locationNear}
-            <h4>附近大眾運輸</h4>
+            <h4>附近大眾運輸(500公尺)</h4>
             <BasicTabs lat={locationXY[0]} lon={locationXY[1]} />
           </StyledBox>
         </SwipeableDrawer>
       </Root>
     );
   }
-  SwipeableEdgeDrawer.propTypes = {
-    /**
-     * Injected by the documentation to work in an iframe.
-     * You won't need it on your project.
-     */
-    window: PropTypes.func,
-  };
 
 
 
@@ -228,7 +216,6 @@ function Map() {
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-
             {locationMark}
           </MapContainer>
         </div>

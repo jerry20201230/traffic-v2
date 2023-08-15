@@ -54,7 +54,7 @@ export default function BasicTabs({ lat, lon, spec, hide, data, children }) {
     setValue(newValue);
   };
   const [nearByData, setNearByData] = React.useState([{ RailStations: { RailStationList: [{ StationUID: "" }] } }])
-  const [traTab, setTraTab] = React.useState(["無資料"])
+  const [traTab, setTraTab] = React.useState([])
   const [hsrTab, setHsrTab] = React.useState(<></>)
   const [mrtTab, setMrtTab] = React.useState(<></>)
   const [busTab, setBusTab] = React.useState(<></>)
@@ -83,6 +83,9 @@ export default function BasicTabs({ lat, lon, spec, hide, data, children }) {
             traTab[0] = <>{res.LineTransfers[i].FromLineName.Zh_tw.replace("西部幹線", "山線").replace("西部幹線 (海線)", "海線")} <br /> {res.LineTransfers[i].ToLineName.Zh_tw.replace("西部幹線", "山線").replace("西部幹線 (海線)", "海線")}</>
             break
           }
+        }
+        if (traTab[0] === <></> || traTab === undefined || traTab.length < 1) {
+          traTab[0] = "無資料"
         }
         return
       }, { useLocalCatch: true })

@@ -44,96 +44,109 @@ function convertOperator(text) {
   var operatorCode = ["KRTC", "NTMC", "THSR", "TMRT", "TRA", "TRTC", "TYMC"]
   var operatorName = ["高雄捷運", "新北捷運", "高鐵", "台中捷運", "台鐵", "台北捷運", "桃園捷運"]
 }
-
+var trainStation_isTransferStation = false
 export default function BasicTabs({ lat, lon, spec, hide, data, children }) {
   const [value, setValue] = React.useState(0);
+
+  const [tabsDoc, setTabsDoc] = React.useState((<></>))
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
   const [nearByData, setNearByData] = React.useState([{ RailStations: { RailStationList: [{ StationUID: "" }] } }])
-
-  const [traTabSpecVal, setTraTabSpecVal] = React.useState([{ FromLineName: { Zh_tw: "" }, ToLineName: { Zh_tw: "" } }])
+  const [traTab, setTraTab] = React.useState(["無資料"])
   const [hsrTab, setHsrTab] = React.useState(<></>)
   const [mrtTab, setMrtTab] = React.useState(<></>)
   const [busTab, setBusTab] = React.useState(<></>)
   const [bikeTab, setBikeTab] = React.useState(<></>)
+
 
   React.useEffect(() => {
     if (lat && lon) {
       getData(`https://tdx.transportdata.tw/api/advanced/V3/Map/GeoLocating/Transit/Nearby/LocationX/${lon}/LocationY/${lat}/Distance/500?%24format=JSON`, (res) => {
         console.log(res)
         setNearByData(res)
-      }, { useLocalCatch: false })
-    }
-
-    if (spec === "tra") {
-      getData("https://tdx.transportdata.tw/api/basic/v3/Rail/TRA/LineTransfer?%24format=JSON", (res) => {
-        setTraTabSpecVal(res.LineTransfers)
-
+        return
       }, { useLocalCatch: true })
     }
   }, [lat, lon])
 
 
+  React.useEffect(() => {
 
-  return (
-    <Box sx={{ width: '100%' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example"
-          variant="scrollable"
-          scrollButtons
-          allowScrollButtonsMobile>
-          <Tab label="台鐵" {...a11yProps(0)} />
-          <Tab label="高鐵" {...a11yProps(1)} />
-          <Tab label="捷運" {...a11yProps(2)} />
-          <Tab label="公車" {...a11yProps(3)} />
-          <Tab label="公共自行車" {...a11yProps(4)} />
-        </Tabs>
-      </Box>
-      <CustomTabPanel value={value} index={0}>
-        {
-          spec !== "tra" ?
-            nearByData[0].RailStations.RailStationList.map((data, index) => {
-              return (
-                data.StationUID.includes("TRA") ?
-                  <div key={"tra-" + index}>
-                    <span>{data.StationName}車站</span><br />
-                  </div>
-                  :
-                  <></>
-              )
-            })
-            :
-            traTabSpecVal.map((tradata, index) => {
 
-              return (
-                traTabSpecVal.length > 0 ?
-                  tradata.FromStationID == data.stationID ?
-                    <div key={index + "-tra"}>
-                      <h3>轉乘 {tradata.FromLineName.Zh_tw}、{tradata.ToLineName.Zh_tw}，請在本站換車</h3>
-                    </div>
-                    :
-                    <></>
-                  : <></>
-              )
+    if (spec === "tra") {
+      getData("https://tdx.transportdata.tw/api/basic/v3/Rail/TRA/LineTransfer?%24format=JSON", (res) => {
+        for (let i = 0; i < res.LineTransfers.length; i++) {
+          if (res.LineTransfers[i].FromStationID === data.stationID) {
+            trainStation_isTransferStation = true
+            traTab[0] = <>{res.LineTransfers[i].FromLineName.Zh_tw.replace("西部幹線", "山線").replace("西部幹線 (海線)", "海線")} <br /> {res.LineTransfers[i].ToLineName.Zh_tw.replace("西部幹線", "山線").replace("西部幹線 (海線)", "海線")}</>
+            break
+          }
+        }
+        return
+      }, { useLocalCatch: true })
 
-            })
+
+    }
+    else {
+      console.log(nearByData[0])
+
+      for (let i = 0; i < nearByData[0].RailStations.RailStationList.length; i++) {
+        if (nearByData[0].RailStations.RailStationList[i].StationUID === "") {
+
+        }
+        else if (nearByData[0].RailStations.RailStationList[i].includes("TRA")) {
+          traTab[0] = traTab[0] + <> <span>{nearByData[0].RailStations.RailStationList[i]}車站</span><br /></>
         }
 
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
-        Item Two
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={2}>
-        Item Three
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={3}>
-        Item Three
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={4}>
-        Item Three
-      </CustomTabPanel>
-    </Box>
+      }
+      if (traTab[0] === <></> || traTab.length < 1) {
+        traTab[0] = "無資料"
+      }
+      return
+    }
+  }, [nearByData, traTab])
+
+  React.useEffect(() => {
+
+    setTabsDoc(<>
+      <Box sx={{ width: '100%' }}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs value={value} onChange={handleChange}
+            variant="scrollable"
+            scrollButtons
+            allowScrollButtonsMobile>
+            <Tab label="台鐵" {...a11yProps(0)} />
+            <Tab label="高鐵" {...a11yProps(1)} />
+            <Tab label="捷運" {...a11yProps(2)} />
+            <Tab label="公車" {...a11yProps(3)} />
+            <Tab label="公共自行車" {...a11yProps(4)} />
+          </Tabs>
+        </Box>
+        <CustomTabPanel value={value} index={0}>
+          {
+            traTab[0]
+          }
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={1}>
+          Item Two
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={2}>
+          Item Three
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={3}>
+          Item Three
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={4}>
+          Item Three
+        </CustomTabPanel>
+      </Box>
+    </>)
+  }, [nearByData, value])
+
+
+  return (
+    tabsDoc
   );
 }

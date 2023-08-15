@@ -34,8 +34,8 @@ function Map() {
 
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const [locationMark, setLocationMark] = React.useState()
-  const [locationNear, setLocationNear] = React.useState(<><NotListedLocationIcon sx={{ verticalAlign: "bottom" }} /> 資料讀取中 <CircularProgress size="1rem" sx={{ verticalAlign: "baseline" }} /></>)
-  const [locationSummery, setLocationSummery] = React.useState(<><NearMeIcon sx={{ verticalAlign: "bottom" }} /> 資料讀取中 <CircularProgress size="1rem" sx={{ verticalAlign: "baseline" }} /></>)
+  const [locationNear, setLocationNear] = React.useState(<><NearMeIcon sx={{ verticalAlign: "bottom" }} /> 資料讀取中 <CircularProgress size="1rem" sx={{ verticalAlign: "baseline" }} /></>)
+  const [locationSummery, setLocationSummery] = React.useState(<><NotListedLocationIcon sx={{ verticalAlign: "bottom" }} /> 資料讀取中 <CircularProgress size="1rem" sx={{ verticalAlign: "baseline" }} /></>)
   const [locationXY, setLocationXY] = React.useState([])
   const mymap = React.useRef()
 

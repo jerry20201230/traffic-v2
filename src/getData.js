@@ -83,7 +83,11 @@ function getData(tdxUrl, callback, setting, i) {
       }
     }
     catch (e) {
-      callback(JSON.parse(localStorage.getItem(tdxUrl)))
+      try {
+        callback(JSON.parse(localStorage.getItem(tdxUrl)))
+      } catch {
+
+      }
     }
   }
 }

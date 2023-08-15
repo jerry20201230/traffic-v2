@@ -253,7 +253,7 @@ export default function BasicTabs({ lat, lon, spec, hide, data, children }) {
 
     setTabsDoc(<>
       <Box sx={{ width: '100%' }}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider', position: "sticky", top: 0, backgroundColor: "white", backdropFilter: "blur(5px)" }}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider', position: "sticky", top: 0, backgroundColor: "white", backdropFilter: "blur(5px)", zIndex: 1999 }}>
           <Tabs value={value} onChange={handleChange}
             variant="scrollable"
             scrollButtons

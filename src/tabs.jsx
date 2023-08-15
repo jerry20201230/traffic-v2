@@ -90,11 +90,11 @@ export default function BasicTabs({ lat, lon, spec, hide, data, children }) {
 
     }
     else {
-      console.log(nearByData[0])
+      console.log(nearByData[0].RailStations.RailStationList[0])
 
       for (let i = 0; i < nearByData[0].RailStations.RailStationList.length; i++) {
         if (nearByData[0].RailStations.RailStationList[i].StationUID.includes("TRA")) {
-          traTab[0] = <> <span>{traTab[0]} {nearByData[0].RailStations.RailStationList[i].StationName.Zh_tw}車站</span><br /></>
+          traTab[0] = <> <span>{traTab[0]} {nearByData[0].RailStations.RailStationList[i].StationName}車站</span><br /></>
         }
 
       }

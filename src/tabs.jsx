@@ -118,7 +118,7 @@ export default function BasicTabs({ lat, lon, spec, hide, data, children }) {
           if (traTab[0] === "無資料") {
             traTab[0] =
               <>
-                <Card sx={{ mt: 0, pt: 0 }}>
+                <Card sx={{ m: 0, pt: 0 }}>
                   <CardContent>
                     <Typography variant="h5" component="div">
                       <Typography sx={{ mr: 1, display: "inline-block", width: "1.5rem", height: "1.5rem", borderRadius: "5px", verticalAlign: "text-top", background: "linear-gradient(315deg, #004da7, #7fa9d9)" }} variant='div' ></Typography> {nearByData[0].RailStations.RailStationList[i].StationName}車站
@@ -145,7 +145,8 @@ export default function BasicTabs({ lat, lon, spec, hide, data, children }) {
             traTab[0] =
               <>
                 {traTab[0]}
-                <Card sx={{ mt: 0, pt: 0 }}>
+                <p></p>
+                <Card sx={{ m: 0, pt: 0 }}>
                   <CardContent>
                     <Typography variant="h5" component="div">
                       <Typography sx={{ mr: 1, display: "inline-block", width: "1.5rem", height: "1.5rem", borderRadius: "5px", verticalAlign: "text-top", background: "linear-gradient(315deg, #004da7, #7fa9d9)" }} variant='div' ></Typography> {nearByData[0].RailStations.RailStationList[i].StationName}車站
@@ -187,7 +188,7 @@ export default function BasicTabs({ lat, lon, spec, hide, data, children }) {
           if (hsrTab[0] === "無資料") {
             hsrTab[0] =
               <>
-                <Card sx={{ mt: 0, pt: 0 }}>
+                <Card sx={{ m: 0, pt: 0 }}>
                   <CardContent>
                     <Typography variant="h5" component="div">
                       <Typography sx={{ mr: 1, display: "inline-block", width: "1.5rem", height: "1.5rem", borderRadius: "5px", verticalAlign: "text-top", background: "linear-gradient(315deg, #ca4f0f, #f89867)" }} variant='div' ></Typography> 高鐵{nearByData[0].RailStations.RailStationList[i].StationName}站
@@ -214,7 +215,8 @@ export default function BasicTabs({ lat, lon, spec, hide, data, children }) {
             hsrTab[0] =
               <>
                 {hsrTab[0]}
-                <Card sx={{ mt: 0, pt: 0 }}>
+                <p></p>
+                <Card sx={{ m: 0, pt: 0 }}>
                   <CardContent>
                     <Typography variant="h5" component="div">
                       <Typography sx={{ mr: 1, display: "inline-block", width: "1.5rem", height: "1.5rem", borderRadius: "5px", verticalAlign: "text-top", background: "linear-gradient(315deg, #ca4f0f, #f89867)" }} variant='div' ></Typography> 高鐵{nearByData[0].RailStations.RailStationList[i].StationName}站
@@ -251,11 +253,12 @@ export default function BasicTabs({ lat, lon, spec, hide, data, children }) {
 
     setTabsDoc(<>
       <Box sx={{ width: '100%' }}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider', position: "sticky", top: 0, backgroundColor: "white", backdropFilter: "blur(5px)" }}>
           <Tabs value={value} onChange={handleChange}
             variant="scrollable"
             scrollButtons
-            allowScrollButtonsMobile>
+            allowScrollButtonsMobile
+          >
             <Tab label="台鐵" {...a11yProps(0)} />
             <Tab label="高鐵" {...a11yProps(1)} />
             <Tab label="捷運" {...a11yProps(2)} />
@@ -278,7 +281,7 @@ export default function BasicTabs({ lat, lon, spec, hide, data, children }) {
         <CustomTabPanel value={value} index={4}>
           Item Three
         </CustomTabPanel>
-      </Box>
+      </Box >
     </>)
   }, [nearByData, value])
 

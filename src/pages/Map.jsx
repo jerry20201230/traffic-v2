@@ -122,7 +122,7 @@ function Map() {
           [lat, lon], 16
         )
         let mark = L.marker([lat, lon], {
-          icon: greenIcon
+          icon: redIcon
         }).addTo(mymap.current)
         mark.bindPopup(UrlParam("popup"))
         getData(`https://tdx.transportdata.tw/api/advanced/V3/Map/GeoLocating/Address/LocationX/${lon}/LocationY/${lat}?%24format=JSON`, (res) => setLocationSummery(<><LocationOnIcon sx={{ verticalAlign: "bottom" }} /> {res[0].Address}</>), { useLocalCatch: true })

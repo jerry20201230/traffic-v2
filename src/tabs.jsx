@@ -55,7 +55,7 @@ export default function BasicTabs({ lat, lon, spec, hide, data, children }) {
   };
   const [nearByData, setNearByData] = React.useState([{ RailStations: { RailStationList: [{ StationUID: "" }] } }])
   const [traTab, setTraTab] = React.useState([])
-  const [hsrTab, setHsrTab] = React.useState(<></>)
+  const [hsrTab, setHsrTab] = React.useState([])
   const [mrtTab, setMrtTab] = React.useState(<></>)
   const [busTab, setBusTab] = React.useState(<></>)
   const [bikeTab, setBikeTab] = React.useState(<></>)
@@ -87,7 +87,6 @@ export default function BasicTabs({ lat, lon, spec, hide, data, children }) {
         if (traTab[0] === <></> || traTab === undefined || traTab.length < 1) {
           traTab[0] = "無資料"
         }
-        return
       }, { useLocalCatch: true })
 
 
@@ -99,12 +98,33 @@ export default function BasicTabs({ lat, lon, spec, hide, data, children }) {
         if (nearByData[0].RailStations.RailStationList[i].StationUID.includes("TRA")) {
           traTab[0] = <> <span>{traTab[0]} {nearByData[0].RailStations.RailStationList[i].StationName}車站</span><br /></>
         }
-
+      }
+      if (traTab[0] === <></> || traTab === undefined || traTab.length < 1) {
+        traTab[0] = "無資料"
       }
 
-      return
     }
-  }, [nearByData, traTab])
+
+    if (spec === "hsr") {
+      hsrTab[0] = "..."
+    } else {
+      console.log(nearByData[0].RailStations.RailStationList[0])
+      console.log("HSRTAB", hsrTab)
+      for (let i = 0; i < nearByData[0].RailStations.RailStationList.length; i++) {
+        if (nearByData[0].RailStations.RailStationList[i].StationUID.includes("THSR")) {
+          if (hsrTab[0] === "無資料") {
+            hsrTab[0] = <> <span>高鐵{nearByData[0].RailStations.RailStationList[i].StationName}站</span><br /></>
+          } else {
+            hsrTab[0] = <> <span>{hsrTab[0]} 高鐵{nearByData[0].RailStations.RailStationList[i].StationName}站</span><br /></>
+          }
+        }
+      }
+      console.log(hsrTab)
+      if (hsrTab[0] === <></> || hsrTab === undefined || hsrTab.length < 1) {
+        hsrTab[0] = "無資料"
+      }
+    }
+  }, [nearByData, traTab, hsrTab])
 
   React.useEffect(() => {
 
@@ -123,12 +143,10 @@ export default function BasicTabs({ lat, lon, spec, hide, data, children }) {
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={0}>
-          {
-            traTab[0]
-          }
+          {traTab[0]}
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
-          Item Two
+          {hsrTab[0]}
         </CustomTabPanel>
         <CustomTabPanel value={value} index={2}>
           Item Three

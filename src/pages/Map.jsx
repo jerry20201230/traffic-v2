@@ -182,7 +182,7 @@ function Map() {
         <Global
           styles={{
             '.drawera > .MuiPaper-root': {
-              height: `calc(50% - ${drawerBleeding}px)`,
+              height: `calc(60% - ${drawerBleeding}px)`,
               overflow: 'visible',
             },
           }}

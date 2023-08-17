@@ -253,7 +253,6 @@ export default function BasicTabs({ lat, lon, spec, specQuery, hide, data, child
 
 
 
-
     if (spec === "mrt") {
       mrtTab[0] = "..."
     } else {
@@ -267,10 +266,10 @@ export default function BasicTabs({ lat, lon, spec, specQuery, hide, data, child
                 <Card sx={{ m: 0, pt: 0 }}>
                   <CardContent>
                     <Typography variant="h5" component="div">
-                      <Typography sx={{ mr: 1, display: "inline-block", width: "1.5rem", height: "1.5rem", borderRadius: "5px", verticalAlign: "text-top", background: "linear-gradient(315deg, #ca4f0f, #f89867)" }} variant='div' ></Typography>{convertOperator(nearByData[0].RailStations.RailStationList[i].StationUID.split("-")[0])} {nearByData[0].RailStations.RailStationList[i].StationName}
+                      <Typography sx={{ mr: 1, display: "inline-block", width: "1.5rem", height: "1.5rem", borderRadius: "5px", verticalAlign: "text-top", background: "linear-gradient(315deg, #8dc21f,#ccf871)" }} variant='div' ></Typography> {nearByData[0].RailStations.RailStationList[i].StationUID.split("-")[1]} {nearByData[0].RailStations.RailStationList[i].StationName}
                     </Typography>
                     <Typography sx={{ mb: 1.5 }} color="text.secondary">
-
+                      {convertOperator(nearByData[0].RailStations.RailStationList[i].StationUID.split("-")[0])}
                     </Typography>
                     <Typography variant="body2" component="div">
                       {data.map ?
@@ -281,7 +280,7 @@ export default function BasicTabs({ lat, lon, spec, specQuery, hide, data, child
                           data.map.current.setView([nearByData[0].RailStations.RailStationList[i].LocationY, nearByData[0].RailStations.RailStationList[i].LocationX], 16)
                         }}>在地圖上顯示</Button>
                         :
-                        <Button variant="contained" component={Link} to={`/map/?lat=${nearByData[0].RailStations.RailStationList[i].LocationY}&lon=${nearByData[0].RailStations.RailStationList[i].LocationX}&popup=高鐵${nearByData[0].RailStations.RailStationList[i].StationName}站`}>在地圖上顯示</Button>
+                        <Button variant="contained" component={Link} to={`/map/?lat=${nearByData[0].RailStations.RailStationList[i].LocationY}&lon=${nearByData[0].RailStations.RailStationList[i].LocationX}&popup=捷運${nearByData[0].RailStations.RailStationList[i].StationName}`}>在地圖上顯示</Button>
                       }
                     </Typography>
                   </CardContent>
@@ -295,10 +294,10 @@ export default function BasicTabs({ lat, lon, spec, specQuery, hide, data, child
                 <Card sx={{ m: 0, pt: 0 }}>
                   <CardContent>
                     <Typography variant="h5" component="div">
-                      <Typography sx={{ mr: 1, display: "inline-block", width: "1.5rem", height: "1.5rem", borderRadius: "5px", verticalAlign: "text-top", background: "linear-gradient(315deg, #ca4f0f, #f89867)" }} variant='div' ></Typography> {convertOperator(nearByData[0].RailStations.RailStationList[i].StationUID.split("-")[0])} {nearByData[0].RailStations.RailStationList[i].StationName}
+                      <Typography sx={{ mr: 1, display: "inline-block", width: "1.5rem", height: "1.5rem", borderRadius: "5px", verticalAlign: "text-top", background: "linear-gradient(315deg, #8dc21f,#ccf871)" }} variant='div' ></Typography> {nearByData[0].RailStations.RailStationList[i].StationUID.split("-")[1]} {nearByData[0].RailStations.RailStationList[i].StationName}
                     </Typography>
                     <Typography sx={{ mb: 1.5 }} color="text.secondary">
-
+                      {convertOperator(nearByData[0].RailStations.RailStationList[i].StationUID.split("-")[0])}
                     </Typography>
                     <Typography variant="body2" component="div">
                       {data.map ?
@@ -309,7 +308,7 @@ export default function BasicTabs({ lat, lon, spec, specQuery, hide, data, child
                           data.map.current.setView([nearByData[0].RailStations.RailStationList[i].LocationY, nearByData[0].RailStations.RailStationList[i].LocationX], 16)
                         }}>在地圖上顯示</Button>
                         :
-                        <Button variant="contained" component={Link} to={`/map/?lat=${nearByData[0].RailStations.RailStationList[i].LocationY}&lon=${nearByData[0].RailStations.RailStationList[i].LocationX}&popup=高鐵${nearByData[0].RailStations.RailStationList[i].StationName}站`}>在地圖上顯示</Button>
+                        <Button variant="contained" component={Link} to={`/map/?lat=${nearByData[0].RailStations.RailStationList[i].LocationY}&lon=${nearByData[0].RailStations.RailStationList[i].LocationX}&popup=捷運${nearByData[0].RailStations.RailStationList[i].StationName}`}>在地圖上顯示</Button>
                       }
                     </Typography>
                   </CardContent>
@@ -323,44 +322,116 @@ export default function BasicTabs({ lat, lon, spec, specQuery, hide, data, child
       }
     }
 
-  }, [nearByData, traTab, hsrTab])
+
+
+
+    if (spec === "bus") {
+      busTab[0] = "..."
+    } else {
+      console.log(nearByData[0].RailStations.RailStationList[0])
+      console.log("HSRTAB", hsrTab)
+      for (let i = 0; i < nearByData[0].RailStations.RailStationList.length; i++) {
+        if (nearByData[0].RailStations.RailStationList[i].StationUID.includes("THSR")) {
+          if (hsrTab[0] === "無資料") {
+            hsrTab[0] =
+              <>
+                <Card sx={{ m: 0, pt: 0 }}>
+                  <CardContent>
+                    <Typography variant="h5" component="div">
+                      <Typography sx={{ mr: 1, display: "inline-block", width: "1.5rem", height: "1.5rem", borderRadius: "5px", verticalAlign: "text-top", background: "linear-gradient(315deg, #ca4f0f, #f89867)" }} variant='div' ></Typography> 高鐵{nearByData[0].RailStations.RailStationList[i].StationName}站
+                    </Typography>
+                    <Typography sx={{ mb: 1.5 }} color="text.secondary">
+
+                    </Typography>
+                    <Typography variant="body2" component="div">
+                      {data.map ?
+                        <Button variant="contained" onClick={() => {
+                          let marker = L.marker([nearByData[0].RailStations.RailStationList[i].LocationY, nearByData[0].RailStations.RailStationList[i].LocationX], { icon: greenIcon }).addTo(data.map.current);
+                          data.markedCallback(false);
+                          marker.bindPopup("高鐵" + nearByData[0].RailStations.RailStationList[i].StationName + "站")
+                          data.map.current.setView([nearByData[0].RailStations.RailStationList[i].LocationY, nearByData[0].RailStations.RailStationList[i].LocationX], 16)
+                        }}>在地圖上顯示</Button>
+                        :
+                        <Button variant="contained" component={Link} to={`/map/?lat=${nearByData[0].RailStations.RailStationList[i].LocationY}&lon=${nearByData[0].RailStations.RailStationList[i].LocationX}&popup=高鐵${nearByData[0].RailStations.RailStationList[i].StationName}站`}>在地圖上顯示</Button>
+                      }
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </>
+          } else {
+            hsrTab[0] =
+              <>
+                {hsrTab[0]}
+                <p></p>
+                <Card sx={{ m: 0, pt: 0 }}>
+                  <CardContent>
+                    <Typography variant="h5" component="div">
+                      <Typography sx={{ mr: 1, display: "inline-block", width: "1.5rem", height: "1.5rem", borderRadius: "5px", verticalAlign: "text-top", background: "linear-gradient(315deg, #ca4f0f, #f89867)" }} variant='div' ></Typography> 高鐵{nearByData[0].RailStations.RailStationList[i].StationName}站
+                    </Typography>
+                    <Typography sx={{ mb: 1.5 }} color="text.secondary">
+
+                    </Typography>
+                    <Typography variant="body2" component="div">
+                      {data.map ?
+                        <Button variant="contained" onClick={() => {
+                          let marker = L.marker([nearByData[0].RailStations.RailStationList[i].LocationY, nearByData[0].RailStations.RailStationList[i].LocationX], { icon: greenIcon }).addTo(data.map.current);
+                          data.markedCallback(false);
+                          marker.bindPopup("高鐵" + nearByData[0].RailStations.RailStationList[i].StationName + "站")
+                          data.map.current.setView([nearByData[0].RailStations.RailStationList[i].LocationY, nearByData[0].RailStations.RailStationList[i].LocationX], 16)
+                        }}>在地圖上顯示</Button>
+                        :
+                        <Button variant="contained" component={Link} to={`/map/?lat=${nearByData[0].RailStations.RailStationList[i].LocationY}&lon=${nearByData[0].RailStations.RailStationList[i].LocationX}&popup=高鐵${nearByData[0].RailStations.RailStationList[i].StationName}站`}>在地圖上顯示</Button>
+                      }
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </>
+          }
+        }
+      }
+      console.log(hsrTab)
+      if (hsrTab[0] === <></> || hsrTab === undefined || hsrTab.length < 1) {
+        hsrTab[0] = "無資料"
+      }
+    }
+  }, [nearByData, traTab, hsrTab, busTab])
 
   React.useEffect(() => {
 
     setTabsDoc(<>
       <Box sx={{ width: '100%' }}>
+        <p>以下顯示可以轉乘的各類大眾運輸</p>
         <Box sx={{ borderBottom: 1, borderColor: 'divider', position: "sticky", top: 0, backgroundColor: "white", backdropFilter: "blur(5px)", zIndex: 999 }}>
           <Tabs value={value} onChange={handleChange}
             variant="scrollable"
             scrollButtons
             allowScrollButtonsMobile
           >
-            <Tab label="台鐵" {...a11yProps(0)} sx={{ display: (traTab[0] === "無資料" ? "none" : "unset") }} />
-            <Tab label="高鐵" {...a11yProps(1)} sx={{ display: (hsrTab[0] === "無資料" ? "none" : "unset") }} />
-            <Tab label="捷運" {...a11yProps(2)} sx={{ display: (mrtTab[0] === "無資料" ? "none" : "unset") }} />
+            <Tab label="台鐵" {...a11yProps(0)} />
+            <Tab label="高鐵" {...a11yProps(1)} />
+            <Tab label="捷運" {...a11yProps(2)} />
             <Tab label="公車" {...a11yProps(3)} />
             <Tab label="公共自行車" {...a11yProps(4)} />
           </Tabs>
         </Box>
-        <CustomTabPanel value={value} index={0}>
+        <CustomTabPanel value={value} index={0} >
           {traTab[0]}
         </CustomTabPanel>
-        <CustomTabPanel value={value} index={1}>
+        <CustomTabPanel value={value} index={1} >
           {hsrTab[0]}
         </CustomTabPanel>
-        <CustomTabPanel value={value} index={2}>
+        <CustomTabPanel value={value} index={2} >
           {mrtTab[0]}
         </CustomTabPanel>
         <CustomTabPanel value={value} index={3}>
           Item Three
         </CustomTabPanel>
         <CustomTabPanel value={value} index={4}>
-          Item Three
+          Item 0Three
         </CustomTabPanel>
       </Box>
     </>)
-  }, [nearByData, value, traTab, hsrTab, mrtTab, bu
-  ])
+  }, [nearByData, value, traTab, hsrTab, mrtTab, busTab])
 
 
   return (

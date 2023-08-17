@@ -49,7 +49,7 @@ function a11yProps(index) {
 
 
 
-export default function BasicTabs({ lat, lon, spec, hide, data, children }) {
+export default function BasicTabs({ lat, lon, spec, specQuery, hide, data, children }) {
   function convertOperator(text) {
     var operatorCode = ["KRTC", "NTMC", "THSR", "TMRT", "TRA", "TRTC", "TYMC"]
     var operatorName = ["高雄捷運", "新北捷運", "高鐵", "台中捷運", "台鐵", "台北捷運", "桃園捷運"]
@@ -260,7 +260,7 @@ export default function BasicTabs({ lat, lon, spec, hide, data, children }) {
       console.log(nearByData[0].RailStations.RailStationList[0])
       console.log("MRTTAB", mrtTab)
       for (let i = 0; i < nearByData[0].RailStations.RailStationList.length; i++) {
-        if (!nearByData[0].RailStations.RailStationList[i].StationUID.includes("TRA") && !nearByData[0].RailStations.RailStationList[i].StationUID.includes("THSR")) {
+        if (!nearByData[0].RailStations.RailStationList[i].StationUID.includes("TRA") && !nearByData[0].RailStations.RailStationList[i].StationUID.includes("THSR") && nearByData[0].RailStations.RailStationList[i].StationUID) {
           if (mrtTab[0] === "無資料") {
             mrtTab[0] =
               <>
@@ -322,6 +322,7 @@ export default function BasicTabs({ lat, lon, spec, hide, data, children }) {
         mrtTab[0] = "無資料"
       }
     }
+
   }, [nearByData, traTab, hsrTab])
 
   React.useEffect(() => {
@@ -334,9 +335,9 @@ export default function BasicTabs({ lat, lon, spec, hide, data, children }) {
             scrollButtons
             allowScrollButtonsMobile
           >
-            <Tab label="台鐵" {...a11yProps(0)} />
-            <Tab label="高鐵" {...a11yProps(1)} />
-            <Tab label="捷運" {...a11yProps(2)} />
+            <Tab label="台鐵" {...a11yProps(0)} sx={{ display: (traTab[0] === "無資料" ? "none" : "unset") }} />
+            <Tab label="高鐵" {...a11yProps(1)} sx={{ display: (hsrTab[0] === "無資料" ? "none" : "unset") }} />
+            <Tab label="捷運" {...a11yProps(2)} sx={{ display: (mrtTab[0] === "無資料" ? "none" : "unset") }} />
             <Tab label="公車" {...a11yProps(3)} />
             <Tab label="公共自行車" {...a11yProps(4)} />
           </Tabs>
@@ -358,7 +359,8 @@ export default function BasicTabs({ lat, lon, spec, hide, data, children }) {
         </CustomTabPanel>
       </Box>
     </>)
-  }, [nearByData, value, traTab, hsrTab, mrtTab])
+  }, [nearByData, value, traTab, hsrTab, mrtTab, bu
+  ])
 
 
   return (

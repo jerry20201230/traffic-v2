@@ -93,7 +93,7 @@ function Map() {
       )
       setLocationXY([loc.coords.latitude, loc.coords.longitude])
       getData(`https://tdx.transportdata.tw/api/advanced/V3/Map/GeoLocating/Address/LocationX/${loc.coords.longitude}/LocationY/${loc.coords.latitude}?%24format=JSON`, (res) => setLocationSummery(<><LocationOnIcon sx={{ verticalAlign: "bottom" }} /> {res[0].Address}</>), { useLocalCatch: true })
-      getData(`https://tdx.transportdata.tw/api/advanced/V3/Map/GeoLocating/Markname/LocationX/${loc.coords.longitude}/LocationY/${loc.coords.latitude}?%24format=JSON`, (res) => setLocationNear(<><NearMeIcon sx={{ verticalAlign: "bottom" }} /> {res[0].Distance > 0 ? `${res[0].Markname} 附近 (${Math.round(res[0].Distance)}公尺)` : `${res[0].Markname}`} </>), { useLocalCatch: true })
+      //  getData(`https://tdx.transportdata.tw/api/advanced/V3/Map/GeoLocating/Markname/LocationX/${loc.coords.longitude}/LocationY/${loc.coords.latitude}?%24format=JSON`, (res) => setLocationNear(<><NearMeIcon sx={{ verticalAlign: "bottom" }} /> {res[0].Distance > 0 ? `${res[0].Markname} 附近 (${Math.round(res[0].Distance)}公尺)` : `${res[0].Markname}`} </>), { useLocalCatch: true })
     }
     function errorFunction() {
       //if(localStorage.getItem("dialog.getLocationError.show") === "true" || !localStorage.getItem("dialog.getLocationError.show")){
@@ -113,7 +113,7 @@ function Map() {
     else {
       var lat = Number(UrlParam("lat")), lon = Number(UrlParam("lon"))
       setLocationXY([lat, lon])
-      setLocType(<>此地點的位置資訊<Alert severity="warning">定位僅供參考</Alert></>)
+      setLocType(<>此地點的位置資訊<Alert severity="warning">定位與地址僅供參考，可能有誤差</Alert></>)
       console.log(mymap)
 
       if (mymap.current !== null || mapLoaded) {
@@ -126,7 +126,7 @@ function Map() {
         }).addTo(mymap.current)
         mark.bindPopup(UrlParam("popup"))
         getData(`https://tdx.transportdata.tw/api/advanced/V3/Map/GeoLocating/Address/LocationX/${lon}/LocationY/${lat}?%24format=JSON`, (res) => setLocationSummery(<><LocationOnIcon sx={{ verticalAlign: "bottom" }} /> {res[0].Address}</>), { useLocalCatch: true })
-        getData(`https://tdx.transportdata.tw/api/advanced/V3/Map/GeoLocating/Markname/LocationX/${lon}/LocationY/${lat}?%24format=JSON`, (res) => setLocationNear(<><NearMeIcon sx={{ verticalAlign: "bottom" }} /> {res[0].Distance > 0 ? `${res[0].Markname} 附近 (${Math.round(res[0].Distance)}公尺)` : `${res[0].Markname}`} </>), { useLocalCatch: true })
+        //  getData(`https://tdx.transportdata.tw/api/advanced/V3/Map/GeoLocating/Markname/LocationX/${lon}/LocationY/${lat}?%24format=JSON`, (res) => setLocationNear(<><NearMeIcon sx={{ verticalAlign: "bottom" }} /> {res[0].Distance > 0 ? `${res[0].Markname} 附近 (${Math.round(res[0].Distance)}公尺)` : `${res[0].Markname}`} </>), { useLocalCatch: true })
       } else {
 
       }
@@ -224,7 +224,7 @@ function Map() {
           >
             <h4>{locType}</h4>
             {locationSummery}<br />
-            {locationNear}
+            {/*locationNear*/}
             <h4>附近大眾運輸(500公尺以內)</h4>
             <BasicTabs lat={locationXY[0]} lon={locationXY[1]} data={{ "map": mymap, markedCallback: closeDrawer }} />
           </StyledBox>

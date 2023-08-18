@@ -74,7 +74,18 @@ export default function BasicTabs({ lat, lon, spec, specQuery, hide, data, child
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  const [nearByData, setNearByData] = React.useState([{ RailStations: { RailStationList: [{ StationUID: "" }] } }])
+  const [nearByData, setNearByData] = React.useState
+    ([{
+      RailStations: {
+        RailStationList: [
+          { StationUID: "" }
+        ]
+      },
+      BusStations: {
+        BusStationList: [{ StopName: "" }],
+      }
+
+    }])
   const [traTab, setTraTab] = React.useState([])
   const [hsrTab, setHsrTab] = React.useState([])
   const [mrtTab, setMrtTab] = React.useState([])
@@ -328,59 +339,79 @@ export default function BasicTabs({ lat, lon, spec, specQuery, hide, data, child
     if (spec === "bus") {
       busTab[0] = "..."
     } else {
-      console.log(nearByData[0].RailStations.RailStationList[0])
-      console.log("HSRTAB", hsrTab)
-      for (let i = 0; i < nearByData[0].RailStations.RailStationList.length; i++) {
-        if (nearByData[0].RailStations.RailStationList[i].StationUID.includes("THSR")) {
-          if (hsrTab[0] === "無資料") {
-            hsrTab[0] =
+      var busStops = []
+      var busRoutes = []
+      var busStopPos = []
+      console.log(nearByData[0].BusStations.BusStationList[0])
+      console.log("busTAB", busTab)
+
+      for (let i = 0; i < nearByData[0].BusStations.BusStationList.length; i++) {
+        var theStopName = nearByData[0].BusStations.BusStationList[i].StopName
+        var theRouteName = nearByData[0].BusStations.BusStationList[i].RouteName
+        if (!busStops.includes(theStopName)) {
+          busStops.push(theStopName)
+          busRoutes.push([])
+          busStopPos.push([nearByData[0].BusStations.BusStationList[i].LocationY, nearByData[0].BusStations.BusStationList[i].LocationX])
+        }
+        if (!busRoutes[busStops.indexOf(theStopName)].includes(theRouteName)) {
+          busRoutes[busStops.indexOf(theStopName)].push(theRouteName)
+        }
+      }
+      console.log(busStops, busRoutes, busStopPos)
+
+      for (let i = 0; i < busStops.length; i++) {
+        if (!busStops[i].includes(specQuery) && busStops[i]) {
+          var theStopName = busStops[i]
+          var theRouteName = busRoutes[i].join(" , ")
+          if (busTab[0] === "無資料") {
+            busTab[0] =
               <>
                 <Card sx={{ m: 0, pt: 0 }}>
                   <CardContent>
                     <Typography variant="h5" component="div">
-                      <Typography sx={{ mr: 1, display: "inline-block", width: "1.5rem", height: "1.5rem", borderRadius: "5px", verticalAlign: "text-top", background: "linear-gradient(315deg, #ca4f0f, #f89867)" }} variant='div' ></Typography> 高鐵{nearByData[0].RailStations.RailStationList[i].StationName}站
+                      <Typography sx={{ mr: 1, display: "inline-block", width: "1.5rem", height: "1.5rem", borderRadius: "5px", verticalAlign: "text-top", background: "linear-gradient(315deg, #8d8d8d,#ccc)" }} variant='div' ></Typography> {theStopName}
                     </Typography>
                     <Typography sx={{ mb: 1.5 }} color="text.secondary">
-
+                      {theRouteName}
                     </Typography>
                     <Typography variant="body2" component="div">
                       {data.map ?
                         <Button variant="contained" onClick={() => {
-                          let marker = L.marker([nearByData[0].RailStations.RailStationList[i].LocationY, nearByData[0].RailStations.RailStationList[i].LocationX], { icon: greenIcon }).addTo(data.map.current);
+                          let marker = L.marker(busStopPos[i], { icon: greenIcon }).addTo(data.map.current);
                           data.markedCallback(false);
-                          marker.bindPopup("高鐵" + nearByData[0].RailStations.RailStationList[i].StationName + "站")
-                          data.map.current.setView([nearByData[0].RailStations.RailStationList[i].LocationY, nearByData[0].RailStations.RailStationList[i].LocationX], 16)
+                          marker.bindPopup(busStops[i])
+                          data.map.current.setView(busStopPos[i], 16)
                         }}>在地圖上顯示</Button>
                         :
-                        <Button variant="contained" component={Link} to={`/map/?lat=${nearByData[0].RailStations.RailStationList[i].LocationY}&lon=${nearByData[0].RailStations.RailStationList[i].LocationX}&popup=高鐵${nearByData[0].RailStations.RailStationList[i].StationName}站`}>在地圖上顯示</Button>
+                        <Button variant="outlined" component={Link} to={`/map/?lat=${busStopPos[i][0]}&lon=${busStopPos[i][1]}&popup=${theStopName}`}>在地圖上顯示</Button>
                       }
                     </Typography>
                   </CardContent>
                 </Card>
               </>
           } else {
-            hsrTab[0] =
+            busTab[0] =
               <>
-                {hsrTab[0]}
+                {busTab[0]}
                 <p></p>
                 <Card sx={{ m: 0, pt: 0 }}>
                   <CardContent>
                     <Typography variant="h5" component="div">
-                      <Typography sx={{ mr: 1, display: "inline-block", width: "1.5rem", height: "1.5rem", borderRadius: "5px", verticalAlign: "text-top", background: "linear-gradient(315deg, #ca4f0f, #f89867)" }} variant='div' ></Typography> 高鐵{nearByData[0].RailStations.RailStationList[i].StationName}站
+                      <Typography sx={{ mr: 1, display: "inline-block", width: "1.5rem", height: "1.5rem", borderRadius: "5px", verticalAlign: "text-top", background: "linear-gradient(315deg, #8d8d8d,#ccc)" }} variant='div' ></Typography> {theStopName}
                     </Typography>
                     <Typography sx={{ mb: 1.5 }} color="text.secondary">
-
+                      {theRouteName}
                     </Typography>
                     <Typography variant="body2" component="div">
                       {data.map ?
                         <Button variant="contained" onClick={() => {
-                          let marker = L.marker([nearByData[0].RailStations.RailStationList[i].LocationY, nearByData[0].RailStations.RailStationList[i].LocationX], { icon: greenIcon }).addTo(data.map.current);
+                          let marker = L.marker(busStopPos[i], { icon: greenIcon }).addTo(data.map.current);
                           data.markedCallback(false);
-                          marker.bindPopup("高鐵" + nearByData[0].RailStations.RailStationList[i].StationName + "站")
-                          data.map.current.setView([nearByData[0].RailStations.RailStationList[i].LocationY, nearByData[0].RailStations.RailStationList[i].LocationX], 16)
+                          marker.bindPopup(busStops[i])
+                          data.map.current.setView(busStopPos[i], 16)
                         }}>在地圖上顯示</Button>
                         :
-                        <Button variant="contained" component={Link} to={`/map/?lat=${nearByData[0].RailStations.RailStationList[i].LocationY}&lon=${nearByData[0].RailStations.RailStationList[i].LocationX}&popup=高鐵${nearByData[0].RailStations.RailStationList[i].StationName}站`}>在地圖上顯示</Button>
+                        <Button variant="outlined" component={Link} to={`/map/?lat=${busStopPos[i][0]}&lon=${busStopPos[i][1]}&popup=${theStopName}`}>在地圖上顯示</Button>
                       }
                     </Typography>
                   </CardContent>
@@ -389,9 +420,9 @@ export default function BasicTabs({ lat, lon, spec, specQuery, hide, data, child
           }
         }
       }
-      console.log(hsrTab)
-      if (hsrTab[0] === <></> || hsrTab === undefined || hsrTab.length < 1) {
-        hsrTab[0] = "無資料"
+      console.log(busTab)
+      if (busTab[0] === <></> || busTab === undefined || busTab.length < 1) {
+        busTab[0] = "無資料"
       }
     }
   }, [nearByData, traTab, hsrTab, busTab])
@@ -400,7 +431,7 @@ export default function BasicTabs({ lat, lon, spec, specQuery, hide, data, child
 
     setTabsDoc(<>
       <Box sx={{ width: '100%' }}>
-        <p>以下顯示可以轉乘的各類大眾運輸</p>
+
         <Box sx={{ borderBottom: 1, borderColor: 'divider', position: "sticky", top: 0, backgroundColor: "white", backdropFilter: "blur(5px)", zIndex: 999 }}>
           <Tabs value={value} onChange={handleChange}
             variant="scrollable"
@@ -424,7 +455,7 @@ export default function BasicTabs({ lat, lon, spec, specQuery, hide, data, child
           {mrtTab[0]}
         </CustomTabPanel>
         <CustomTabPanel value={value} index={3}>
-          Item Three
+          {busTab[0]}
         </CustomTabPanel>
         <CustomTabPanel value={value} index={4}>
           Item 0Three

@@ -139,7 +139,7 @@ function TraTrain() {
 
 
   React.useEffect(() => {
-    async function refreshApi () {
+    async function refreshApi() {
       setProgEle(
         <>
           <AppBar position="fixed" color="secondary" sx={{ top: 'auto', bottom: 0, height: 'auto', }}>
@@ -319,7 +319,7 @@ function TraTrain() {
         } else {
           setTrainCardTitle("找不到列車")
           setTrainCardSubTitle("無資料")
-          setTrainCardBody("請檢查搜尋條件")
+          setTrainCardBody(<>請檢查搜尋條件<br />如果該車次並非每天行駛，在發車日之前可能查不到資料<br />如果該車次為貨物列車或其他特殊班次，我們無法取得資料</>)
         }
       }, {
         useLocalCatch: false,

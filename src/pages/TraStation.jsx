@@ -188,7 +188,7 @@ function TraStation() {
       if (!found) {
         setTitle(<TopBar title="找不到車站" />)
         setStationCardTitle("找不到車站")
-        setStationCardBody("請確認你的條件")
+        setStationCardBody(<>請確認你的條件</>)
         setStationCardAction(<><Button size='small' component={Link} to="/tra?sw=station">修改條件</Button></>)
       } else {
 

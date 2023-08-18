@@ -185,7 +185,7 @@ function TraTrain() {
               <TimelineSeparator>
                 <TimelineDot />
               </TimelineSeparator>
-              <TimelineContent  color="textSecondary">
+              <TimelineContent color="textSecondary">
                 <Link to={`/tra/station/?q=${dataStruct[i].StationID}`} style={{ color: "currentcolor" }}>{dataStruct[i].StationName.Zh_tw} (終點)</Link>
               </TimelineContent>
             </>
@@ -216,7 +216,7 @@ function TraTrain() {
                 <TimelineDot />
               </TimelineSeparator>
               <TimelineContent color="textSecondary">
-                <Link to={`/tra/station/?q=${dataStruct[i].StationID}`}  style={{ color: "currentcolor" }}>{dataStruct[i].StationName.Zh_tw} (終點)</Link>
+                <Link to={`/tra/station/?q=${dataStruct[i].StationID}`} style={{ color: "currentcolor" }}>{dataStruct[i].StationName.Zh_tw} (終點)</Link>
               </TimelineContent>
             </>
             :
@@ -228,7 +228,7 @@ function TraTrain() {
                 <TimelineDot color={timecolor} />
                 <TimelineConnector />
               </TimelineSeparator>
-              <TimelineContent  color="textSecondary">
+              <TimelineContent color="textSecondary">
                 <Link to={`/tra/station/?q=${dataStruct[i].StationID}`} style={{ color: "currentcolor" }}>{dataStruct[i].StationName.Zh_tw}</Link>
               </TimelineContent>
             </>

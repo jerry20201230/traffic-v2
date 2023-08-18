@@ -383,7 +383,7 @@ export default function BasicTabs({ lat, lon, spec, specQuery, hide, data, child
                           data.map.current.setView(busStopPos[i], 16)
                         }}>在地圖上顯示</Button>
                         :
-                        <Button variant="outlined" component={Link} to={`/map/?lat=${busStopPos[i][0]}&lon=${busStopPos[i][1]}&popup=${theStopName}`}>在地圖上顯示</Button>
+                        <Button variant="contained" component={Link} to={`/map/?lat=${busStopPos[i][0]}&lon=${busStopPos[i][1]}&popup=${theStopName}`}>在地圖上顯示</Button>
                       }
                     </Typography>
                   </CardContent>
@@ -411,7 +411,7 @@ export default function BasicTabs({ lat, lon, spec, specQuery, hide, data, child
                           data.map.current.setView(busStopPos[i], 16)
                         }}>在地圖上顯示</Button>
                         :
-                        <Button variant="outlined" component={Link} to={`/map/?lat=${busStopPos[i][0]}&lon=${busStopPos[i][1]}&popup=${theStopName}`}>在地圖上顯示</Button>
+                        <Button variant="contained" component={Link} to={`/map/?lat=${busStopPos[i][0]}&lon=${busStopPos[i][1]}&popup=${theStopName}`}>在地圖上顯示</Button>
                       }
                     </Typography>
                   </CardContent>

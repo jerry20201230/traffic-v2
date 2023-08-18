@@ -1,7 +1,7 @@
 import * as  React from 'react'
 import TopBar from '../TopBar';
 import "leaflet/dist/leaflet.css";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet'
 import L from 'leaflet'
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -34,7 +34,7 @@ function Map() {
   const [locType, setLocType] = React.useState("你的位置資訊")
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const [locationMark, setLocationMark] = React.useState()
-  const [locationNear, setLocationNear] = React.useState(<><NearMeIcon sx={{ verticalAlign: "bottom" }} /> 資料讀取中 <CircularProgress size="1rem" sx={{ verticalAlign: "baseline" }} /></>)
+  // const [locationNear, setLocationNear] = React.useState(<><NearMeIcon sx={{ verticalAlign: "bottom" }} /> 資料讀取中 <CircularProgress size="1rem" sx={{ verticalAlign: "baseline" }} /></>)
   const [locationSummery, setLocationSummery] = React.useState(<><NotListedLocationIcon sx={{ verticalAlign: "bottom" }} /> 資料讀取中 <CircularProgress size="1rem" sx={{ verticalAlign: "baseline" }} /></>)
   const [locationXY, setLocationXY] = React.useState([])
   const mymap = React.useRef()
@@ -235,6 +235,31 @@ function Map() {
 
 
 
+  const MapEvents = () => {
+    useMapEvents({
+      click(e) {
+        // setState your coords here
+        // coords exist in "e.latlng.lat" and "e.latlng.lng"
+
+
+        var loc = [e.latlng.lat, e.latlng.lng]
+        let marker = L.marker(loc, { icon: greenIcon }).addTo(mymap.current);
+
+        marker.bindPopup("資料讀取中...")
+        mymap.current.flyTo(loc, 16)
+        setLocType(<>此地點的位置資訊<Alert severity="warning">定位與地址僅供參考，可能有誤差</Alert></>)
+        setLocationXY(loc)
+        setLocationSummery(<><NotListedLocationIcon sx={{ verticalAlign: "bottom" }} /> 資料讀取中 <CircularProgress size="1rem" sx={{ verticalAlign: "baseline" }} /></>)
+        getData(
+          `https://tdx.transportdata.tw/api/advanced/V3/Map/GeoLocating/Address/LocationX/${loc[1]}/LocationY/${loc[0]}?%24format=JSON`,
+          (res) => {
+            setLocationSummery(<><LocationOnIcon sx={{ verticalAlign: "bottom" }} /> {res[0].Address}</>)
+            marker.bindPopup(res[0].Address)
+          }, { useLocalCatch: true })
+      }
+    })
+    return false;
+  };
 
 
 
@@ -259,6 +284,7 @@ function Map() {
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             {locationMark}
+            <MapEvents />
           </MapContainer>
         </div>
       </div>

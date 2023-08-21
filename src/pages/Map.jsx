@@ -145,7 +145,7 @@ function Map() {
     }
 
 
-  }, [mymap.current])
+  }, [mymap])
 
   //// React.useEffect(() => {
   //   const lc = new Locate()

@@ -30,7 +30,7 @@ function LocateControl(props) {
   // const { map } = props.leaflet;
 
   console.log(map)
-  const lc = new Locate(options);
+  const lc = new Locate()//(options);
   lc.addTo(map);
 
   if (startDirectly) {

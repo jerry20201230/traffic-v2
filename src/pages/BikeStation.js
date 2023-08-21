@@ -24,6 +24,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Divider from '@mui/material/Divider';
 import dayjs from 'dayjs';
 import Chip from '@mui/material/Chip';
+import BasicTabs from '../tabs';
 
 export default function BikeStation() {
   const [pageTitle, setPageTitle] = React.useState("loading")
@@ -36,7 +37,8 @@ export default function BikeStation() {
   const [progress, setProgress] = React.useState(0);
   const [stationID, setStationID] = React.useState()
   const [countdown, setCountdown] = React.useState(60)
-
+  var locXY = []
+  const [transferTab, setTransferTab] = React.useState(<><center><CircularProgress size="2rem" /><br />資料讀取中</center></>)
   function UrlParam(name) {
     var url = new URL(window.location.href),
       result = url.searchParams.get(name);
@@ -181,11 +183,18 @@ export default function BikeStation() {
                   {bikeData.StationUID === "" ? <CircularProgress size={"1rem"} /> :
                     bikeData[0].AvailableReturnBikes < 1 ? <span style={{ color: "red" }}>{bikeData[0].AvailableReturnBikes}</span> : bikeData[0].AvailableReturnBikes}</Typography></div>
             </Box>
-            <p>最後更新: {dayjs(bikeData.UpdateTime).format("HH:mm:ss")}</p>
+            <p>最後更新: {dayjs(bikeData.SrcUpdateTime).format("HH:mm:ss")}</p>
           </>)
+
+        setTransferTab(<BasicTabs
+          lat={res[0].StationPosition.PositionLat}
+          lon={res[0].StationPosition.PositionLon} spec="bike" data={{}} />)
+
       }
     }
   }, [bikeData, bikeStationData])
+
+
 
   return (
     <>
@@ -201,6 +210,20 @@ export default function BikeStation() {
             </Typography>
             <Typography variant="body2" component="div">
               {bikeStationCardBody}
+            </Typography>
+          </CardContent>
+        </Card>
+        <p></p>
+        <Card sx={{ mt: 0, pt: 0 }}>
+          <CardContent>
+            <Typography variant="h5" component="div">
+              跨運具轉乘
+            </Typography>
+            <Typography sx={{ mb: 1.5 }} color="text.secondary">
+
+            </Typography>
+            <Typography variant="body2" component="div">
+              {transferTab}
             </Typography>
           </CardContent>
         </Card>

@@ -14,6 +14,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Divider from "@mui/material/Divider";
 import { Link } from 'react-router-dom';
 import BookmarkIcon from '@mui/icons-material/BookmarkBorder';
+import SearchAnything from "./searchAnything";
 
 function TopBar({ title }) {
   const [showNavigation, setShowNavigation] = useState(false);
@@ -74,9 +75,13 @@ function TopBar({ title }) {
           onOpen={() => setShowNavigation(true)}
         >
 
+
           <Box sx={{ width: '100%', minWidth: 240, bgcolor: 'background.paper' }}>
             <nav aria-label="main mailbox folders">
               <List>
+                <ListItem disablePadding sx={{ p: 1, pt: 0 }}>
+                  <SearchAnything type="easy" />
+                </ListItem>
                 <ListItem disablePadding>
                   <ListItemButton component={Link} to="/">
                     <ListItemIcon>
@@ -162,8 +167,8 @@ function TopBar({ title }) {
           </Box>
 
 
-        </SwipeableDrawer>
-      </Box>
+        </SwipeableDrawer >
+      </Box >
     </>
   );
 }

@@ -83,8 +83,10 @@ export default function BasicTabs({ lat, lon, spec, specQuery, hide, data, child
       },
       BusStations: {
         BusStationList: [{ StopName: "" }],
+      },
+      BikeStations: {
+        ikeStationList: [{ StationName: "" }],
       }
-
     }])
   const [traTab, setTraTab] = React.useState([])
   const [hsrTab, setHsrTab] = React.useState([])
@@ -425,7 +427,49 @@ export default function BasicTabs({ lat, lon, spec, specQuery, hide, data, child
         busTab[0] = "無資料"
       }
     }
-  }, [nearByData, traTab, hsrTab, busTab])
+
+    if (spec === "bike") {
+
+    } else {
+      console.log(nearByData[0].RailStations.RailStationList[0])
+      for (let i = 0; i < nearByData[0].RailStations.RailStationList.length; i++) {
+        if (!nearByData[0].RailStations.RailStationList[i].StationUID.includes("TRA") && !nearByData[0].RailStations.RailStationList[i].StationUID.includes("THSR") && nearByData[0].RailStations.RailStationList[i].StationUID) {
+          if (bikeTab[0] === "無資料") {
+            bikeTab[0] =
+              <>
+                <Card sx={{ m: 0, pt: 0 }}>
+                  <CardContent>
+                    <Typography variant="h5" component="div">
+                      <Typography sx={{ mr: 1, display: "inline-block", width: "1.5rem", height: "1.5rem", borderRadius: "5px", verticalAlign: "text-top", background: "linear-gradient(315deg, #8dc21f,#ccf871)" }} variant='div' ></Typography> {nearByData[0].RailStations.RailStationList[i].StationUID.split("-")[1]} {nearByData[0].RailStations.RailStationList[i].StationName}
+                    </Typography>
+                    <Typography sx={{ mb: 1.5 }} color="text.secondary">
+
+                    </Typography>
+                    <Typography variant="body2" component="div">
+                      {data.map ?
+                        <Button variant="contained" onClick={() => {
+                          let marker = L.marker([nearByData[0].RailStations.RailStationList[i].LocationY, nearByData[0].RailStations.RailStationList[i].LocationX], { icon: greenIcon }).addTo(data.map.current);
+                          data.markedCallback(false);
+                          marker.bindPopup(convertOperator(nearByData[0].RailStations.RailStationList[i].StationUID.split("-")[0]) + nearByData[0].RailStations.RailStationList[i].StationName)
+                          data.map.current.setView([nearByData[0].RailStations.RailStationList[i].LocationY, nearByData[0].RailStations.RailStationList[i].LocationX], 16)
+                        }}>在地圖上顯示</Button>
+                        :
+                        <Button variant="contained" component={Link} to={`/map/?lat=${nearByData[0].RailStations.RailStationList[i].LocationY}&lon=${nearByData[0].RailStations.RailStationList[i].LocationX}&popup=捷運${nearByData[0].RailStations.RailStationList[i].StationName}`}>在地圖上顯示</Button>
+                      }
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </>
+          } else {
+
+          }
+        }
+      }
+      if (bikeTab[0] === <></> || bikeTab === undefined || bikeTab.length < 1) {
+        bikeTab[0] = "無資料"
+      }
+    }
+  }, [nearByData, traTab, hsrTab, busTab, bikeTab])
 
   React.useEffect(() => {
 
@@ -438,27 +482,27 @@ export default function BasicTabs({ lat, lon, spec, specQuery, hide, data, child
             scrollButtons
             allowScrollButtonsMobile
           >
-            <Tab label="台鐵" {...a11yProps(0)} />
-            <Tab label="高鐵" {...a11yProps(1)} />
+            <Tab label="公車" {...a11yProps(0)} />
+            <Tab label="公共自行車" {...a11yProps(1)} />
             <Tab label="捷運" {...a11yProps(2)} />
-            <Tab label="公車" {...a11yProps(3)} />
-            <Tab label="公共自行車" {...a11yProps(4)} />
+            <Tab label="台鐵" {...a11yProps(3)} />
+            <Tab label="高鐵" {...a11yProps(4)} />
           </Tabs>
         </Box>
-        <CustomTabPanel value={value} index={0} >
-          {traTab[0]}
+        <CustomTabPanel value={value} index={0}>
+          {busTab[0]}
         </CustomTabPanel>
-        <CustomTabPanel value={value} index={1} >
-          {hsrTab[0]}
+        <CustomTabPanel value={value} index={1}>
+          {bikeTab[0]}
         </CustomTabPanel>
         <CustomTabPanel value={value} index={2} >
           {mrtTab[0]}
         </CustomTabPanel>
-        <CustomTabPanel value={value} index={3}>
-          {busTab[0]}
+        <CustomTabPanel value={value} index={3} >
+          {traTab[0]}
         </CustomTabPanel>
-        <CustomTabPanel value={value} index={4}>
-          Item 0Three
+        <CustomTabPanel value={value} index={4} >
+          {hsrTab[0]}
         </CustomTabPanel>
       </Box>
     </>)

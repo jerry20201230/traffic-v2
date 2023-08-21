@@ -8,7 +8,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import LocateControl from '../location';
+//import LocateControl from '../location';
 import Paper from '@mui/material/Paper';
 import { Box, Autocomplete, TextField, Button, IconButton, Alert } from '@mui/material';
 import PropTypes from 'prop-types';
@@ -29,6 +29,9 @@ import NotListedLocationIcon from '@mui/icons-material/NotListedLocation';
 import LocationOffIcon from '@mui/icons-material/LocationOff';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import NearMeIcon from '@mui/icons-material/NearMe';
+import LocateControl from '../location';
+//import Locate from "leaflet.locatecontrol";
+import Locate from "leaflet.locatecontrol";
 
 function Map() {
   const [locType, setLocType] = React.useState("你的位置資訊")
@@ -37,6 +40,10 @@ function Map() {
   // const [locationNear, setLocationNear] = React.useState(<><NearMeIcon sx={{ verticalAlign: "bottom" }} /> 資料讀取中 <CircularProgress size="1rem" sx={{ verticalAlign: "baseline" }} /></>)
   const [locationSummery, setLocationSummery] = React.useState(<><NotListedLocationIcon sx={{ verticalAlign: "bottom" }} /> 資料讀取中 <CircularProgress size="1rem" sx={{ verticalAlign: "baseline" }} /></>)
   const [locationXY, setLocationXY] = React.useState([])
+
+
+  const [findLocBtn, setFindLocBtn] = React.useState()
+
   const mymap = React.useRef()
   var mapLoaded = false
   const redIcon = new L.Icon({
@@ -106,6 +113,9 @@ function Map() {
   React.useEffect(() => {
 
 
+
+    //  setFindLocBtn(<LocateControl map={mymap.current} startDirectly={true} />)
+
     if (!UrlParam("lat") || !UrlParam("lon") || !UrlParam("popup")) {
       getLocation(mymap)
 
@@ -135,6 +145,12 @@ function Map() {
 
 
   }, [mymap.current])
+
+  //// React.useEffect(() => {
+  //   const lc = new Locate()
+  //  lc.addTo(mymap.current)
+  ///   lc.start()
+  // }, [])
 
 
 
@@ -240,13 +256,14 @@ function Map() {
       click(e) {
         // setState your coords here
         // coords exist in "e.latlng.lat" and "e.latlng.lng"
-
-
         var loc = [e.latlng.lat, e.latlng.lng]
         let marker = L.marker(loc, { icon: greenIcon }).addTo(mymap.current);
 
         marker.bindPopup("資料讀取中...")
         mymap.current.flyTo(loc, 16)
+
+        marker.addEventListener("click", (e) => { console.log(e) })
+
         setLocType(<>此地點的位置資訊<Alert severity="warning">定位與地址僅供參考，可能有誤差</Alert></>)
         setLocationXY(loc)
         setLocationSummery(<><NotListedLocationIcon sx={{ verticalAlign: "bottom" }} /> 資料讀取中 <CircularProgress size="1rem" sx={{ verticalAlign: "baseline" }} /></>)
@@ -278,6 +295,7 @@ function Map() {
         <TopBar title="地圖" />
         <div className="map" id="map" style={{ width: "100%", height: `100%`, flexGrow: 1 }}>
           <MapContainer ref={mymap}
+
             center={[23.75518176611264, 120.9406086935125]} zoom={7} style={{ width: "100%", height: "100%" }}>
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -285,6 +303,7 @@ function Map() {
             />
             {locationMark}
             <MapEvents />
+            {/*findLocBtn*/}
           </MapContainer>
         </div>
       </div>

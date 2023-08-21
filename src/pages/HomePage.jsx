@@ -30,7 +30,10 @@ import Checkbox from '@mui/material/Checkbox';
 import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import L from 'leaflet'
-
+import SearchIcon from '@mui/icons-material/Search';
+import InputBase from '@mui/material/InputBase';
+import { styled, alpha } from '@mui/material/styles';
+import SearchAnything from '../searchAnything';
 export default function HomePage() {
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const [weatherSettingDialogOpen, setWeatherSettingDialogOpen] = React.useState(false)
@@ -339,6 +342,9 @@ export default function HomePage() {
   return (
     <>
       <TopBar title="首頁" />
+      <Box sx={{ p: 3 }}><SearchAnything type="easy" variant="framed" /></Box>
+
+
       <Box sx={{ display: "flex", p: 3 }}>
         <Box sx={{ flexGrow: 1 }}>
           <Paper

@@ -297,7 +297,6 @@ function Map() {
         <SearchAnything type="easy" variant="framed" sx={{ m: 0 }} />
         <div className="map" id="map" style={{ width: "100%", height: `100%`, flexGrow: 1 }}>
           <MapContainer ref={mymap}
-
             center={[23.75518176611264, 120.9406086935125]} zoom={7} style={{ width: "100%", height: "100%" }}>
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

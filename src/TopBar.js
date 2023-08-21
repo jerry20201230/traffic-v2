@@ -22,21 +22,7 @@ function TopBar({ title }) {
   useEffect(() => {
     document.title = `${title} - 大眾運輸查詢系統`
   }, [title])
-  function isElementOverflowing(element) {
-    var overflowX = element.offsetWidth < element.scrollWidth,
-      overflowY = element.offsetHeight < element.scrollHeight;
 
-    return (overflowX || overflowY);
-  }
-
-  function wrapContentsInMarquee(element) {
-    var marquee = document.createElement('marquee'),
-      contents = element.innerText;
-
-    marquee.innerText = contents;
-    element.innerHTML = '';
-    element.appendChild(marquee);
-  }
 
   // useEffect(() => {
   //    if (isElementOverflowing(titleRef.current)) {
@@ -80,10 +66,10 @@ function TopBar({ title }) {
             <nav aria-label="main mailbox folders">
               <List>
                 <ListItem disablePadding sx={{ p: 1, pt: 0 }}>
-                  <SearchAnything type="easy" />
+                  <SearchAnything type="easy" variant="framed" onSettingBtnClick={{ func: setShowNavigation, par: false }} />
                 </ListItem>
                 <ListItem disablePadding>
-                  <ListItemButton component={Link} to="/">
+                  <ListItemButton component={Link} to="/" onClick={() => setShowNavigation(false)}>
                     <ListItemIcon>
                       <HomeIcon />
                     </ListItemIcon>
@@ -91,7 +77,7 @@ function TopBar({ title }) {
                   </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
-                  <ListItemButton component={Link} to="/map">
+                  <ListItemButton component={Link} to="/map" onClick={() => setShowNavigation(false)}>
                     <ListItemIcon>
                       <MapIcon />
                     </ListItemIcon>
@@ -99,7 +85,7 @@ function TopBar({ title }) {
                   </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
-                  <ListItemButton component={Link} to="/bookmark">
+                  <ListItemButton component={Link} to="/bookmark" onClick={() => setShowNavigation(false)}>
                     <ListItemIcon>
                       <BookmarkIcon />
                     </ListItemIcon>
@@ -107,7 +93,7 @@ function TopBar({ title }) {
                   </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
-                  <ListItemButton component={Link} to="/setting">
+                  <ListItemButton component={Link} to="/setting" onClick={() => setShowNavigation(false)}>
                     <ListItemIcon>
                       <SettingsIcon />
                     </ListItemIcon>
@@ -121,7 +107,7 @@ function TopBar({ title }) {
               <List>
 
                 <ListItem disablePadding>
-                  <ListItemButton component={Link} to="/tra">
+                  <ListItemButton component={Link} to="/tra" onClick={() => setShowNavigation(false)}>
                     <ListItemIcon>
                       <Typography sx={{ mr: 1, display: "inline-block", width: "1.5rem", height: "1.5rem", borderRadius: "5px", verticalAlign: "text-top", background: "linear-gradient(315deg, #004da7, #7fa9d9)" }} variant='div' ></Typography>
                     </ListItemIcon>
@@ -130,7 +116,7 @@ function TopBar({ title }) {
                 </ListItem>
 
                 <ListItem disablePadding>
-                  <ListItemButton component={Link} to="/hsr">
+                  <ListItemButton component={Link} to="/hsr" onClick={() => setShowNavigation(false)}>
                     <ListItemIcon>
                       <Typography sx={{ mr: 1, display: "inline-block", width: "1.5rem", height: "1.5rem", borderRadius: "5px", verticalAlign: "text-top", background: "linear-gradient(315deg, #ca4f0f, #f89867)" }} variant='div' ></Typography>
                     </ListItemIcon>
@@ -139,7 +125,7 @@ function TopBar({ title }) {
                 </ListItem>
 
                 <ListItem disablePadding>
-                  <ListItemButton component={Link} to="/mrt">
+                  <ListItemButton component={Link} to="/mrt" onClick={() => setShowNavigation(false)}>
                     <ListItemIcon>
                       <Typography sx={{ mr: 1, display: "inline-block", width: "1.5rem", height: "1.5rem", borderRadius: "5px", verticalAlign: "text-top", background: "linear-gradient(315deg, #8dc21f,#ccf871)" }} variant='div' ></Typography>
                     </ListItemIcon>
@@ -147,7 +133,7 @@ function TopBar({ title }) {
                   </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
-                  <ListItemButton component={Link} to="/bus">
+                  <ListItemButton component={Link} to="/bus" onClick={() => setShowNavigation(false)}>
                     <ListItemIcon>
                       <Typography sx={{ mr: 1, display: "inline-block", width: "1.5rem", height: "1.5rem", borderRadius: "5px", verticalAlign: "text-top", background: "linear-gradient(315deg, #8d8d8d,#ccc)" }} variant='div' ></Typography>
                     </ListItemIcon>
@@ -155,7 +141,7 @@ function TopBar({ title }) {
                   </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
-                  <ListItemButton component={Link} to="/bike">
+                  <ListItemButton component={Link} to="/bike" onClick={() => setShowNavigation(false)}>
                     <ListItemIcon>
                       <Typography sx={{ mr: 1, display: "inline-block", width: "1.5rem", height: "1.5rem", borderRadius: "5px", verticalAlign: "text-top", background: "linear-gradient(315deg, #ffef00,#fff647)" }} variant='div' ></Typography>
                     </ListItemIcon>
@@ -165,10 +151,8 @@ function TopBar({ title }) {
               </List>
             </nav>
           </Box>
-
-
-        </SwipeableDrawer >
-      </Box >
+        </SwipeableDrawer>
+      </Box>
     </>
   );
 }

@@ -14,8 +14,15 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { Button } from '@mui/material';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 
-export default function SearchAnything({ type, value, variant }) {
+export default function SearchAnything({ type, value, variant, sx, onSettingBtnClick }) {
+  const [searchType, setSearchType] = React.useState(type)
+  const [tempSearchType, setTempSearchType] = React.useState(type)
   const [inputVal, setInputVal] = React.useState(value ? value : "")
   const [dialogOpen, setDialogOpen] = React.useState(false)
   const submitButton = React.useRef()
@@ -36,13 +43,25 @@ export default function SearchAnything({ type, value, variant }) {
       document.removeEventListener('keydown', handleKeyDown);
     };
   }, [])
-
+  /*
+          <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+          <IconButton color="primary" sx={{ p: '10px' }} aria-label="directions"
+            onClick={(e) => {
+              if (variant === 'framed') {
+                setDialogOpen(true)
+                if (onSettingBtnClick) {
+                  onSettingBtnClick.func(onSettingBtnClick.par)
+                }
+              }
+            }}>
+            <TuneIcon />
+          </IconButton>*/
   return (
     <>
       <Paper
         component="form"
         onSubmit={(e) => { e.preventDefault(); submitButton.current.click() }}
-        sx={{ p: '1', mt: 2, display: 'flex', width: '100%' }}
+        sx={{ p: '1', mt: 2, display: 'flex', width: '100%', ...sx }}
       >
         <InputBase
           value={inputVal}
@@ -50,22 +69,14 @@ export default function SearchAnything({ type, value, variant }) {
           onBlur={(e) => setInputVal(e.target.value)}
           onFocus={(e) => setInputVal(e.target.value)}
           sx={{ ml: 1, flex: 1 }}
-          placeholder={type === "easy" ? "簡易搜尋..." : '輸入任何關鍵字...'}
-          inputProps={{ 'aria-label': type === "easy" ? "簡易搜尋..." : '輸入任何關鍵字...' }}
+          placeholder={searchType === "easy" ? "輸入車次、車站或地址..." : '輸入車次、車站或地址...'}
+          inputProps={{ 'aria-label': searchType === "easy" ? "輸入車次、車站或地址..." : '輸入車次、車站或地址...' }}
         />
 
-        <IconButton ref={submitButton} type="button" sx={{ p: '10px' }} aria-label="search" component={Link} to={`/search/?q=${inputVal}`}>
+        <IconButton color="primary" ref={submitButton} type="button" sx={{ p: '10px' }} aria-label="search" component={Link} to={`/search/?q=${inputVal}`}>
           <SearchIcon />
         </IconButton>
-        <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-        <IconButton color="primary" sx={{ p: '10px' }} aria-label="directions"
-          onClick={(e) => {
-            if (variant === 'framed') {
-              setDialogOpen(true)
-            }
-          }}>
-          <TuneIcon />
-        </IconButton>
+
       </Paper>
 
 
@@ -80,7 +91,17 @@ export default function SearchAnything({ type, value, variant }) {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description" component="div">
-
+            <FormControl>
+              <RadioGroup
+                defaultValue="easy"
+                name="radio-buttons-group"
+                value={tempSearchType}
+                onChange={(e) => setTempSearchType(e.target.value)}
+              >
+                <FormControlLabel value="easy" control={<Radio />} label="簡易搜尋" />
+                <FormControlLabel value="advanced" control={<Radio />} label="進階搜尋" />
+              </RadioGroup>
+            </FormControl>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -95,6 +116,7 @@ export default function SearchAnything({ type, value, variant }) {
           <Button
             onClick={() => {
               setDialogOpen(false);
+              setSearchType(tempSearchType)
             }}
           >
             確定

@@ -317,8 +317,8 @@ function TraStation() {
                   value={radioValue}
                   onChange={(e) => handleRadioChange(e)}
                 >
-                  <FormControlLabel value={0} control={<Radio />} label="北上" />
-                  <FormControlLabel value={1} control={<Radio />} label="南下" />
+                  <FormControlLabel value={0} control={<Radio />} label="順行" />
+                  <FormControlLabel value={1} control={<Radio />} label="逆行" />
                 </RadioGroup>
               </FormControl>
 

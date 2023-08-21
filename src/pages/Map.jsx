@@ -32,6 +32,7 @@ import NearMeIcon from '@mui/icons-material/NearMe';
 import LocateControl from '../location';
 //import Locate from "leaflet.locatecontrol";
 import Locate from "leaflet.locatecontrol";
+import SearchAnything from '../searchAnything';
 
 function Map() {
   const [locType, setLocType] = React.useState("你的位置資訊")
@@ -293,6 +294,7 @@ function Map() {
     <>
       <div style={{ display: "flex", flexFlow: "column", height: "100%" }}>
         <TopBar title="地圖" />
+        <SearchAnything type="easy" variant="framed" sx={{ m: 0 }} />
         <div className="map" id="map" style={{ width: "100%", height: `100%`, flexGrow: 1 }}>
           <MapContainer ref={mymap}
 

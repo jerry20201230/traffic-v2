@@ -20,6 +20,8 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 
+
+
 export default function SearchAnything({ type, value, variant, sx, onSettingBtnClick }) {
   const [searchType, setSearchType] = React.useState(type)
   const [tempSearchType, setTempSearchType] = React.useState(type)
@@ -30,6 +32,7 @@ export default function SearchAnything({ type, value, variant, sx, onSettingBtnC
 
 
   React.useEffect(() => {
+
     const handleKeyDown = (event) => {
       if (event.keyCode === 13) {
         console.log(submitButton)
@@ -73,7 +76,7 @@ export default function SearchAnything({ type, value, variant, sx, onSettingBtnC
           inputProps={{ 'aria-label': searchType === "easy" ? "輸入車次、車站或地址..." : '輸入車次、車站或地址...' }}
         />
 
-        <IconButton color="primary" ref={submitButton} type="button" sx={{ p: '10px' }} aria-label="search" component={Link} to={`/search/?q=${inputVal}`}>
+        <IconButton color="primary" ref={submitButton} type="button" sx={{ p: '10px' }} aria-label="search" component={Link} to={`/search/?q=${inputVal}&submit=now`}>
           <SearchIcon />
         </IconButton>
 

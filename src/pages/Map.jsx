@@ -100,7 +100,7 @@ function Map() {
         16
       )
       setLocationXY([loc.coords.latitude, loc.coords.longitude])
-      getData(`https://tdx.transportdata.tw/api/advanced/V3/Map/GeoLocating/Address/LocationX/${loc.coords.longitude}/LocationY/${loc.coords.latitude}?%24format=JSON`, (res) => setLocationSummery(<><LocationOnIcon sx={{ verticalAlign: "bottom" }} /> {res[0].Address}</>), { useLocalCatch: true })
+      getData(`https://tdx.transportdata.tw/api/advanced/V3/Map/GeoLocating/Address/LocationX/${loc.coords.longitude}/LocationY/${loc.coords.latitude}?%24format=JSON`, (res) => setLocationSummery(<><LocationOnIcon sx={{ verticalAlign: "bottom" }} /> {res[0].Address}</>), { useLocalCatch: false })
       //  getData(`https://tdx.transportdata.tw/api/advanced/V3/Map/GeoLocating/Markname/LocationX/${loc.coords.longitude}/LocationY/${loc.coords.latitude}?%24format=JSON`, (res) => setLocationNear(<><NearMeIcon sx={{ verticalAlign: "bottom" }} /> {res[0].Distance > 0 ? `${res[0].Markname} 附近 (${Math.round(res[0].Distance)}公尺)` : `${res[0].Markname}`} </>), { useLocalCatch: true })
     }
     function errorFunction() {
@@ -136,7 +136,7 @@ function Map() {
           icon: redIcon
         }).addTo(mymap.current)
         mark.bindPopup(UrlParam("popup"))
-        getData(`https://tdx.transportdata.tw/api/advanced/V3/Map/GeoLocating/Address/LocationX/${lon}/LocationY/${lat}?%24format=JSON`, (res) => setLocationSummery(<><LocationOnIcon sx={{ verticalAlign: "bottom" }} /> {res[0].Address}</>), { useLocalCatch: true })
+        getData(`https://tdx.transportdata.tw/api/advanced/V3/Map/GeoLocating/Address/LocationX/${lon}/LocationY/${lat}?%24format=JSON`, (res) => setLocationSummery(<><LocationOnIcon sx={{ verticalAlign: "bottom" }} /> {res[0].Address}</>), { useLocalCatch: false })
         //  getData(`https://tdx.transportdata.tw/api/advanced/V3/Map/GeoLocating/Markname/LocationX/${lon}/LocationY/${lat}?%24format=JSON`, (res) => setLocationNear(<><NearMeIcon sx={{ verticalAlign: "bottom" }} /> {res[0].Distance > 0 ? `${res[0].Markname} 附近 (${Math.round(res[0].Distance)}公尺)` : `${res[0].Markname}`} </>), { useLocalCatch: true })
       } else {
 
@@ -176,6 +176,7 @@ function Map() {
     position: 'absolute',
     top: 8,
     left: 'calc(50% - 15px)',
+    touchAction: "none"
   }));
 
   function SwipeableEdgeDrawer(props) {
@@ -194,13 +195,14 @@ function Map() {
 
     return (
 
-      <Root>
+      <Root sx={{ touchAction: "none" }}>
         <CssBaseline />
         <Global
           styles={{
             '.drawera > .MuiPaper-root': {
               height: `calc(60% - ${drawerBleeding}px)`,
               overflow: 'visible',
+              touchAction: "none"
             },
           }}
         />
@@ -227,6 +229,7 @@ function Map() {
               visibility: 'visible',
               right: 0,
               left: 0,
+              touchAction: "none"
             }}
           >
             <Puller />
@@ -237,6 +240,7 @@ function Map() {
               px: 2,
               pb: 2,
               overflow: 'auto',
+              touchAction: "none"
             }}
           >
             <h4>{locType}</h4>
@@ -273,7 +277,7 @@ function Map() {
           (res) => {
             setLocationSummery(<><LocationOnIcon sx={{ verticalAlign: "bottom" }} /> {res[0].Address}</>)
             marker.bindPopup(res[0].Address)
-          }, { useLocalCatch: true })
+          }, { useLocalCatch: false })
       }
     })
     return false;
@@ -294,7 +298,7 @@ function Map() {
     <>
       <div style={{ display: "flex", flexFlow: "column", height: "100%" }}>
         <TopBar title="地圖" />
-        <SearchAnything type="easy" variant="framed" sx={{ m: 0 }} />
+        <SearchAnything type="easy" variant="framed-map" sx={{ m: 0 }} />
         <div className="map" id="map" style={{ width: "100%", height: `100%`, flexGrow: 1 }}>
           <MapContainer ref={mymap}
             center={[23.75518176611264, 120.9406086935125]} zoom={7} style={{ width: "100%", height: "100%" }}>

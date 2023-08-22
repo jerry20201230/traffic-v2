@@ -1,5 +1,5 @@
 import './App.css';
-import HomePage from './pages/HomePage';
+import HomePage from './pages/HomePage2';
 import Err404 from './pages/Error404';
 import Map from './pages/Map';
 import TraRoot from './pages/TraRoot';

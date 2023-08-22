@@ -195,20 +195,19 @@ function Map() {
 
     return (
 
-      <Root sx={{ touchAction: "none" }}>
+      <Root>
         <CssBaseline />
         <Global
           styles={{
             '.drawera > .MuiPaper-root': {
               height: `calc(60% - ${drawerBleeding}px)`,
               overflow: 'visible',
-              touchAction: "none"
             },
           }}
         />
         <SwipeableDrawer
           className='drawera'
-          sx={{ display: (L.Browser.mobile ? "unset " : "none"), touchAction: "none" }}
+          sx={{ display: (L.Browser.mobile ? "unset " : "none"), }}
 
           anchor="bottom"
           open={open}
@@ -229,7 +228,6 @@ function Map() {
               visibility: 'visible',
               right: 0,
               left: 0,
-              touchAction: "none"
             }}
           >
             <Puller />
@@ -240,7 +238,6 @@ function Map() {
               px: 2,
               pb: 2,
               overflow: 'auto',
-              touchAction: "none"
             }}
           >
             <h4>{locType}</h4>

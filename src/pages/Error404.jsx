@@ -3,20 +3,22 @@ import TopBar from '../TopBar';
 import { Box } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
+import SearchAnything from '../searchAnything';
+import { Link } from 'react-router-dom';
 
-
-
-function Err404() {
+function Err404({ noHeader }) {
 
 
   return (
     <>
-      <TopBar title="找不到路徑" />
+      {noHeader ? <></> : <TopBar title="找不到路徑" />}
       <Box sx={{ p: 3 }}>
-        <Typography variant="h1" gutterBottom>
-          : (
+        <Typography >
+          發生錯誤，我們找不到你想去的地方:<br />
+          {window.location.pathname}<br />
+          你可以嘗試搜尋，或者<Link to="/">回首頁</Link>
         </Typography>
-        <h1>Error 404</h1>
+        <SearchAnything type="" />
       </Box>
     </>
   )

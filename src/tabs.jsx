@@ -457,7 +457,10 @@ export default function BasicTabs({ lat, lon, spec, specQuery, hide, data, child
                     <Button variant="contained" component={Link} to={`/map/?lat=${bikeStation[i].LocationY}&lon=${bikeStation[i].LocationX}&popup=${bikeStation[i].StationName}`}>在地圖上顯示</Button>
                   }
                   <p></p>
-                  <Button color="secondary" variant="contained" component={Link} to={`/route/to/bike/station/?lon=${bikeStation[i].LocationY}&lat=${bikeStation[i].LocationX}&uid=${bikeStation[i].StationUID}`}>詳細資料</Button>
+                  <Button color="secondary" variant="contained" component={Link} to={{
+                    pathname: "/route/to/bike/station/",
+                    search: `?lon=${bikeStation[i].LocationY}&lat=${bikeStation[i].LocationX}&uid=${bikeStation[i].StationUID}`,
+                  }} state={{ name: (bikeStation[i].StationName) }}>詳細資料</Button>
                 </Typography>
               </CardContent>
             </Card>

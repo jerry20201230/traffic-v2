@@ -49,7 +49,8 @@ export default function HomePage() {
                         <Item><h2 style={{ margin: 0 }}>天氣</h2><Button variant='contained'>啟用定位</Button></Item>
                     </Grid>
                     <Grid xs={6} sx={{ height: "100%" }}>
-                        <Item sx={{ width: "100%", height: "100%" }}><h2 style={{ margin: 0 }}>書籤</h2>你沒有任何書籤</Item>
+                        <Item ><h2 style={{ margin: 0 }}>書籤</h2>
+                            {!JSON.parse(localStorage.getItem("bookmarks")) ? "你沒有任何書籤" : ""}</Item>
                     </Grid>
                     <Grid xs={12} sx={{ height: "25rem" }}>
                         <Item sx={{ height: "100%" }}>

@@ -16,6 +16,7 @@ import HsrTrain from './pages/HsrTrain';
 import { Bookmark } from './pages/Bookmark';
 import BikeStation from './pages/BikeStation';
 import Search from './pages/Search';
+import GoToLocation from './GoToLocation';
 
 function App() {
   return (
@@ -54,6 +55,10 @@ function App() {
 
         <Route path='/search'>
           <Route index element={<Search />}></Route>
+        </Route>
+
+        <Route path='/route/*' element={<GoToLocation />} >
+
         </Route>
 
         <Route path='*' element=<Err404 /> ></Route>

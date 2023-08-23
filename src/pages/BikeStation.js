@@ -67,6 +67,7 @@ export default function BikeStation() {
       setTopbar(<TopBar title={"找不到站點"} />)
       setBikeStationCardTitle("找不到站點")
       setBikeStationCardSubTitle("網址無效")
+      setTransferTab("資料讀取失敗")
       setCountdown(-1)
     }
     else {
@@ -114,6 +115,7 @@ export default function BikeStation() {
         setTopbar(<TopBar title={"找不到站點"} />)
         setBikeStationCardTitle("找不到站點")
         setBikeStationCardSubTitle("請檢查輸入")
+        setTransferTab("資料讀取失敗")
       } else {
         if (bikeData[0].ServiceStatus === 0) {
           setBikeStationCardSubTitle(<Chip color="error" label="停止營運" />)
@@ -188,7 +190,7 @@ export default function BikeStation() {
 
         setTransferTab(<BasicTabs
           lat={res[0].StationPosition.PositionLat}
-          lon={res[0].StationPosition.PositionLon} spec="bike" data={{}} />)
+          lon={res[0].StationPosition.PositionLon} spec="bike" specQuery={res[0].StationUID} data={{}} />)
 
       }
     }

@@ -29,36 +29,8 @@ function getData(tdxUrl, callback, setting, i) {
     });
   }
 
-  if (tdxUrl.includes("tdx")) {
-    if ((!setting.useLocalCatch || !localStorage.getItem(tdxUrl) || !setting)) {
-      if (!localStorage.getItem("loginAccess")) {
-        getapikey(getData)
-      } else {
-        var accesstoken = JSON.parse(localStorage.getItem("loginAccess"));
-        $.ajax({
-          url: tdxUrl,
-          method: "GET",
-          dataType: "json",
-          async: true,
-          headers: {
-            "authorization": "Bearer " + accesstoken.access_token,
-          },
-          success: function (res) {
-            if (setting.useLocalCatch) { localStorage.setItem(tdxUrl, JSON.stringify(res)) }
-            callback(res)
-            return res
-          },
-          error: function (xhr, textStatus, thrownError) {
-            getapikey(getData)
-          }
-        })
-      }
-    } else {
-      callback(JSON.parse(localStorage.getItem(tdxUrl)))
-    }
-  }
-  else {
-    try {
+  try {
+    if (tdxUrl.includes("tdx")) {
       if ((!setting.useLocalCatch || !localStorage.getItem(tdxUrl) || !setting)) {
         if (!localStorage.getItem("loginAccess")) {
           getapikey(getData)
@@ -69,6 +41,9 @@ function getData(tdxUrl, callback, setting, i) {
             method: "GET",
             dataType: "json",
             async: true,
+            headers: {
+              "authorization": "Bearer " + accesstoken.access_token,
+            },
             success: function (res) {
               if (setting.useLocalCatch) { localStorage.setItem(tdxUrl, JSON.stringify(res)) }
               callback(res)
@@ -76,19 +51,48 @@ function getData(tdxUrl, callback, setting, i) {
             },
             error: function (xhr, textStatus, thrownError) {
               getapikey(getData)
-              return <></>
             }
           })
         }
-      }
-    }
-    catch (e) {
-      try {
+      } else {
         callback(JSON.parse(localStorage.getItem(tdxUrl)))
-      } catch {
-
       }
     }
+    else {
+      try {
+        if ((!setting.useLocalCatch || !localStorage.getItem(tdxUrl) || !setting)) {
+          if (!localStorage.getItem("loginAccess")) {
+            getapikey(getData)
+          } else {
+            var accesstoken = JSON.parse(localStorage.getItem("loginAccess"));
+            $.ajax({
+              url: tdxUrl,
+              method: "GET",
+              dataType: "json",
+              async: true,
+              success: function (res) {
+                if (setting.useLocalCatch) { localStorage.setItem(tdxUrl, JSON.stringify(res)) }
+                callback(res)
+                return res
+              },
+              error: function (xhr, textStatus, thrownError) {
+                getapikey(getData)
+                return <></>
+              }
+            })
+          }
+        }
+      }
+      catch (e) {
+        try {
+          callback(JSON.parse(localStorage.getItem(tdxUrl)))
+        } catch {
+
+        }
+      }
+    }
+  } catch {
+    return 0
   }
 }
 export default getData;

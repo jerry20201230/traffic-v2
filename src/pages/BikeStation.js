@@ -25,6 +25,7 @@ import Divider from '@mui/material/Divider';
 import dayjs from 'dayjs';
 import Chip from '@mui/material/Chip';
 import BasicTabs from '../tabs';
+import BookmarkBtn from '../BookmarkBtn';
 
 export default function BikeStation() {
   const [pageTitle, setPageTitle] = React.useState("loading")
@@ -119,6 +120,7 @@ export default function BikeStation() {
       } else {
         if (bikeData[0].ServiceStatus === 0) {
           setBikeStationCardSubTitle(<Chip color="error" label="停止營運" />)
+          setCountdown(-1)
         } else if (bikeData[0].ServiceStatus === 1) {
           //正常
           if (bikeData[0].AvailableRentBikes === 0) {
@@ -131,6 +133,7 @@ export default function BikeStation() {
         }
         else {
           setBikeStationCardSubTitle(<Chip color="error" label="暫停營運" />)
+          setCountdown(-1)
         }
 
         setBikeStationCardBody(
@@ -205,7 +208,14 @@ export default function BikeStation() {
         <Card sx={{ mt: 0, pt: 0 }}>
           <CardContent>
             <Typography variant="h5" component="div">
-              <Typography sx={{ mr: 1, display: "inline-block", width: "1.5rem", height: "1.5rem", borderRadius: "5px", verticalAlign: "text-top", background: "linear-gradient(315deg, #ffef00,#fff647)" }} variant='div' ></Typography> {bikeStationCardTitle}
+              <Typography sx={{ mr: 1, display: "inline-block", width: "1.5rem", height: "1.5rem", borderRadius: "5px", verticalAlign: "text-top", background: "linear-gradient(315deg, #ffef00,#fff647)" }} variant='div' ></Typography>
+              {bikeStationCardTitle}
+              <BookmarkBtn
+                sx={{ float: "right" }}
+                url={window.location.pathname + window.location.search}
+                title={bikeStationCardTitle}
+                disabled={bikeStationCardTitle === ""}
+              />
             </Typography>
             <Typography sx={{ mb: 1.5 }} color="text.secondary">
               {bikeStationCardSubTitle}

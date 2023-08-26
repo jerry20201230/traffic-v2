@@ -26,12 +26,15 @@ import FormLabel from '@mui/material/FormLabel';
 import { AppBar, Toolbar } from '@mui/material'
 import BoltIcon from '@mui/icons-material/Bolt';
 import LinearProgress from '@mui/material/LinearProgress';
-import { TocTwoTone } from '@mui/icons-material';
+import { CheckBox, TocTwoTone } from '@mui/icons-material';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkAddedIcon from '@mui/icons-material/BookmarkAdded';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import IconButton from '@mui/material/IconButton';
 import BasicTabs from '../tabs';
+import Checkbox from '@mui/material/Checkbox';
+import { bookmarkSetting } from '../bookmarkSetting';
+import BookmarkBtn from '../BookmarkBtn';
 
 function TraStation() {
   const [stationCardTitle, setStationCardTitle] = React.useState("")
@@ -280,9 +283,14 @@ function TraStation() {
             <Typography variant="h5" component="div">
               <Typography sx={{ mr: 1, display: "inline-block", width: "1.5rem", height: "1.5rem", borderRadius: "5px", verticalAlign: "text-top", background: "linear-gradient(315deg, #004da7, #7fa9d9)" }} variant='div' ></Typography>
               {stationCardTitle}
-              <IconButton aria-label="add bookmark" sx={{ float: "right" }}>
-                <BookmarkBorderIcon />
-              </IconButton>
+
+              <BookmarkBtn
+                sx={{ float: "right" }}
+                url={window.location.pathname + window.location.search}
+                title={"台鐵" + stationCardTitle}
+                disabled={stationCardTitle === ""}
+              />
+
             </Typography>
 
             <Typography sx={{ mb: 1.5 }} color="text.secondary">

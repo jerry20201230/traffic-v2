@@ -63,7 +63,7 @@ function TopBar({ title }) {
 
 
           <Box sx={{ width: '100%', minWidth: 240, bgcolor: 'background.paper' }}>
-            <nav aria-label="main mailbox folders">
+            <nav aria-label="">
               <List>
                 <ListItem disablePadding sx={{ p: 1, pt: 0 }}>
                   <SearchAnything type="easy" variant="framed" onSettingBtnClick={{ func: setShowNavigation, par: false }} />

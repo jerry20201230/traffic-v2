@@ -30,6 +30,7 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { AppBar, Toolbar } from '@mui/material'
 import LinearProgress from '@mui/material/LinearProgress';
 import BoltIcon from '@mui/icons-material/Bolt';
+import BookmarkBtn from '../BookmarkBtn';
 
 function TraTrain() {
   const [trainStations, setTrainStations] = React.useState([])
@@ -521,6 +522,12 @@ function TraTrain() {
             <Typography variant="h5" component="div">
               <Typography sx={{ mr: 1, display: "inline-block", width: "1.5rem", height: "1.5rem", borderRadius: "5px", verticalAlign: "text-top", background: "linear-gradient(315deg, #004da7, #7fa9d9)" }} variant='div' ></Typography>
               {trainCardTitle}
+              <BookmarkBtn
+                sx={{ float: "right" }}
+                url={window.location.pathname + window.location.search}
+                title={"台鐵" + trainCardTitle}
+                disabled={trainCardTitle === ""}
+              />
             </Typography>
             <Typography sx={{ mb: 1.5 }} color="text.secondary" component="div">
               {trainCardSubTitle}

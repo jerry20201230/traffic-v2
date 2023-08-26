@@ -15,7 +15,7 @@ function getIcon(text) {
 
 }
 
-export default function Bookmark() {
+export function Bookmark() {
   return (
     <>
       <TopBar title="書籤" />

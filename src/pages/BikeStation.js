@@ -211,6 +211,7 @@ export default function BikeStation() {
               <Typography sx={{ mr: 1, display: "inline-block", width: "1.5rem", height: "1.5rem", borderRadius: "5px", verticalAlign: "text-top", background: "linear-gradient(315deg, #ffef00,#fff647)" }} variant='div' ></Typography>
               {bikeStationCardTitle}
               <BookmarkBtn
+                icon="bike"
                 sx={{ float: "right" }}
                 url={window.location.pathname + window.location.search}
                 title={bikeStationCardTitle}

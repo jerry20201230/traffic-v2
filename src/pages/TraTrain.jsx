@@ -523,6 +523,7 @@ function TraTrain() {
               <Typography sx={{ mr: 1, display: "inline-block", width: "1.5rem", height: "1.5rem", borderRadius: "5px", verticalAlign: "text-top", background: "linear-gradient(315deg, #004da7, #7fa9d9)" }} variant='div' ></Typography>
               {trainCardTitle}
               <BookmarkBtn
+                icon="tra"
                 sx={{ float: "right" }}
                 url={window.location.pathname + window.location.search}
                 title={"台鐵" + trainCardTitle}

@@ -285,6 +285,7 @@ function TraStation() {
               {stationCardTitle}
 
               <BookmarkBtn
+                icon="tra"
                 sx={{ float: "right" }}
                 url={window.location.pathname + window.location.search}
                 title={"台鐵" + stationCardTitle}

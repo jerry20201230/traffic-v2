@@ -5,20 +5,20 @@ import { BookmarkBorder, Bookmark } from '@mui/icons-material'
 import dayjs from 'dayjs'
 import BookmarkAddedIcon from '@mui/icons-material/BookmarkAdded';
 
-export default function BookmarkBtn({ sx, url, title, disabled }) {
+export default function BookmarkBtn({ sx, url, title, disabled, icon }) {
     function handleChange(e) {
         console.log(e.target.checked)
         if (checked) {//沒有寫反(應該 XD)
-            bookmarkSetting("delete", { url: url, title: title })
+            bookmarkSetting("delete", { url: url, title: title, icon: icon })
         } else {
-            bookmarkSetting("add", { url: url, title: title })
+            bookmarkSetting("add", { url: url, title: title, icon: icon })
         }
         setChecked(!checked)
     }
     React.useEffect(() => {
-        setChecked(bookmarkSetting("check", { url: url, title: title }))
+        setChecked(bookmarkSetting("check", { url: url, title: title, icon: icon }))
     }, [title])
-    const [checked, setChecked] = React.useState(bookmarkSetting("check", { url: url, title: title }))
+    const [checked, setChecked] = React.useState(bookmarkSetting("check", { url: url, title: title, icon: icon }))
     return (
         <>
             <Checkbox

@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import SearchAnything from '../searchAnything';
 import { Link } from 'react-router-dom';
-
+import { CircularProgress } from '@mui/material';
 function Err404({ noHeader }) {
 
 
@@ -20,6 +20,9 @@ function Err404({ noHeader }) {
         </Typography>
         <SearchAnything type="" />
       </Box>
+
+
+
     </>
   )
 }

@@ -25,6 +25,8 @@ import { BookmarkAdded } from '@mui/icons-material';
 export default function HomePage() {
 
   const mymap = React.useRef()
+  const [weatherCardTitle, setWeatherCardTitle] = React.useState(<></>)
+  const [weatherCardBody, setWeatherCardBody] = React.useState(<><Button variant='contained'>啟用定位</Button></>)
 
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -50,7 +52,7 @@ export default function HomePage() {
         <Grid container spacing={2} sx={{ alignItems: "stretch" }}>
           <Grid xs={6} sx={{ height: "100%" }}>
             <Item><h2 style={{ margin: 0 }}>天氣</h2>
-              <Button variant='contained'>啟用定位</Button>
+              {weatherCardBody}
             </Item>
           </Grid>
           <Grid xs={6} sx={{ height: "100%" }}>
@@ -60,7 +62,17 @@ export default function HomePage() {
                   bookmarkSetting("get").length < 1 ?
                     "你沒有任何書籤"
                     : bookmarkSetting("get").map((data, index) => {
-                      return (<><Link to={data.url} key={String(index) + String(data.url)}>{data.title}</Link><br /></>)
+
+                      return (
+                        index < 5 ?
+                          <>
+                            <Link to={data.url} key={String(index) + String(data.url)}>{data.title}</Link><br />
+                          </> :
+                          index === 5 ?
+                            <>前往書籤頁面查看另外{bookmarkSetting("get").length - 5}個書籤</>
+                            :
+                            <></>
+                      )
                     })
                   : "你沒有任何書籤"
               }</Item>

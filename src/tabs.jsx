@@ -10,7 +10,7 @@ import Paper from '@mui/material/Paper';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import { Button } from '@mui/material';
+import { Button, CircularProgress } from '@mui/material';
 import L from 'leaflet'
 import { Link } from 'react-router-dom';
 
@@ -50,6 +50,7 @@ function a11yProps(index) {
 
 
 export default function BasicTabs({ lat, lon, spec, specQuery, hide, data, children }) {
+  const [loading, setLoading] = React.useState(<><CircularProgress size={"1rem"} /> 資料讀取中...</>)
   function convertOperator(text) {
     var operatorCode = ["KRTC", "NTMC", "THSR", "TMRT", "TRA", "TRTC", "TYMC"]
     var operatorName = ["高雄捷運", "新北捷運", "高鐵", "台中捷運", "台鐵", "台北捷運", "桃園捷運"]
@@ -100,6 +101,7 @@ export default function BasicTabs({ lat, lon, spec, specQuery, hide, data, child
     if (lat && lon) {
       getData(`https://tdx.transportdata.tw/api/advanced/V3/Map/GeoLocating/Transit/Nearby/LocationX/${lon}/LocationY/${lat}/Distance/500?%24format=JSON`, (res) => {
         console.log(res)
+        setLoading(<></>)
         setNearByData(res)
         return
       }, { useLocalCatch: false })
@@ -109,7 +111,9 @@ export default function BasicTabs({ lat, lon, spec, specQuery, hide, data, child
 
   React.useEffect(() => {
     if (spec === "tra") {
+      setLoading(<><CircularProgress size={"1rem"} /> 資料讀取中...</>)
       getData("https://tdx.transportdata.tw/api/basic/v3/Rail/TRA/LineTransfer?%24format=JSON", (res) => {
+        setLoading(<></>)
         for (let i = 0; i < res.LineTransfers.length; i++) {
           if (res.LineTransfers[i].FromStationID === data.stationID) {
 
@@ -125,8 +129,6 @@ export default function BasicTabs({ lat, lon, spec, specQuery, hide, data, child
           traTab[0] = "無資料"
         }
       }, { useLocalCatch: false })
-
-
     }
     else {
       for (let i = 0; i < nearByData[0].RailStations.RailStationList.length; i++) {
@@ -477,7 +479,7 @@ export default function BasicTabs({ lat, lon, spec, specQuery, hide, data, child
 
     setTabsDoc(<>
       <Box sx={{ width: '100%' }}>
-
+        {loading}
         <Box sx={{ borderBottom: 1, borderColor: 'divider', position: "sticky", top: 0, backgroundColor: "white", backdropFilter: "blur(5px)", zIndex: 999 }}>
           <Tabs value={value} onChange={handleChange}
             variant="scrollable"

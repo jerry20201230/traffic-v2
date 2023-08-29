@@ -26,7 +26,7 @@ export default function HomePage() {
 
   const mymap = React.useRef()
   const [weatherCardTitle, setWeatherCardTitle] = React.useState(<></>)
-  const [weatherCardBody, setWeatherCardBody] = React.useState(<><Button variant='contained'>啟用定位</Button></>)
+  const [weatherCardBody, setWeatherCardBody] = React.useState(<><Button variant='contained' onClick={() => getLocation()}>啟用定位</Button></>)
 
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -41,7 +41,30 @@ export default function HomePage() {
     display: "grid",
     gridTemplateColumns: "repeat(5, 1fr)"
   };
+  function getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(successFunction, errorFunction);
+    } else {
+      setWeatherCardBody(<>
+        <Typography color="red">定位資訊無法使用</Typography>
+      </>)
+    }
 
+    function successFunction(loc) {
+      setWeatherCardBody(<></>)
+    }
+
+    function errorFunction() {
+      setWeatherCardBody(<>
+        <Typography color="red">無法使用你的定位資訊</Typography>
+      </>)
+    }
+  }
+
+  React.useEffect(() => {
+
+    getLocation()
+  }, [])
 
 
 
@@ -50,6 +73,7 @@ export default function HomePage() {
       <TopBar title="首頁" />
       <Box sx={{ flexGrow: 1, p: 3 }}>
         <Grid container spacing={2} sx={{ alignItems: "stretch" }}>
+          <Grid xs={12}><SearchAnything /></Grid>
           <Grid xs={6} sx={{ height: "100%" }}>
             <Item><h2 style={{ margin: 0 }}>天氣</h2>
               {weatherCardBody}
@@ -69,7 +93,7 @@ export default function HomePage() {
                             <Link to={data.url} key={String(index) + String(data.url)}>{data.title}</Link><br />
                           </> :
                           index === 5 ?
-                            <>前往書籤頁面查看另外{bookmarkSetting("get").length - 5}個書籤</>
+                            <>還有{bookmarkSetting("get").length - 5}個書籤</>
                             :
                             <></>
                       )

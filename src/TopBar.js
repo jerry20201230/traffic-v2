@@ -15,6 +15,7 @@ import Divider from "@mui/material/Divider";
 import { Link } from 'react-router-dom';
 import BookmarkIcon from '@mui/icons-material/BookmarkBorder';
 import SearchAnything from "./searchAnything";
+import DirectionsIcon from '@mui/icons-material/Directions';
 
 function TopBar({ title }) {
   const [showNavigation, setShowNavigation] = useState(false);
@@ -66,7 +67,7 @@ function TopBar({ title }) {
             <nav aria-label="">
               <List>
                 <ListItem disablePadding sx={{ p: 1, pt: 0 }}>
-                  <SearchAnything type="easy" variant="framed" onSettingBtnClick={{ func: setShowNavigation, par: false }} />
+                  <SearchAnything type="easy" variant="framed-topbar" onSettingBtnClick={{ func: setShowNavigation, par: false }} />
                 </ListItem>
                 <ListItem disablePadding>
                   <ListItemButton component={Link} to="/" onClick={() => setShowNavigation(false)}>
@@ -82,6 +83,14 @@ function TopBar({ title }) {
                       <MapIcon />
                     </ListItemIcon>
                     <ListItemText primary="地圖" />
+                  </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding>
+                  <ListItemButton component={Link} to="/0" onClick={() => setShowNavigation(false)}>
+                    <ListItemIcon>
+                      <DirectionsIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="行程規劃" />
                   </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
@@ -148,6 +157,9 @@ function TopBar({ title }) {
                     <ListItemText primary="公共自行車" />
                   </ListItemButton>
                 </ListItem>
+
+
+
               </List>
             </nav>
           </Box>

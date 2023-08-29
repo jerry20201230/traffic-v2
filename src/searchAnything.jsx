@@ -13,21 +13,36 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { Button } from '@mui/material';
+import { Button, NativeSelect, InputLabel } from '@mui/material';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
+import getData from './getData';
 
 
 
 export default function SearchAnything({ type, value, variant, sx, onSettingBtnClick }) {
-  const [searchType, setSearchType] = React.useState(type)
-  const [tempSearchType, setTempSearchType] = React.useState(type)
+  const citySelect = React.useRef()
+  const [searchCity, setSearchCity] = React.useState("選擇縣市")
+  const [tempSearchCity, setTempSearchCity] = React.useState("")
   const [inputVal, setInputVal] = React.useState(value ? value : "")
+  const [currentCity, setCurrentCityList] = React.useState([])
   const [dialogOpen, setDialogOpen] = React.useState(false)
   const submitButton = React.useRef()
+
+  React.useEffect(() => {
+    getData("https://tdx.transportdata.tw/api/basic/v2/Basic/City?%24format=JSON", function (res) {
+      console.log(res)
+      var list = ["選擇縣市"]
+      for (let i = 0; i < res.length; i++) {
+        list.push(res[i].CityName)
+      }
+      setCurrentCityList(list)
+
+    }, { useLocalCatch: true })
+  }, [])
 
 
 
@@ -71,11 +86,14 @@ export default function SearchAnything({ type, value, variant, sx, onSettingBtnC
           onInput={(e) => setInputVal(e.target.value)}
           onBlur={(e) => setInputVal(e.target.value)}
           onFocus={(e) => setInputVal(e.target.value)}
-          sx={{ ml: 1, flex: 1 }}
-          placeholder={searchType === "easy" ? "輸入車次、車站或地址..." : '輸入車次、車站或地址...'}
-          inputProps={{ 'aria-label': searchType === "easy" ? "輸入車次、車站或地址..." : '輸入車次、車站或地址...' }}
+          sx={{ ml: 1, flex: 1, width: "min-content" }}
+          placeholder={variant === "framed-topbar" ? "搜尋" : "輸入車次、車站或地址..."}
+          inputProps={{ 'aria-label': variant === "framed-topbar" ? "搜尋" : "輸入車次、車站或地址..." }}
         />
 
+        <Button color="primary" ref={submitButton} type="button" sx={{ p: '10px' }} onClick={() => { if (onSettingBtnClick) { onSettingBtnClick.func(onSettingBtnClick.par); } setDialogOpen(true) }} >
+          {searchCity}
+        </Button>
         <IconButton color="primary" ref={submitButton} type="button" sx={{ p: '10px' }} aria-label="search" component={Link} to={`/search/?q=${inputVal}&submit=now`}>
           <SearchIcon />
         </IconButton>
@@ -85,25 +103,34 @@ export default function SearchAnything({ type, value, variant, sx, onSettingBtnC
 
       <Dialog
         open={dialogOpen}
-        onClose={() => setDialogOpen(false)}
+        onClose={() => { setDialogOpen(false); if (onSettingBtnClick) { onSettingBtnClick.func(!onSettingBtnClick.par) } }}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          選擇搜尋方式
+          選擇縣市
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description" component="div">
-            <FormControl>
-              <RadioGroup
-                defaultValue="easy"
-                name="radio-buttons-group"
-                value={tempSearchType}
-                onChange={(e) => setTempSearchType(e.target.value)}
+            <FormControl fullWidth>
+              <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                縣市
+              </InputLabel>
+              <NativeSelect
+                ref={citySelect}
+                defaultValue={currentCity.length ? currentCity[0] : ""}
+                inputProps={{
+                  name: '縣市',
+                  id: 'uncontrolled-native',
+                }}
+                onChange={(e) => setTempSearchCity(e.target.value)}
               >
-                <FormControlLabel value="easy" control={<Radio />} label="簡易搜尋" />
-                <FormControlLabel value="advanced" control={<Radio />} label="進階搜尋" />
-              </RadioGroup>
+                {
+                  currentCity.map((data, index) => {
+                    return (<><option value={data}>{data}</option></>)
+                  })
+                }
+              </NativeSelect>
             </FormControl>
           </DialogContentText>
         </DialogContent>
@@ -112,6 +139,7 @@ export default function SearchAnything({ type, value, variant, sx, onSettingBtnC
 
             onClick={() => {
               setDialogOpen(false);
+              if (onSettingBtnClick) { onSettingBtnClick.func(!onSettingBtnClick.par) }
             }}
           >
             取消
@@ -119,7 +147,8 @@ export default function SearchAnything({ type, value, variant, sx, onSettingBtnC
           <Button
             onClick={() => {
               setDialogOpen(false);
-              setSearchType(tempSearchType)
+              setSearchCity(tempSearchCity)
+              if (onSettingBtnClick) { onSettingBtnClick.func(!onSettingBtnClick.par) }
             }}
           >
             確定

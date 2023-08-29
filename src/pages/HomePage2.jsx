@@ -56,7 +56,7 @@ export default function HomePage() {
 
     function errorFunction() {
       setWeatherCardBody(<>
-        <Typography color="red">無法使用你的定位資訊</Typography>
+        <Typography color="red">無法使用你的定位</Typography>
       </>)
     }
   }

@@ -89,9 +89,9 @@ export default function HomePage() {
 
                       return (
                         index < 5 ?
-                          <>
-                            <Link to={data.url} key={String(index) + String(data.url)}>{data.title}</Link><br />
-                          </> :
+                          <span key={String(index) + String(data.url)} >
+                            <Link to={data.url} >{data.title}</Link><br />
+                          </span> :
                           index === 5 ?
                             <>還有{bookmarkSetting("get").length - 5}個書籤</>
                             :
@@ -125,7 +125,7 @@ export default function HomePage() {
             </Item>
           </Grid>
         </Grid>
-      </Box>
+      </Box >
     </>
   )
 }

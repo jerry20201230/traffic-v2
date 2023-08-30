@@ -57,9 +57,10 @@ function App() {
           <Route index element={<Search />}></Route>
         </Route>
 
-        <Route path='/route/*' element={<GoToLocation />} >
 
+        <Route path='/route/to/*' element={<GoToLocation />}>
         </Route>
+
 
         <Route path='*' element=<Err404 /> ></Route>
 

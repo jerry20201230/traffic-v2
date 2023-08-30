@@ -86,7 +86,7 @@ function TopBar({ title }) {
                   </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
-                  <ListItemButton component={Link} to="/0" onClick={() => setShowNavigation(false)}>
+                  <ListItemButton component={Link} to="/plan" onClick={() => setShowNavigation(false)}>
                     <ListItemIcon>
                       <DirectionsIcon />
                     </ListItemIcon>

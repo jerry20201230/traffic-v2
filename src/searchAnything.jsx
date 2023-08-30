@@ -23,10 +23,10 @@ import getData from './getData';
 
 
 
-export default function SearchAnything({ type, value, variant, sx, onSettingBtnClick }) {
+export default function SearchAnything({ type, value, variant, sx, onSettingBtnClick, onSearchBtnClick, city }) {
   const citySelect = React.useRef()
-  const [searchCity, setSearchCity] = React.useState("選擇縣市")
-  const [tempSearchCity, setTempSearchCity] = React.useState("")
+  const [searchCity, setSearchCity] = React.useState(city ? city : "選擇縣市")
+  const [tempSearchCity, setTempSearchCity] = React.useState("選擇縣市")
   const [inputVal, setInputVal] = React.useState(value ? value : "")
   const [currentCity, setCurrentCityList] = React.useState([])
   const [dialogOpen, setDialogOpen] = React.useState(false)
@@ -94,10 +94,9 @@ export default function SearchAnything({ type, value, variant, sx, onSettingBtnC
         <Button color="primary" ref={submitButton} type="button" sx={{ p: '10px' }} onClick={() => { if (onSettingBtnClick) { onSettingBtnClick.func(onSettingBtnClick.par); } setDialogOpen(true) }} >
           {searchCity}
         </Button>
-        <IconButton color="primary" ref={submitButton} type="button" sx={{ p: '10px' }} aria-label="search" component={Link} to={`/search/?q=${inputVal}&submit=now`}>
+        <IconButton color="primary" ref={submitButton} type="button" sx={{ p: '10px' }} aria-label="search" component={Link} to={`/route/to/search/?q=${inputVal}&city=${searchCity}&submit=now`}>
           <SearchIcon />
         </IconButton>
-
       </Paper>
 
 
@@ -127,7 +126,7 @@ export default function SearchAnything({ type, value, variant, sx, onSettingBtnC
               >
                 {
                   currentCity.map((data, index) => {
-                    return (<><option value={data}>{data}</option></>)
+                    return (<option value={data} key={"citylist-" + index}>{data}</option>)
                   })
                 }
               </NativeSelect>

@@ -11,15 +11,31 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import L from 'leaflet'
-
+import dayjs from 'dayjs';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
+import BookmarkBtn from '../BookmarkBtn';
 
 function HsrStation() {
   const [stationCardTitle, setStationCardTitle] = React.useState("")
   const [stationCardSubTitle, setStationCardSubTitle] = React.useState("")
   const [stationCardBody, setStationCardBody] = React.useState("")
   const [stationCardAction, setStationCardAction] = React.useState("")
+  const [radioValue, setRadioValue] = React.useState(0)
 
   const [title, setTitle] = React.useState(<></>)
+
+
 
   const [stationName, setStationName] = React.useState("")
   const redIcon = new L.Icon({
@@ -38,6 +54,12 @@ function HsrStation() {
     return result
   }
 
+  const handleRadioChange = (event) => {
+    setRadioValue(event.target.value);
+    //readTrainData(trainBoard)
+    //
+    //window.history.pushState("", "", window.location.origin + window.location.pathname + "?sw=" + event.target.value);
+  };
 
   React.useEffect(() => {
     var station = UrlParam("q")
@@ -105,6 +127,13 @@ function HsrStation() {
             <Typography variant="h5" component="div">
               <Typography sx={{ mr: 1, display: "inline-block", width: "1.5rem", height: "1.5rem", borderRadius: "5px", verticalAlign: "text-top", background: "linear-gradient(315deg, #ca4f0f, #f89867)" }} variant='div' ></Typography>
               {stationCardTitle}
+              <BookmarkBtn
+                icon="hsr"
+                sx={{ float: "right" }}
+                url={window.location.pathname + window.location.search}
+                title={stationCardTitle}
+                disabled={stationCardTitle === ""}
+              />
             </Typography>
             <Typography sx={{ mb: 1.5 }} color="text.secondary">
               {stationCardSubTitle}
@@ -122,6 +151,38 @@ function HsrStation() {
           <CardContent>
             <Typography variant='h5' component='div'>
               時刻表
+            </Typography>
+            <p></p>
+            <Typography variant="body2" component="div" sx={{ lineHeight: 1.25 }}>
+              <FormControl>
+                <FormLabel id="demo-row-radio-buttons-group-label">列車方向</FormLabel>
+                <RadioGroup
+                  row
+                  aria-labelledby="demo-row-radio-buttons-group-label"
+                  name="row-radio-buttons-group"
+                  value={radioValue}
+                  onChange={(e) => handleRadioChange(e)}
+                >
+                  <FormControlLabel value={0} control={<Radio />} label="北上" />
+                  <FormControlLabel value={1} control={<Radio />} label="南下" />
+                </RadioGroup>
+              </FormControl>
+              <p></p>
+              <TableContainer component={Paper} >
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell sx={{ p: 0.5 }}>時間</TableCell>
+                      <TableCell sx={{ p: 0.5 }}>車次</TableCell>
+                      <TableCell sx={{ p: 0.5 }}>往</TableCell>
+                      <TableCell sx={{ p: 0.5 }}>備註</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+
+                  </TableBody>
+                </Table>
+              </TableContainer>
             </Typography>
           </CardContent>
         </Card>

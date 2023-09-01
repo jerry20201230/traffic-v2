@@ -43,7 +43,6 @@ function App() {
           <Route path='station/*' element={<BikeStation />}></Route>
         </Route>
 
-
         <Route path='/setting'>
           <Route index element={<SettingRoot />}></Route>
           <Route path='about' element={<SettingAbout />}></Route>

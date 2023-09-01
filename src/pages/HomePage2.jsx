@@ -17,10 +17,18 @@ import TopBar from '../TopBar';
 import Grid from '@mui/material/Unstable_Grid2';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet'
 import L from 'leaflet'
-import { Button } from '@mui/material';
+import { Button, CardHeader } from '@mui/material';
 import { bookmarkSetting } from '../bookmarkSetting';
 import { Link } from 'react-router-dom';
 import { BookmarkAdded } from '@mui/icons-material';
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/pagination';
+import { Pagination } from 'swiper/modules';
+
+
 
 export default function HomePage() {
 
@@ -32,6 +40,7 @@ export default function HomePage() {
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
     ...theme.typography.body2,
     padding: theme.spacing(1),
+    margin: "5px",
     textAlign: 'left',
     height: "100%",
     color: theme.palette.text.secondary,
@@ -71,15 +80,48 @@ export default function HomePage() {
   return (
     <>
       <TopBar title="首頁" />
+      <SearchAnything sx={{ m: 0 }} />
       <Box sx={{ flexGrow: 1, p: 3 }}>
         <Grid container spacing={2} sx={{ alignItems: "stretch" }}>
-          <Grid xs={12}><SearchAnything /></Grid>
-          <Grid xs={6} sx={{ height: "100%" }}>
-            <Item><h2 style={{ margin: 0 }}>天氣</h2>
-              {weatherCardBody}
-            </Item>
+          <Grid xs={12}>
+            <Swiper
+              pagination={{
+                dynamicBullets: true,
+              }}
+              modules={[Pagination]}
+              className="mySwiper"
+              style={{ padding: "5px" }}
+            >
+              <SwiperSlide>
+                <Card style={{ padding: "10px" }} sx={{ m: 2 }}>
+                  <Typography variant="h5" component="div">天氣</Typography>
+                  <CardContent>{weatherCardBody}</CardContent>
+                </Card>
+              </SwiperSlide>
+              <SwiperSlide>
+                <Card style={{ padding: "10px" }} sx={{ m: 2 }}>
+                  <Typography variant="h5" component="div">書籤</Typography>
+                  <CardContent>{weatherCardBody}</CardContent>
+                </Card>
+              </SwiperSlide>
+              <SwiperSlide>
+                <Card style={{ padding: "10px" }} sx={{ m: 2 }}>
+                  <Typography variant="h5" component="div">附近大眾運輸</Typography>
+                  <CardContent>{weatherCardBody}</CardContent>
+                </Card>
+              </SwiperSlide>
+
+            </Swiper>
           </Grid>
-          <Grid xs={6} sx={{ height: "100%" }}>
+
+
+          <Grid xs={6} sx={{ p: 1, textAlign: "center" }}><Item>台鐵</Item></Grid>
+          <Grid xs={6} sx={{ p: 1, textAlign: "center" }}><Item>高鐵</Item></Grid>
+          <Grid xs={6} sx={{ p: 1, textAlign: "center" }}><Item>公車</Item></Grid>
+          <Grid xs={6} sx={{ p: 1, textAlign: "center" }}><Item>捷運</Item></Grid>
+          <Grid xs={6} sx={{ p: 1, textAlign: "center" }}><Item>公共自行車</Item></Grid>
+
+          <Grid xs={12} sx={{ height: "100%", display: "none" }}>
             <Item ><h2 style={{ margin: 0 }}>書籤</h2>
               {
                 bookmarkSetting("get") !== null ?
@@ -101,31 +143,8 @@ export default function HomePage() {
                   : "你沒有任何書籤"
               }</Item>
           </Grid>
-          <Grid xs={12} sx={{ height: "25rem" }}>
-            <Item sx={{ height: "100%" }}>
-              <div style={{ display: "flex", flexFlow: "column", height: "100%" }}>
-                <h2 style={{ margin: 0 }}>附近大眾運輸</h2>
-                <div className="map" id="map" style={{ width: "100%", height: `100%`, flexGrow: 1 }}>
-                  <MapContainer
-                    ref={mymap}
-                    dragging={!L.Browser.mobile}
-                    scrollWheelZoom={false}
-                    center={[23.75518176611264, 120.9406086935125]}
-                    zoom={7}
-                    style={{ width: "100%", height: "100%" }}
-                  >
-                    <TileLayer
-                      attribution={`&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors${L.Browser.mobile ? "<br/>使用兩指移動與縮放地圖" : ""
-                        }`}
-                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    />
-                  </MapContainer>
-                </div>
-              </div>
-            </Item>
-          </Grid>
         </Grid>
-      </Box >
+      </Box>
     </>
   )
 }

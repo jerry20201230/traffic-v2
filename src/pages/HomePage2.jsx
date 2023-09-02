@@ -26,7 +26,9 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
-import { Pagination } from 'swiper/modules';
+import 'swiper/css/navigation';
+
+import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 
 
 
@@ -81,14 +83,22 @@ export default function HomePage() {
     <>
       <TopBar title="首頁" />
       <SearchAnything sx={{ m: 0 }} />
+
+
       <Box sx={{ flexGrow: 1, p: 3 }}>
         <Grid container spacing={2} sx={{ alignItems: "stretch" }}>
           <Grid xs={12}>
             <Swiper
               pagination={{
                 dynamicBullets: true,
+                clickable: true
               }}
-              modules={[Pagination]}
+              autoplay={{
+                delay: 5000,
+                disableOnInteraction: false,
+              }}
+              loop={true}
+              modules={[Autoplay, Pagination, Navigation]}
               className="mySwiper"
               style={{ padding: "5px" }}
             >

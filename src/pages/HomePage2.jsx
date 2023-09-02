@@ -17,7 +17,7 @@ import TopBar from '../TopBar';
 import Grid from '@mui/material/Unstable_Grid2';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet'
 import L from 'leaflet'
-import { Button, CardHeader } from '@mui/material';
+import { Button } from '@mui/material';
 import { bookmarkSetting } from '../bookmarkSetting';
 import { Link } from 'react-router-dom';
 import { BookmarkAdded } from '@mui/icons-material';
@@ -124,12 +124,12 @@ export default function HomePage() {
             </Swiper>
           </Grid>
 
-          <Grid component={Link} to={"/tra"} xs={6} sx={{ textDecoration: "none" }}><Paper sx={{ height: "5em", display: "flex", alignItems: "center", justifyContent: "center" }}><span>台鐵</span></Paper></Grid>
-          <Grid component={Link} to={"/hsr"} xs={6} sx={{ textDecoration: "none" }}><Paper sx={{ height: "5em", display: "flex", alignItems: "center", justifyContent: "center" }}><span>高鐵</span></Paper></Grid>
-          <Grid component={Link} to={"/bus"} xs={6} sx={{ textDecoration: "none" }}><Paper sx={{ height: "5em", display: "flex", alignItems: "center", justifyContent: "center" }}><span>公車</span></Paper></Grid>
-          <Grid component={Link} to={"/mrt"} xs={6} sx={{ textDecoration: "none" }}><Paper sx={{ height: "5em", display: "flex", alignItems: "center", justifyContent: "center" }}><span>捷運</span></Paper></Grid>
-          <Grid component={Link} to={"/bike"} xs={6} sx={{ textDecoration: "none" }}><Paper sx={{ height: "5em", display: "flex", alignItems: "center", justifyContent: "center" }}><span>公共自行車</span></Paper></Grid>
-          <Grid component={Link} to={"/plan"} xs={6} sx={{ textDecoration: "none" }}><Paper sx={{ height: "5em", display: "flex", alignItems: "center", justifyContent: "center" }}><span>路線規劃</span></Paper></Grid>
+          <Grid component={Link} to={"/tra"} xs={6} sx={{ textDecoration: "none" }}><Paper sx={{ height: "5em", display: "flex", alignItems: "center", justifyContent: "center", background: "linear-gradient(315deg, #004da7, #7fa9d9)", color: "#fff" }}><Typography variant='h6'>台鐵</Typography></Paper></Grid>
+          <Grid component={Link} to={"/hsr"} xs={6} sx={{ textDecoration: "none" }}><Paper sx={{ height: "5em", display: "flex", alignItems: "center", justifyContent: "center", background: "linear-gradient(315deg, #ca4f0f, #f89867)" }}><Typography variant='h6'>高鐵</Typography></Paper></Grid>
+          <Grid component={Link} to={"/bus"} xs={6} sx={{ textDecoration: "none" }}><Paper sx={{ height: "5em", display: "flex", alignItems: "center", justifyContent: "center", background: "linear-gradient(315deg, #8d8d8d,#ccc)", color: "#fff" }}><Typography variant='h6'>公車</Typography></Paper></Grid>
+          <Grid component={Link} to={"/mrt"} xs={6} sx={{ textDecoration: "none" }}><Paper sx={{ height: "5em", display: "flex", alignItems: "center", justifyContent: "center", background: "linear-gradient(315deg, #8dc21f,#ccf871)" }}><Typography variant='h6'>捷運</Typography></Paper></Grid>
+          <Grid component={Link} to={"/bike"} xs={6} sx={{ textDecoration: "none" }}><Paper sx={{ height: "5em", display: "flex", alignItems: "center", justifyContent: "center", background: "linear-gradient(315deg, #ffef00,#fff647)" }}><Typography variant='h6'>公共自行車</Typography></Paper></Grid>
+          <Grid component={Link} to={"/plan"} xs={6} sx={{ textDecoration: "none" }}><Paper sx={{ height: "5em", display: "flex", alignItems: "center", justifyContent: "center" }}><Typography variant='h6'>路線規劃</Typography></Paper></Grid>
 
           <Grid xs={12} sx={{ height: "100%", display: "none" }}>
             <Item ><h2 style={{ margin: 0 }}>書籤</h2>

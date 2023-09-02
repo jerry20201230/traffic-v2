@@ -18,6 +18,7 @@ import BikeStation from './pages/BikeStation';
 import Search from './pages/Search';
 import GoToLocation from './GoToLocation';
 import { BusRoot } from './pages/BusRoot';
+import { PlanRoot } from './pages/Plan';
 
 function App() {
   return (
@@ -47,6 +48,11 @@ function App() {
 
         <Route path='/bike'>
           <Route index element={<BikeRoot />}></Route>
+          <Route path='station/*' element={<BikeStation />}></Route>
+        </Route>
+
+        <Route path='/plan'>
+          <Route index element={<PlanRoot />}></Route>
           <Route path='station/*' element={<BikeStation />}></Route>
         </Route>
 

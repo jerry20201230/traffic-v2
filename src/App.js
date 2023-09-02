@@ -17,6 +17,7 @@ import { Bookmark } from './pages/Bookmark';
 import BikeStation from './pages/BikeStation';
 import Search from './pages/Search';
 import GoToLocation from './GoToLocation';
+import { BusRoot } from './pages/BusRoot';
 
 function App() {
   return (
@@ -36,6 +37,12 @@ function App() {
           <Route index element=<HsrRoot />></Route>
           <Route path='station/*' element=<HsrStation />></Route>
           <Route path='train/*' element=<HsrTrain />></Route>
+        </Route>
+
+        <Route path='/bus'>
+          <Route index element=<BusRoot />></Route>
+          <Route path='station/*' element=<HsrStation />></Route>
+          <Route path='route/*' element=<HsrTrain />></Route>
         </Route>
 
         <Route path='/bike'>

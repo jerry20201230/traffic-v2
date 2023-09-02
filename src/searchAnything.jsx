@@ -35,7 +35,7 @@ export default function SearchAnything({ type, value, variant, sx, onSettingBtnC
   React.useEffect(() => {
     getData("https://tdx.transportdata.tw/api/basic/v2/Basic/City?%24format=JSON", function (res) {
       console.log(res)
-      var list = ["選擇縣市"]
+      var list = ["請選擇縣市"]
       for (let i = 0; i < res.length; i++) {
         list.push(res[i].CityName)
       }
@@ -91,7 +91,7 @@ export default function SearchAnything({ type, value, variant, sx, onSettingBtnC
           inputProps={{ 'aria-label': variant === "framed-topbar" ? "搜尋" : "輸入車次、車站或地址..." }}
         />
 
-        <Button color="primary" ref={submitButton} type="button" sx={{ p: '10px' }} onClick={() => { if (onSettingBtnClick) { onSettingBtnClick.func(onSettingBtnClick.par); } setDialogOpen(true) }} >
+        <Button color="primary" type="button" sx={{ p: '10px' }} onClick={() => { if (onSettingBtnClick) { onSettingBtnClick.func(onSettingBtnClick.par); } setDialogOpen(true) }} >
           {searchCity}
         </Button>
         <IconButton color="primary" ref={submitButton} type="button" sx={{ p: '10px' }} aria-label="search" component={Link} to={`/route/to/search/?q=${inputVal}&city=${searchCity}&submit=now`}>
@@ -111,10 +111,9 @@ export default function SearchAnything({ type, value, variant, sx, onSettingBtnC
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description" component="div">
+            選擇要查詢的縣市，這有助於縮小查詢範圍、提供更精確的資訊
+            <p></p>
             <FormControl fullWidth>
-              <InputLabel variant="standard" htmlFor="uncontrolled-native">
-                縣市
-              </InputLabel>
               <NativeSelect
                 ref={citySelect}
                 defaultValue={currentCity.length ? currentCity[0] : ""}
@@ -122,7 +121,7 @@ export default function SearchAnything({ type, value, variant, sx, onSettingBtnC
                   name: '縣市',
                   id: 'uncontrolled-native',
                 }}
-                onChange={(e) => setTempSearchCity(e.target.value)}
+                onChange={(e) => setTempSearchCity(e.target.value === "請選擇縣市" ? "選擇縣市" : e.target.value)}
               >
                 {
                   currentCity.map((data, index) => {
@@ -135,7 +134,6 @@ export default function SearchAnything({ type, value, variant, sx, onSettingBtnC
         </DialogContent>
         <DialogActions>
           <Button
-
             onClick={() => {
               setDialogOpen(false);
               if (onSettingBtnClick) { onSettingBtnClick.func(!onSettingBtnClick.par) }

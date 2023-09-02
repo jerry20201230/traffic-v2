@@ -24,6 +24,7 @@ export default function Search() {
             <TopBar title={"搜尋"} />
             <Box sx={{ p: 3 }}>
                 <SearchAnything type="all" value={UrlParam("q")} variant="search.js" city={UrlParam("city")} onSearchBtnClick={{ func: reloadSearch }} />
+                <p>搜尋 "{UrlParam("q")}"，縣市:{UrlParam("city")}</p>
             </Box>
         </>
     )

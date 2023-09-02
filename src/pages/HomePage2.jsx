@@ -114,12 +114,12 @@ export default function HomePage() {
             </Swiper>
           </Grid>
 
-
-          <Grid xs={6} sx={{ p: 1, textAlign: "center" }}><Item>台鐵</Item></Grid>
-          <Grid xs={6} sx={{ p: 1, textAlign: "center" }}><Item>高鐵</Item></Grid>
-          <Grid xs={6} sx={{ p: 1, textAlign: "center" }}><Item>公車</Item></Grid>
-          <Grid xs={6} sx={{ p: 1, textAlign: "center" }}><Item>捷運</Item></Grid>
-          <Grid xs={6} sx={{ p: 1, textAlign: "center" }}><Item>公共自行車</Item></Grid>
+          <Grid component={Link} to={"/tra"} xs={6} sx={{ textDecoration: "none" }}><Paper sx={{ height: "5em", display: "flex", alignItems: "center", justifyContent: "center" }}><span>台鐵</span></Paper></Grid>
+          <Grid component={Link} to={"/hsr"} xs={6} sx={{ textDecoration: "none" }}><Paper sx={{ height: "5em", display: "flex", alignItems: "center", justifyContent: "center" }}><span>高鐵</span></Paper></Grid>
+          <Grid component={Link} to={"/bus"} xs={6} sx={{ textDecoration: "none" }}><Paper sx={{ height: "5em", display: "flex", alignItems: "center", justifyContent: "center" }}><span>公車</span></Paper></Grid>
+          <Grid component={Link} to={"/mrt"} xs={6} sx={{ textDecoration: "none" }}><Paper sx={{ height: "5em", display: "flex", alignItems: "center", justifyContent: "center" }}><span>捷運</span></Paper></Grid>
+          <Grid component={Link} to={"/bike"} xs={6} sx={{ textDecoration: "none" }}><Paper sx={{ height: "5em", display: "flex", alignItems: "center", justifyContent: "center" }}><span>公共自行車</span></Paper></Grid>
+          <Grid component={Link} to={"/plan"} xs={6} sx={{ textDecoration: "none" }}><Paper sx={{ height: "5em", display: "flex", alignItems: "center", justifyContent: "center" }}><span>路線規劃</span></Paper></Grid>
 
           <Grid xs={12} sx={{ height: "100%", display: "none" }}>
             <Item ><h2 style={{ margin: 0 }}>書籤</h2>

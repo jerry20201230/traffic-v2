@@ -26,6 +26,8 @@ export function BusRoot() {
     const busKeywordRef = React.useRef()
 
     const [keyWord, setKeyWord] = React.useState("")
+    const [keyWordInputReadonly, setKeyWordInputReadonly] = React.useState(true)
+
 
     const Item = styled(Paper)(({ theme }) => ({
         backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -87,22 +89,18 @@ export function BusRoot() {
                 </NativeSelect>
             </FormControl>
             <p></p>
-            <TextField variant="standard" value={keyWord} inputProps={{ readOnly: true, }} fullWidth placeholder={radioValue === "route" ? "輸入路線名稱" : "輸入站牌名稱"} ref={busKeywordRef} />
+            <TextField inputRef={busKeywordRef} variant="standard" onInput={(e) => setKeyWord(e.target.value)} value={keyWord} inputProps={{ readOnly: keyWordInputReadonly, }} fullWidth placeholder={radioValue === "route" ? "輸入路線名稱" : "輸入站牌名稱"} />
         </Box>
         <Box sx={{ position: "fixed", bottom: "0", textAlign: "center", width: "100%", userSelect: "none", display: "flex" }}>
-            <Grid container spacing={2} sx={{ display: (radioValue === "route" ? "flex" : "none"), p: 2 }}>
-                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em", background: "red", color: "#fff" }} onClick={() => { setKeyWord(keyWord + "紅") }}>紅</Item></Grid>
-                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em", background: "yellow" }} onClick={() => { setKeyWord(keyWord + "黃") }}>黃</Item></Grid>
-                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em", background: "blue", color: "#fff" }} onClick={() => { setKeyWord(keyWord + "藍") }}>藍</Item></Grid>
-                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em", background: "green", color: "#fff" }} onClick={() => { setKeyWord(keyWord + "綠") }}>綠</Item></Grid>
-                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em", background: "orange" }} onClick={() => { setKeyWord(keyWord + "橘") }}>橘</Item></Grid>
-                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em", background: "brown", color: "#fff" }} onClick={() => { setKeyWord(keyWord + "棕") }}>棕</Item></Grid>
-                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }} onClick={() => { setKeyWord(keyWord + "小") }}>小</Item></Grid>
-                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }} onClick={() => { setKeyWord(keyWord + "副") }}>副</Item></Grid>
-                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }} onClick={() => { setKeyWord(keyWord + "延") }}>延</Item></Grid>
-                <Grid xs={4}><Item className='btn'><KeyboardIcon sx={{ verticalAlign: "bottom", fontSize: "1.4rem" }} /></Item></Grid>
-                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }} onClick={() => { setKeyWord(keyWord + "區") }}>區</Item></Grid>
-                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }} onClick={() => { setKeyWord(keyWord + "預") }}>預</Item></Grid>
+            <Grid container spacing={2} sx={{ display: (radioValue === "route" ? "flex" : "none"), p: 2, maxWidth: "40%" }}>
+                <Grid xs={6}><Item className='btn' sx={{ fontSize: "1em", background: "red", color: "#fff" }} onClick={() => { setKeyWord(keyWord + "紅") }}>紅</Item></Grid>
+                <Grid xs={6}><Item className='btn' sx={{ fontSize: "1em", background: "yellow" }} onClick={() => { setKeyWord(keyWord + "黃") }}>黃</Item></Grid>
+                <Grid xs={6}><Item className='btn' sx={{ fontSize: "1em", background: "blue", color: "#fff" }} onClick={() => { setKeyWord(keyWord + "藍") }}>藍</Item></Grid>
+                <Grid xs={6}><Item className='btn' sx={{ fontSize: "1em", background: "green", color: "#fff" }} onClick={() => { setKeyWord(keyWord + "綠") }}>綠</Item></Grid>
+                <Grid xs={6}><Item className='btn' sx={{ fontSize: "1em", background: "orange" }} onClick={() => { setKeyWord(keyWord + "橘") }}>橘</Item></Grid>
+                <Grid xs={6}><Item className='btn' sx={{ fontSize: "1em", background: "brown", color: "#fff" }} onClick={() => { setKeyWord(keyWord + "棕") }}>棕</Item></Grid>
+                <Grid xs={6}><Item className='btn' onClick={() => { setKeyWordInputReadonly(!keyWordInputReadonly); busKeywordRef.current.focus(); busKeywordRef.current.click() }}><KeyboardIcon sx={{ verticalAlign: "bottom", fontSize: "1.4rem" }} color={(keyWordInputReadonly ? "inherit" : "primary")} /></Item></Grid>
+                <Grid xs={6}><Item className='btn' sx={{ fontSize: "1em" }} onClick={() => { setKeyWord(keyWord + "小") }}>小</Item></Grid>
             </Grid>
             <Grid container spacing={2} sx={{ display: (radioValue === "route" ? "flex" : "none"), p: 2 }}>
                 <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }} onClick={() => { setKeyWord(keyWord + "1") }}>1</Item></Grid>

@@ -19,64 +19,71 @@ import Search from './pages/Search';
 import GoToLocation from './GoToLocation';
 import { BusRoot } from './pages/BusRoot';
 import { PlanRoot } from './pages/Plan';
+import { useEffect } from 'react';
+import { Welcome } from './pages/Welcome';
 
 function App() {
+
   return (
     <>
-      <Routes>
-        <Route path='/' element=<HomePage /> ></Route>
-        <Route path='/index.html' element=<HomePage /> ></Route>
-        <Route path='/map/*' element=<Map />></Route>
+      {!localStorage.getItem("ver") ? <Welcome /> :
+        <Routes>
+          <Route path='/' element=<HomePage /> ></Route>
+          <Route path='/index.html' element=<HomePage /> ></Route>
+          <Route path='/map/*' element=<Map />></Route>
 
-        <Route path='/tra'>
-          <Route index element=<TraRoot />></Route>
-          <Route path='station/*' element=<TraStation />></Route>
-          <Route path='train/*' element=<TraTrain />></Route>
-        </Route>
+          <Route path='/tra'>
+            <Route index element=<TraRoot />></Route>
+            <Route path='station/*' element=<TraStation />></Route>
+            <Route path='train/*' element=<TraTrain />></Route>
+          </Route>
 
-        <Route path='/hsr'>
-          <Route index element=<HsrRoot />></Route>
-          <Route path='station/*' element=<HsrStation />></Route>
-          <Route path='train/*' element=<HsrTrain />></Route>
-        </Route>
+          <Route path='/hsr'>
+            <Route index element=<HsrRoot />></Route>
+            <Route path='station/*' element=<HsrStation />></Route>
+            <Route path='train/*' element=<HsrTrain />></Route>
+          </Route>
 
-        <Route path='/bus'>
-          <Route index element=<BusRoot />></Route>
-          <Route path='station/*' element=<HsrStation />></Route>
-          <Route path='route/*' element=<HsrTrain />></Route>
-        </Route>
+          <Route path='/bus'>
+            <Route index element=<BusRoot />></Route>
+            <Route path='station/*' element=<HsrStation />></Route>
+            <Route path='route/*' element=<HsrTrain />></Route>
+          </Route>
 
-        <Route path='/bike'>
-          <Route index element={<BikeRoot />}></Route>
-          <Route path='station/*' element={<BikeStation />}></Route>
-        </Route>
+          <Route path='/bike'>
+            <Route index element={<BikeRoot />}></Route>
+            <Route path='station/*' element={<BikeStation />}></Route>
+          </Route>
 
-        <Route path='/plan'>
-          <Route index element={<PlanRoot />}></Route>
-          <Route path='station/*' element={<BikeStation />}></Route>
-        </Route>
+          <Route path='/plan'>
+            <Route index element={<PlanRoot />}></Route>
+            <Route path='station/*' element={<BikeStation />}></Route>
+          </Route>
 
-        <Route path='/setting'>
-          <Route index element={<SettingRoot />}></Route>
-          <Route path='about' element={<SettingAbout />}></Route>
-        </Route>
+          <Route path='/setting'>
+            <Route index element={<SettingRoot />}></Route>
+            <Route path='about' element={<SettingAbout />}></Route>
+          </Route>
 
-        <Route path='/bookmark'>
-          <Route index element={<Bookmark />}></Route>
-        </Route>
+          <Route path='/bookmark'>
+            <Route index element={<Bookmark />}></Route>
+          </Route>
 
-        <Route path='/search'>
-          <Route index element={<Search />}></Route>
-        </Route>
-
-
-        <Route path='/route/to/*' element={<GoToLocation />}>
-        </Route>
+          <Route path='/search'>
+            <Route index element={<Search />}></Route>
+          </Route>
 
 
-        <Route path='*' element=<Err404 /> ></Route>
+          <Route path='/route/to/*' element={<GoToLocation />}>
+          </Route>
 
-      </Routes>
+          <Route path='/welcome' element={<Welcome />}>
+          </Route>
+
+          <Route path='*' element=<Err404 /> ></Route>
+
+        </Routes>
+      }
     </>
   );
 }

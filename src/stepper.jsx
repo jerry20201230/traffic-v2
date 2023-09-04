@@ -5,7 +5,7 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { CircularProgress, TextField } from '@mui/material'
+import { CircularProgress, TextField, Divider } from '@mui/material'
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -33,6 +33,37 @@ export default function LinearStepper() {
     const map1 = React.useRef()
     const map2 = React.useRef()
 
+    const [userLocStatus, setUserLocStatus] = React.useState(<Button variant='contained'>開啟定位</Button>)
+    const [userLoc, setUserLoc] = React.useState([])
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(successFunction, errorFunction);
+        } else {
+            setUserLocStatus(<>
+                <Typography color="red">定位資訊無法使用 (裝置不支援)</Typography>
+            </>)
+        }
+
+        function successFunction(loc) {
+            setUserLocStatus(<Typography>資料驗證中...</Typography>)
+            console.log(loc)
+            getData(
+                `https://tdx.transportdata.tw/api/advanced/V3/Map/GeoLocating/Address/LocationX/${loc.coords.longitude}/LocationY/${loc.coords.latitude}?%24format=JSON`,
+                (res) => {
+
+                    setPlace1(res[0].Address)
+
+                    setUserLocStatus(<>{res[0].Address}<br /><Button variant='contained' onClick={() => { setPlace1(res[0].Address); setlatlng1([loc.coords.latitude, loc.coords.longitude]) }}>使用這個地址</Button></>)
+                    setlatlng1([loc.coords.latitude, loc.coords.longitude])
+                }, { useLocalCatch: false })
+        }
+
+        function errorFunction() {
+            setUserLocStatus(<>
+                <Typography color="red">無法使用你的定位</Typography>
+            </>)
+        }
+    }
 
     const handleNext = () => {
         let newSkipped = skipped;
@@ -63,19 +94,21 @@ export default function LinearStepper() {
     const steps = ['設定起點', '設定終點'];
 
 
+    React.useEffect(() => {
+        getLocation()
+    }, [])
 
-    const MapEvents = () => {
+    const MapEvents = ({ map, id }) => {
         useMapEvents({
             click(e) {
                 // setState your coords here
                 // coords exist in "e.latlng.lat" and "e.latlng.lng"
                 var loc = [e.latlng.lat, e.latlng.lng]
 
-
-                let marker = L.marker(loc, { icon: redIcon }).addTo(map1.current);
+                let marker = L.marker(loc, { icon: redIcon }).addTo(map.current);
 
                 marker.bindPopup("資料讀取中...")
-                map1.current.flyTo(loc, 16)
+                map.current.flyTo(loc, 18)
 
                 marker.addEventListener("click", (e) => { console.log(e) })
                 getData(
@@ -83,7 +116,13 @@ export default function LinearStepper() {
                     (res) => {
 
                         marker.bindPopup(res[0].Address)
-                        setPlace1(res[0].Address)
+                        if (id === "1") {
+                            setPlace1(res[0].Address)
+                            setlatlng1(loc)
+                        } else if (id === "2") {
+                            setPlace2(res[0].Address)
+                            setlatlng2(loc)
+                        }
                     }, { useLocalCatch: false })
 
             }
@@ -95,7 +134,8 @@ export default function LinearStepper() {
 
     var stepBody = [
         <>
-            {place1}<p></p>
+            {place1 ? place1 : "地址會顯示在這裡"}
+            <Divider />
             <FormControl>
                 <RadioGroup
                     row
@@ -108,7 +148,9 @@ export default function LinearStepper() {
                     <FormControlLabel value="typeIn" control={<Radio />} label="輸入地址" />
                 </RadioGroup>
             </FormControl>
-            <div hidden={radio1Value !== "navLoc"}>你的定位:</div>
+            <div hidden={radio1Value !== "navLoc"}>你的定位:<br />
+                {userLocStatus}
+            </div>
             <div hidden={radio1Value !== "fromMap"}>
                 請點擊地圖
                 {radio1Value !== "fromMap" ? <></> : <MapContainer
@@ -116,20 +158,22 @@ export default function LinearStepper() {
                     dragging={!L.Browser.mobile}
                     scrollWheelZoom={false}
                     center={latlng1}
-                    zoom={7}
+                    zoom={16}
                     style={{ width: "100%", height: "50vh" }}
                 >
                     <TileLayer
                         attribution={`&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors${L.Browser.mobile ? "<br/>使用兩指移動與縮放地圖" : ""}`}
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     />
-                    <MapEvents />
+                    <MapEvents map={map1} id="1" />
 
                 </MapContainer>}
             </div>
-            <div hidden={radio1Value !== "typeIn"}><TextField onInput={(e) => { setPlace1(e.target.value) }} placeholder='輸入地址或經緯度' /></div>
+            <div hidden={radio1Value !== "typeIn"}><TextField value={place1} onInput={(e) => { setPlace1(e.target.value) }} placeholder='輸入地址或經緯度' /></div>
         </>,
         <>
+            {place2 ? place2 : "地址會顯示在這裡"}
+            <Divider />
             <FormControl>
                 <RadioGroup
                     row
@@ -141,6 +185,26 @@ export default function LinearStepper() {
                     <FormControlLabel value="typeIn" control={<Radio />} label="輸入地址" />
                 </RadioGroup>
             </FormControl>
+            <div hidden={radio2Value !== "fromMap"}>
+                請點擊地圖
+                {radio2Value !== "fromMap" ? <></> : <MapContainer
+                    ref={map2}
+                    dragging={!L.Browser.mobile}
+                    scrollWheelZoom={false}
+                    center={latlng2}
+                    zoom={16}
+                    style={{ width: "100%", height: "50vh" }}
+                >
+                    <TileLayer
+                        attribution={`&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors${L.Browser.mobile ? "<br/>使用兩指移動與縮放地圖" : ""}`}
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    />
+                    <MapEvents map={map2} id="2" />
+
+                </MapContainer>}
+            </div>
+            <div hidden={radio2Value !== "typeIn"}><TextField value={place2} onInput={(e) => { setPlace2(e.target.value) }} placeholder='輸入地址或經緯度' /></div>
+
         </>]
 
 
@@ -162,7 +226,12 @@ export default function LinearStepper() {
                 })}
             </Stepper>
             {activeStep === steps.length ? (
-                <Typography sx={{ mt: 2, mb: 1, p: 1, textAlign: "center" }} component="div"><CircularProgress /><br />正在規劃路線<p><Button variant='contained' color="secondary" onClick={() => window.location.reload()}>重試</Button></p></Typography>
+                <Typography sx={{ mt: 2, mb: 1, p: 1, textAlign: "center" }} component="div"><CircularProgress /><br />
+                    正在規劃路線
+                    <br />
+                    起點: {place1}<br />
+                    終點: {place2}
+                    <p><Button variant='contained' color="secondary" onClick={() => window.location.reload()}>重試</Button></p></Typography>
             ) : (
                 <React.Fragment>
                     <Typography sx={{ mt: 2, mb: 1, p: 1, height: "100%" }} component="div" >
@@ -178,8 +247,11 @@ export default function LinearStepper() {
                             上一步
                         </Button>
                         <Box sx={{ flex: '1 1 auto' }} />
-                        <Button onClick={handleNext}>
-                            {activeStep === steps.length - 1 ? '開始規劃路線' : '下一步'}
+                        <Button onClick={handleNext}
+                            disabled={
+                                activeStep === 0 && place1 === "" || activeStep === 1 && place2 === ""
+                            }>
+                            {activeStep === steps.length - 1 ? '開始規劃路線' : (activeStep === 0 && place1 === "" || activeStep === 1 && place2 === "" ? "請選擇地點" : "下一步")}
                         </Button>
                     </Box>
                 </React.Fragment>

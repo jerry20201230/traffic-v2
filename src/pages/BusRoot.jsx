@@ -1,12 +1,17 @@
 import * as React from 'react'
 import TopBar from '../TopBar'
 import Grid from '@mui/material/Unstable_Grid2';
-import { NativeSelect, Box, InputLabel, FormControl, Paper } from '@mui/material'
+import { NativeSelect, Box, InputLabel, Paper, TextField } from '@mui/material'
 import getData from '../getData'
 import SearchAnything from '../searchAnything'
 import { styled } from '@mui/material/styles';
 import BackspaceIcon from '@mui/icons-material/Backspace';
 import SearchIcon from '@mui/icons-material/Search';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import '../App.css'
 
 export function BusRoot() {
     const citySelect = React.useRef()
@@ -15,6 +20,10 @@ export function BusRoot() {
     const [inputVal, setInputVal] = React.useState("")
     const [currentCity, setCurrentCityList] = React.useState([])
     const [dialogOpen, setDialogOpen] = React.useState(false)
+
+    const [radioValue, setRadioValue] = React.useState("route")
+    const busKeywordRef = React.useRef()
+
     const Item = styled(Paper)(({ theme }) => ({
         backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
         ...theme.typography.body2,
@@ -24,7 +33,6 @@ export function BusRoot() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-
         color: theme.palette.text.secondary,
     }));
 
@@ -46,6 +54,18 @@ export function BusRoot() {
         <TopBar title="公車" />
         <Box sx={{ p: 3 }}>
             <h1>歡迎使用公車資料</h1>
+            <FormControl>
+                <RadioGroup
+                    row
+                    name="row-radio-buttons-group-1"
+                    value={radioValue}
+                    onChange={(e) => setRadioValue(e.target.value)}
+                >
+                    <FormControlLabel value="route" control={<Radio />} label="搜尋路線" />
+                    <FormControlLabel value="station" control={<Radio />} label="搜尋站牌" />
+
+                </RadioGroup>
+            </FormControl>
             <FormControl fullWidth>
                 <NativeSelect
                     ref={citySelect}
@@ -63,22 +83,24 @@ export function BusRoot() {
                     }
                 </NativeSelect>
             </FormControl>
+            <p></p>
+            <TextField variant="standard" fullWidth placeholder={radioValue === "route" ? "輸入路線名稱" : "輸入站牌名稱"} ref={busKeywordRef} />
         </Box>
-        <Box sx={{ position: "fixed", bottom: "0", p: 2, textAlign: "center" }}>
+        <Box sx={{ position: "fixed", bottom: "0", textAlign: "center", width: "100%", userSelect: "none" }}>
 
-            <Grid container spacing={2}>
-                <Grid xs={4}><Item sx={{ fontSize: "1em" }}>1</Item></Grid>
-                <Grid xs={4}><Item sx={{ fontSize: "1em" }}>2</Item></Grid>
-                <Grid xs={4}><Item sx={{ fontSize: "1em" }}>3</Item></Grid>
-                <Grid xs={4}><Item sx={{ fontSize: "1em" }}>4</Item></Grid>
-                <Grid xs={4}><Item sx={{ fontSize: "1em" }}>5</Item></Grid>
-                <Grid xs={4}><Item sx={{ fontSize: "1em" }}>6</Item></Grid>
-                <Grid xs={4}><Item sx={{ fontSize: "1em" }}>7</Item></Grid>
-                <Grid xs={4}><Item sx={{ fontSize: "1em" }}>8</Item></Grid>
-                <Grid xs={4}><Item sx={{ fontSize: "1em" }}>9</Item></Grid>
-                <Grid xs={4}><Item sx={{ fontSize: "1em" }}>0</Item></Grid>
-                <Grid xs={4}><Item><BackspaceIcon sx={{ verticalAlign: "bottom", fontSize: "1.4rem" }} /></Item></Grid>
-                <Grid xs={4}><Item><SearchIcon sx={{ verticalAlign: "bottom", fontSize: "1.4rem" }} /></Item></Grid>
+            <Grid container spacing={2} sx={{ display: (radioValue === "route" ? "flex" : "none"), p: 2 }}>
+                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }}>1</Item></Grid>
+                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }}>2</Item></Grid>
+                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }}>3</Item></Grid>
+                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }}>4</Item></Grid>
+                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }}>5</Item></Grid>
+                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }}>6</Item></Grid>
+                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }}>7</Item></Grid>
+                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }}>8</Item></Grid>
+                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }}>9</Item></Grid>
+                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }}>0</Item></Grid>
+                <Grid xs={4}><Item className='btn'><BackspaceIcon sx={{ verticalAlign: "bottom", fontSize: "1.4rem" }} /></Item></Grid>
+                <Grid xs={4}><Item className='btn'><SearchIcon sx={{ verticalAlign: "bottom", fontSize: "1.4rem" }} /></Item></Grid>
             </Grid>
 
         </Box>

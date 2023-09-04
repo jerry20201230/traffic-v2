@@ -111,7 +111,7 @@ export default function LinearStepper() {
             <div hidden={radio1Value !== "navLoc"}>你的定位:</div>
             <div hidden={radio1Value !== "fromMap"}>
                 請點擊地圖
-                <MapContainer
+                {radio1Value !== "fromMap" ? <></> : <MapContainer
                     ref={map1}
                     dragging={!L.Browser.mobile}
                     scrollWheelZoom={false}
@@ -125,7 +125,7 @@ export default function LinearStepper() {
                     />
                     <MapEvents />
 
-                </MapContainer>
+                </MapContainer>}
             </div>
             <div hidden={radio1Value !== "typeIn"}><TextField onInput={(e) => { setPlace1(e.target.value) }} placeholder='輸入地址或經緯度' /></div>
         </>,

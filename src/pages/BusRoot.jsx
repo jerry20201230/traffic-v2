@@ -101,8 +101,8 @@ export function BusRoot() {
                 <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }} onClick={() => { setKeyWord(keyWord + "副") }}>副</Item></Grid>
                 <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }} onClick={() => { setKeyWord(keyWord + "延") }}>延</Item></Grid>
                 <Grid xs={4}><Item className='btn'><KeyboardIcon sx={{ verticalAlign: "bottom", fontSize: "1.4rem" }} /></Item></Grid>
-                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }} onClick={() => { setKeyWord(keyWord + "通勤") }}>通勤</Item></Grid>
-                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }} onClick={() => { setKeyWord(keyWord + "F") }}>F</Item></Grid>
+                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }} onClick={() => { setKeyWord(keyWord + "區") }}>區</Item></Grid>
+                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }} onClick={() => { setKeyWord(keyWord + "預") }}>預</Item></Grid>
             </Grid>
             <Grid container spacing={2} sx={{ display: (radioValue === "route" ? "flex" : "none"), p: 2 }}>
                 <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }} onClick={() => { setKeyWord(keyWord + "1") }}>1</Item></Grid>

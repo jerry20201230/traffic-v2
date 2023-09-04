@@ -13,35 +13,43 @@ export function Welcome({ next, title }) {
     ]
     var item = 0
     var [summery, setSummery] = React.useState("")
+    const linkBtn = React.useRef()
 
     const CURRENT_VER = "1.0.0"
 
     React.useEffect(() => {
-        if (!localStorage.getItem("ver")) {
-            for (let i = 0; i < allItem.length; i++) {
-                console.log(i)
-                setSummery(`正在更新第 ${item + 1} 項資料，共 ${allItem.length} 項`)
-                getData(allItem[i], function (res) {
-                    item += 1
-                    console.log("ITEM", item, (item / allItem.length) * 100)
-                    if (item + 1 < allItem.length) {
-                        setSummery(`第 ${item} 項資料更新成功，共 ${allItem.length} 項`)
-                    }
-                    else {
-                        setSummery("資料更新完畢")
-                        localStorage.setItem("ver", CURRENT_VER)
-                    }
-                }, {
-                    useLocalCatch: true,
-                })
-            }
-        } else {
-            setSummery("資料更新完畢")
+        if (linkBtn.current) {
 
-            item = allItem.length
-            localStorage.setItem("ver", CURRENT_VER)
+
+            if (!localStorage.getItem("ver")) {
+                for (let i = 0; i < allItem.length; i++) {
+                    console.log(i)
+                    setSummery(`正在更新第 ${item + 1} 項資料，共 ${allItem.length} 項`)
+                    getData(allItem[i], function (res) {
+                        item += 1
+                        console.log("ITEM", item, (item / allItem.length) * 100)
+                        if (item + 1 < allItem.length) {
+                            setSummery(`第 ${item} 項資料更新成功，共 ${allItem.length} 項`)
+                        }
+                        else {
+                            setSummery("資料更新完畢")
+                            localStorage.setItem("ver", CURRENT_VER)
+                            linkBtn.current.click()
+
+                        }
+                    }, {
+                        useLocalCatch: true,
+                    })
+                }
+            } else {
+                setSummery("資料更新完畢")
+
+                item = allItem.length
+                localStorage.setItem("ver", CURRENT_VER)
+                linkBtn.current.click()
+            }
         }
-    }, [])
+    }, [linkBtn])
 
     return (
         <>
@@ -52,7 +60,7 @@ export function Welcome({ next, title }) {
                     <LinearProgressWithLabel value={(item / allItem.length) * 100} sx={{ display: (item + 1 >= allItem.length ? "block" : "none") }} />
                 </p>
                 <p></p>
-                <Button disabled={summery !== "資料更新完畢"} variant='contained' onClick={() => window.location.reload()}>繼續使用系統</Button>
+                <Button ref={linkBtn} disabled={summery !== "資料更新完畢"} variant='contained' onClick={() => window.location.reload()}>繼續使用系統</Button>
             </Box>
         </>
     )

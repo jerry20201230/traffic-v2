@@ -6,6 +6,7 @@ import getData from '../getData'
 import SearchAnything from '../searchAnything'
 import { styled } from '@mui/material/styles';
 import BackspaceIcon from '@mui/icons-material/Backspace';
+import KeyboardIcon from '@mui/icons-material/Keyboard';
 import SearchIcon from '@mui/icons-material/Search';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
@@ -23,6 +24,8 @@ export function BusRoot() {
 
     const [radioValue, setRadioValue] = React.useState("route")
     const busKeywordRef = React.useRef()
+
+    const [keyWord, setKeyWord] = React.useState("")
 
     const Item = styled(Paper)(({ theme }) => ({
         backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -84,22 +87,35 @@ export function BusRoot() {
                 </NativeSelect>
             </FormControl>
             <p></p>
-            <TextField variant="standard" fullWidth placeholder={radioValue === "route" ? "輸入路線名稱" : "輸入站牌名稱"} ref={busKeywordRef} />
+            <TextField variant="standard" value={keyWord} inputProps={{ readOnly: true, }} fullWidth placeholder={radioValue === "route" ? "輸入路線名稱" : "輸入站牌名稱"} ref={busKeywordRef} />
         </Box>
-        <Box sx={{ position: "fixed", bottom: "0", textAlign: "center", width: "100%", userSelect: "none" }}>
-
+        <Box sx={{ position: "fixed", bottom: "0", textAlign: "center", width: "100%", userSelect: "none", display: "flex" }}>
             <Grid container spacing={2} sx={{ display: (radioValue === "route" ? "flex" : "none"), p: 2 }}>
-                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }}>1</Item></Grid>
-                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }}>2</Item></Grid>
-                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }}>3</Item></Grid>
-                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }}>4</Item></Grid>
-                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }}>5</Item></Grid>
-                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }}>6</Item></Grid>
-                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }}>7</Item></Grid>
-                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }}>8</Item></Grid>
-                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }}>9</Item></Grid>
-                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }}>0</Item></Grid>
-                <Grid xs={4}><Item className='btn'><BackspaceIcon sx={{ verticalAlign: "bottom", fontSize: "1.4rem" }} /></Item></Grid>
+                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em", background: "red", color: "#fff" }} onClick={() => { setKeyWord(keyWord + "紅") }}>紅</Item></Grid>
+                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em", background: "yellow" }} onClick={() => { setKeyWord(keyWord + "黃") }}>黃</Item></Grid>
+                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em", background: "blue", color: "#fff" }} onClick={() => { setKeyWord(keyWord + "藍") }}>藍</Item></Grid>
+                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em", background: "green", color: "#fff" }} onClick={() => { setKeyWord(keyWord + "綠") }}>綠</Item></Grid>
+                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em", background: "orange" }} onClick={() => { setKeyWord(keyWord + "橘") }}>橘</Item></Grid>
+                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em", background: "brown", color: "#fff" }} onClick={() => { setKeyWord(keyWord + "棕") }}>棕</Item></Grid>
+                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }} onClick={() => { setKeyWord(keyWord + "小") }}>小</Item></Grid>
+                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }} onClick={() => { setKeyWord(keyWord + "副") }}>副</Item></Grid>
+                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }} onClick={() => { setKeyWord(keyWord + "延") }}>延</Item></Grid>
+                <Grid xs={4}><Item className='btn'><KeyboardIcon sx={{ verticalAlign: "bottom", fontSize: "1.4rem" }} /></Item></Grid>
+                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }} onClick={() => { setKeyWord(keyWord + "通勤") }}>通勤</Item></Grid>
+                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }} onClick={() => { setKeyWord(keyWord + "F") }}>F</Item></Grid>
+            </Grid>
+            <Grid container spacing={2} sx={{ display: (radioValue === "route" ? "flex" : "none"), p: 2 }}>
+                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }} onClick={() => { setKeyWord(keyWord + "1") }}>1</Item></Grid>
+                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }} onClick={() => { setKeyWord(keyWord + "2") }}>2</Item></Grid>
+                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }} onClick={() => { setKeyWord(keyWord + "3") }}>3</Item></Grid>
+                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }} onClick={() => { setKeyWord(keyWord + "4") }}>4</Item></Grid>
+                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }} onClick={() => { setKeyWord(keyWord + "5") }}>5</Item></Grid>
+                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }} onClick={() => { setKeyWord(keyWord + "6") }}>6</Item></Grid>
+                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }} onClick={() => { setKeyWord(keyWord + "7") }}>7</Item></Grid>
+                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }} onClick={() => { setKeyWord(keyWord + "8") }}>8</Item></Grid>
+                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }} onClick={() => { setKeyWord(keyWord + "9") }}>9</Item></Grid>
+                <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }} onClick={() => { setKeyWord(keyWord + "0") }}>0</Item></Grid>
+                <Grid xs={4}><Item className='btn' onClick={() => { setKeyWord(keyWord.slice(0, -1)) }}><BackspaceIcon sx={{ verticalAlign: "bottom", fontSize: "1.4rem" }} /></Item></Grid>
                 <Grid xs={4}><Item className='btn'><SearchIcon sx={{ verticalAlign: "bottom", fontSize: "1.4rem" }} /></Item></Grid>
             </Grid>
 

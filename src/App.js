@@ -23,10 +23,10 @@ import { useEffect } from 'react';
 import { Welcome } from './pages/Welcome';
 
 function App() {
-
+  const CURRENT_VER = "1.0.1"
   return (
     <>
-      {!localStorage.getItem("ver") ? <Welcome /> :
+      {(!localStorage.getItem("ver") || localStorage.getItem("ver") !== CURRENT_VER) ? <Welcome CURRENT_VER={CURRENT_VER} /> :
         <Routes>
           <Route path='/' element=<HomePage /> ></Route>
           <Route path='/index.html' element=<HomePage /> ></Route>
@@ -75,9 +75,6 @@ function App() {
 
 
           <Route path='/route/to/*' element={<GoToLocation />}>
-          </Route>
-
-          <Route path='/welcome' element={<Welcome />}>
           </Route>
 
           <Route path='*' element=<Err404 /> ></Route>

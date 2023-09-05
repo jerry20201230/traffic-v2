@@ -23,7 +23,7 @@ import { useEffect } from 'react';
 import { Welcome } from './pages/Welcome';
 
 function App() {
-  const CURRENT_VER = "1.0.1"
+  const CURRENT_VER = "1.0.2"
   return (
     <>
       {(!localStorage.getItem("ver") || localStorage.getItem("ver") !== CURRENT_VER) ? <Welcome CURRENT_VER={CURRENT_VER} /> :

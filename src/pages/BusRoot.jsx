@@ -138,7 +138,7 @@ export function BusRoot() {
                 <Grid xs={6}><Item className='btn' sx={{ fontSize: "1em", backgroundColor: green[500], color: "#fff" }} onClick={() => { setKeyWord(keyWord + "綠") }}>綠</Item></Grid>
                 <Grid xs={6}><Item className='btn' sx={{ fontSize: "1em", backgroundColor: orange[500] }} onClick={() => { setKeyWord(keyWord + "橘") }}>橘</Item></Grid>
                 <Grid xs={6}><Item className='btn' sx={{ fontSize: "1em", backgroundColor: brown[500], color: "#fff" }} onClick={() => { setKeyWord(keyWord + "棕") }}>棕</Item></Grid>
-                <Grid xs={6}><Item className='btn' onClick={() => { setKeyWordInputReadonly(!keyWordInputReadonly); if (keyWordInputReadonly) { busKeywordRef.current.focus(); busKeywordRef.current.click(); keyboardAnimation("hide") } }}><KeyboardIcon sx={{ verticalAlign: "bottom", fontSize: "1.4rem" }} color={(keyWordInputReadonly ? "inherit" : "primary")} /></Item></Grid>
+                <Grid xs={6}><Item className='btn' onClick={() => { setKeyWordInputReadonly(!keyWordInputReadonly); if (keyWordInputReadonly) { busKeywordRef.current.focus(); busKeywordRef.current.click(); keyboardAnimation("hide") } }}><KeyboardIcon sx={{ verticalAlign: "bottom", fontSize: "1.43rem" }} color={(keyWordInputReadonly ? "inherit" : "primary")} /></Item></Grid>
                 <Grid xs={6}><Item className='btn' sx={{ fontSize: "1em", }} onClick={() => { setKeyWord(keyWord + "小") }}>小</Item></Grid>
             </Grid>
             <Grid container spacing={2} sx={{ p: 2, pl: 0, flexGrow: 1, flexShrink: 1 }}>
@@ -152,8 +152,8 @@ export function BusRoot() {
                 <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em", }} onClick={() => { setKeyWord(keyWord + "8") }}>8</Item></Grid>
                 <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em", }} onClick={() => { setKeyWord(keyWord + "9") }}>9</Item></Grid>
                 <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }} onClick={() => { setKeyWord(keyWord + "0") }}>0</Item></Grid>
-                <Grid xs={4}><Item className='btn' onClick={() => { setKeyWord(keyWord.slice(0, -1)) }}><BackspaceIcon sx={{ verticalAlign: "bottom", fontSize: "1.4rem" }} /></Item></Grid>
-                <Grid xs={4}><Item className='btn' onClick={() => searchData()}><SearchIcon sx={{ verticalAlign: "bottom", fontSize: "1.4rem" }} /></Item></Grid>
+                <Grid xs={4}><Item className='btn' onClick={() => { setKeyWord(keyWord.slice(0, -1)) }}><BackspaceIcon sx={{ verticalAlign: "bottom", fontSize: "1.43rem" }} /></Item></Grid>
+                <Grid xs={4}><Item className='btn' onClick={() => searchData()}><SearchIcon sx={{ verticalAlign: "bottom", fontSize: "1.43rem" }} /></Item></Grid>
             </Grid>
 
         </Box>

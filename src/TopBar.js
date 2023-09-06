@@ -63,7 +63,7 @@ function TopBar({ title }) {
         >
 
 
-          <Box sx={{ width: '100%', minWidth: 240, bgcolor: 'background.paper' }}>
+          <Box sx={{ width: '100%', height: "100%", minWidth: 240, bgcolor: 'background.paper' }}>
             <nav aria-label="">
               <List>
                 <ListItem disablePadding sx={{ p: 1, pt: 0 }}>
@@ -99,14 +99,6 @@ function TopBar({ title }) {
                       <BookmarkIcon />
                     </ListItemIcon>
                     <ListItemText primary="書籤" />
-                  </ListItemButton>
-                </ListItem>
-                <ListItem disablePadding>
-                  <ListItemButton component={Link} to="/setting" onClick={() => setShowNavigation(false)}>
-                    <ListItemIcon>
-                      <SettingsIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="設定" />
                   </ListItemButton>
                 </ListItem>
               </List>
@@ -160,6 +152,23 @@ function TopBar({ title }) {
 
 
 
+              </List>
+            </nav>
+
+
+            <nav aria-label="" style={{ position: "absolute", bottom: 0, width: "100%" }}>
+              <Divider />
+              <List>
+                <ListItem disablePadding>
+                  <ListItemButton component={Link} to="/setting" onClick={() => setShowNavigation(false)}>
+                    <ListItemIcon>
+                      <SettingsIcon />
+                    </ListItemIcon>
+                    <ListItemText >
+                      設定
+                    </ListItemText>
+                  </ListItemButton>
+                </ListItem>
               </List>
             </nav>
           </Box>

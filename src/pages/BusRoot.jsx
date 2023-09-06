@@ -55,6 +55,15 @@ export function BusRoot() {
         }, { useLocalCatch: true })
     }, [])
 
+    function searchData(){
+        if(radioValue === "route"){
+
+        }
+        else if(radioValue === "station"){
+            
+        }
+    }
+
 
     return (<>
         <TopBar title="公車" />
@@ -91,6 +100,8 @@ export function BusRoot() {
             </FormControl>
             <p></p>
             <TextField inputRef={busKeywordRef} variant="standard" onInput={(e) => setKeyWord(e.target.value)} value={keyWord} inputProps={{ readOnly: keyWordInputReadonly, }} fullWidth placeholder={radioValue === "route" ? "輸入路線名稱" : "輸入站牌名稱"} />
+            <p></p>
+            <Button variant="contained" onClick={()=>searchData()}>搜尋</Button>
         </Box>
         <Box sx={{ position: "fixed", bottom: "0", textAlign: "center", width: "100%", userSelect: "none", display: "flex", pr: 0, background: grey[200], borderRadius: "5px 5px 0 0", display: (radioValue === "route" ? "flex" : "none") }}>
             <Grid container spacing={2} sx={{ p: 2, maxWidth: "40%", flexGrow: 1, flexShrink: 1 }}>
@@ -115,7 +126,7 @@ export function BusRoot() {
                 <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em", }} onClick={() => { setKeyWord(keyWord + "9") }}>9</Item></Grid>
                 <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }} onClick={() => { setKeyWord(keyWord + "0") }}>0</Item></Grid>
                 <Grid xs={4}><Item className='btn' onClick={() => { setKeyWord(keyWord.slice(0, -1)) }}><BackspaceIcon sx={{ verticalAlign: "bottom", fontSize: "1.4rem" }} /></Item></Grid>
-                <Grid xs={4}><Item className='btn'><SearchIcon sx={{ verticalAlign: "bottom", fontSize: "1.4rem" }} /></Item></Grid>
+                <Grid xs={4}><Item className='btn' onClick={()=>searchData()}><SearchIcon sx={{ verticalAlign: "bottom", fontSize: "1.4rem" }} /></Item></Grid>
             </Grid>
 
         </Box>

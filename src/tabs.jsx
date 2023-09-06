@@ -212,7 +212,6 @@ export default function BasicTabs({ lat, lon, spec, specQuery, hide, data, child
                       <Typography sx={{ mr: 1, display: "inline-block", width: "1.5rem", height: "1.5rem", borderRadius: "5px", verticalAlign: "text-top", background: "linear-gradient(315deg, #ca4f0f, #f89867)" }} variant='div' ></Typography> 高鐵{nearByData[0].RailStations.RailStationList[i].StationName}站
                     </Typography>
                     <Typography sx={{ mb: 1.5 }} color="text.secondary">
-
                     </Typography>
                     <Typography variant="body2" component="div">
                       {data.map ?

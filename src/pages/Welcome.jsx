@@ -16,7 +16,6 @@ export function Welcome({ next, title, CURRENT_VER }) {
     React.useEffect(() => {
 
         getData("https://tdx.transportdata.tw/api/basic/v2/Basic/City?%24format=JSON", function (res) {
-
             setSummery(`全台縣市列表 更新成功，將依據此列表繼續下載其他資料...`)
             for (let j = 0; j < res.length; j++) {
                 allItem.push(`https://tdx.transportdata.tw/api/basic/v2/Bus/Route/City/${res[j].City}?%24format=JSON`)

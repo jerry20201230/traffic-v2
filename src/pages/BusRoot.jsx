@@ -14,6 +14,14 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import '../App.css'
 import { red, yellow, blue, green, brown, orange, grey } from '@mui/material/colors';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Divider from '@mui/material/Divider';
+import Typography from '@mui/material/Typography';
+import { Link } from 'react-router-dom';
 
 export function BusRoot() {
   const citySelect = React.useRef()
@@ -102,7 +110,8 @@ export function BusRoot() {
                     route: res2[j].RouteName.Zh_tw,
                     from: res2[j].DepartureStopNameZh,
                     to: res2[j].DestinationStopNameZh,
-                    city: res[i].CityName
+                    city: res[i].CityName,
+                    uid: res2[j].RouteUID
                   }
                 )
                 setSearchResult(currentRouteList)
@@ -119,7 +128,9 @@ export function BusRoot() {
                   route: res2[j].RouteName.Zh_tw,
                   from: res2[j].DepartureStopNameZh,
                   to: res2[j].DestinationStopNameZh,
-                  city: "公路客運"
+                  city: "公路客運",
+                  uid: res2[j].RouteUID
+
                 }
               )
               setSearchResult(currentRouteList)
@@ -138,7 +149,6 @@ export function BusRoot() {
   return (<>
     <TopBar title="公車" />
     <Box sx={{ p: 3 }}>
-      <h1>歡迎使用公車資料</h1>
       <FormControl>
         <RadioGroup
           row
@@ -151,65 +161,82 @@ export function BusRoot() {
 
         </RadioGroup>
       </FormControl>
-      <FormControl fullWidth>
-        <NativeSelect
-          ref={citySelect}
-          defaultValue={currentCity.length ? currentCity[0] : ""}
-          inputProps={{
-            name: '縣市',
-            id: 'uncontrolled-native',
-          }}
-          onChange={(e) => setTempSearchCity(e.target.value === "請選擇縣市" ? "選擇縣市" : e.target.value)}
-        >
-          {
-            currentCity.map((data, index) => {
-              return (<option value={data} key={"citylist-" + index}>{data}</option>)
-            })
-          }
-        </NativeSelect>
-      </FormControl>
+      <Box sx={{ display: (radioValue === "station" ? "block" : "none") }}>
+        <FormControl fullWidth>
+          <NativeSelect
+
+            ref={citySelect}
+            defaultValue={currentCity.length ? currentCity[0] : ""}
+            inputProps={{
+              name: '縣市',
+              id: 'uncontrolled-native',
+            }}
+            onChange={(e) => setTempSearchCity(e.target.value === "請選擇縣市" ? "選擇縣市" : e.target.value)}
+          >
+            {
+              currentCity.map((data, index) => {
+                return (<option value={data} key={"citylist-" + index}>{data}</option>)
+              })
+            }
+          </NativeSelect>
+        </FormControl></Box>
       <p></p>
-      <TextField inputRef={busKeywordRef} variant="standard" onBlur={() => { setKeyWordInputReadonly(true); }} onFocus={() => { if (keyWordInputReadonly) { keyboardAnimation("show") } else { keyboardAnimation("hide") } }} onInput={(e) => { setKeyWord(e.target.value); if (radioValue === "route") { searchData() } }} value={keyWord} inputProps={{ readOnly: keyWordInputReadonly, }} fullWidth placeholder={radioValue === "route" ? "輸入路線名稱" : "輸入站牌名稱"} />
+      <TextField inputRef={busKeywordRef} variant="standard" onBlur={() => { setKeyWordInputReadonly(true); }} onFocus={() => { if (keyWordInputReadonly) { keyboardAnimation("show") } else { keyboardAnimation("hide") } }} onInput={(e) => { setKeyWord(e.target.value); if (radioValue === "route") { searchData() } }} value={keyWord} inputProps={{ readOnly: (keyWordInputReadonly && radioValue === "route"), }} fullWidth placeholder={radioValue === "route" ? "輸入路線名稱" : "輸入站牌名稱"} />
     </Box>
     <Box sx={{ p: 3 }}>
-      共{searchResult.length}筆資料
-      {searchResult.length > 0 ?
-
-        searchResult.map((data, i) => {
-          return (
-
-            <p key={"data--" + i}>{data.route}<br />{data.from} - {data.to}<br />{data.city}</p>
-          )
-        }) : <></>
+      {
+        searchResult.length < 1 ? <></> : <p>共 {searchResult.length}筆資料</p>
       }
+      <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
+        <nav aria-label="">
+          <List>
+            {searchResult.length > 0 ?
+              searchResult.map((data, i) => {
+                return (
+                  <div key={"data--" + i}>
+                    <ListItem disablePadding>
+                      <ListItemButton components={Link} to={`/bus/route/?q=${data.uid}`}>
+                        <ListItemText>
+                          <Typography variant="h5">{data.route}</Typography>{data.from} - {data.to}<br />{data.city}
+                        </ListItemText>
+                      </ListItemButton>
+                    </ListItem>
+                    <Divider />
+                  </div>
+                )
+              }) : <></>
+            }
+          </List>
+        </nav>
+      </Box>
+
     </Box>
     <Box ref={keyboard} sx={{ position: "fixed", bottom: "0", textAlign: "center", width: "100%", userSelect: "none", display: "flex", pr: 0, background: grey[200], borderRadius: "5px 5px 0 0" }}></Box>
     <Box ref={keyboard} sx={{ position: "fixed", bottom: "0", textAlign: "center", width: "100%", userSelect: "none", display: "flex", pr: 0, background: grey[200], borderRadius: "5px 5px 0 0", display: (radioValue === "route" ? "flex" : "none"), transform: "translateY(120%)" }}>
       <Grid container spacing={2} sx={{ p: 2, maxWidth: "40%", flexGrow: 1, flexShrink: 1 }}>
-        <Grid xs={6}><Item className='btn' sx={{ fontSize: "1em", backgroundColor: red[500], color: "#fff" }} onClick={() => { setKeyWord(keyWord + "紅") }}>紅</Item></Grid>
-        <Grid xs={6}><Item className='btn' sx={{ fontSize: "1em", backgroundColor: yellow[500] }} onClick={() => { setKeyWord(keyWord + "黃") }}>黃</Item></Grid>
-        <Grid xs={6}><Item className='btn' sx={{ fontSize: "1em", backgroundColor: blue[500], color: "#fff" }} onClick={() => { setKeyWord(keyWord + "藍") }}>藍</Item></Grid>
-        <Grid xs={6}><Item className='btn' sx={{ fontSize: "1em", backgroundColor: green[500], color: "#fff" }} onClick={() => { setKeyWord(keyWord + "綠") }}>綠</Item></Grid>
-        <Grid xs={6}><Item className='btn' sx={{ fontSize: "1em", backgroundColor: orange[500] }} onClick={() => { setKeyWord(keyWord + "橘") }}>橘</Item></Grid>
-        <Grid xs={6}><Item className='btn' sx={{ fontSize: "1em", backgroundColor: brown[500], color: "#fff" }} onClick={() => { setKeyWord(keyWord + "棕") }}>棕</Item></Grid>
-        <Grid xs={6}><Item className='btn' onClick={() => { setKeyWordInputReadonly(!keyWordInputReadonly); if (keyWordInputReadonly) { busKeywordRef.current.focus(); busKeywordRef.current.click(); keyboardAnimation("hide") } }}><KeyboardIcon sx={{ verticalAlign: "bottom", fontSize: "1.43rem" }} color={(keyWordInputReadonly ? "inherit" : "primary")} /></Item></Grid>
-        <Grid xs={6}><Item className='btn' sx={{ fontSize: "1em", }} onClick={() => { setKeyWord(keyWord + "小") }}>小</Item></Grid>
+        <Grid xs={6} component="button" className='btn-container' onClick={() => { setKeyWord(keyWord + "紅") }}><Item className='btn' sx={{ fontSize: "1em", backgroundColor: red[500], color: "#fff" }}>紅</Item></Grid>
+        <Grid xs={6} component="button" className='btn-container' onClick={() => { setKeyWord(keyWord + "黃") }}><Item className='btn' sx={{ fontSize: "1em", backgroundColor: yellow[500] }}>黃</Item></Grid>
+        <Grid xs={6} component="button" className='btn-container' onClick={() => { setKeyWord(keyWord + "藍") }}><Item className='btn' sx={{ fontSize: "1em", backgroundColor: blue[500], color: "#fff" }}>藍</Item></Grid>
+        <Grid xs={6} component="button" className='btn-container' onClick={() => { setKeyWord(keyWord + "綠") }}><Item className='btn' sx={{ fontSize: "1em", backgroundColor: green[500], color: "#fff" }}>綠</Item></Grid>
+        <Grid xs={6} component="button" className='btn-container' onClick={() => { setKeyWord(keyWord + "橘") }}><Item className='btn' sx={{ fontSize: "1em", backgroundColor: orange[500] }}>橘</Item></Grid>
+        <Grid xs={6} component="button" className='btn-container' onClick={() => { setKeyWord(keyWord + "棕") }}><Item className='btn' sx={{ fontSize: "1em", backgroundColor: brown[500], color: "#fff" }}>棕</Item></Grid>
+        <Grid xs={6} component="button" className='btn-container' onClick={() => { setKeyWordInputReadonly(!keyWordInputReadonly); if (keyWordInputReadonly) { busKeywordRef.current.focus(); busKeywordRef.current.click(); keyboardAnimation("hide") } }}><Item className='btn'><KeyboardIcon sx={{ verticalAlign: "bottom", fontSize: "1.43rem" }} color={(keyWordInputReadonly ? "inherit" : "primary")} /></Item></Grid>
+        <Grid xs={6} component="button" className='btn-container' onClick={() => { setKeyWord(keyWord + "小") }}><Item className='btn' sx={{ fontSize: "1em", }}>小</Item></Grid>
       </Grid>
       <Grid container spacing={2} sx={{ p: 2, pl: 0, flexGrow: 1, flexShrink: 1 }}>
-        <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em", }} onClick={() => { setKeyWord(keyWord + "1") }}>1</Item></Grid>
-        <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em", }} onClick={() => { setKeyWord(keyWord + "2") }}>2</Item></Grid>
-        <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em", }} onClick={() => { setKeyWord(keyWord + "3") }}>3</Item></Grid>
-        <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em", }} onClick={() => { setKeyWord(keyWord + "4") }}>4</Item></Grid>
-        <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em", }} onClick={() => { setKeyWord(keyWord + "5") }}>5</Item></Grid>
-        <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em", }} onClick={() => { setKeyWord(keyWord + "6") }}>6</Item></Grid>
-        <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em", }} onClick={() => { setKeyWord(keyWord + "7") }}>7</Item></Grid>
-        <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em", }} onClick={() => { setKeyWord(keyWord + "8") }}>8</Item></Grid>
-        <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em", }} onClick={() => { setKeyWord(keyWord + "9") }}>9</Item></Grid>
-        <Grid xs={4}><Item className='btn' sx={{ fontSize: "1em" }} onClick={() => { setKeyWord(keyWord + "0") }}>0</Item></Grid>
-        <Grid xs={4}><Item className='btn' onClick={() => { setKeyWord(keyWord.slice(0, -1)) }}><BackspaceIcon sx={{ verticalAlign: "bottom", fontSize: "1.43rem" }} /></Item></Grid>
-        <Grid xs={4}><Item className='btn' onClick={() => { keyboardAnimation("hide"); searchData() }}><SearchIcon sx={{ verticalAlign: "bottom", fontSize: "1.43rem" }} /></Item></Grid>
+        <Grid xs={4} component="button" className='btn-container' onClick={() => { setKeyWord(keyWord + "1") }}><Item className='btn' sx={{ fontSize: "1em", }}>1</Item></Grid>
+        <Grid xs={4} component="button" className='btn-container' onClick={() => { setKeyWord(keyWord + "2") }}><Item className='btn' sx={{ fontSize: "1em", }}>2</Item></Grid>
+        <Grid xs={4} component="button" className='btn-container' onClick={() => { setKeyWord(keyWord + "3") }}><Item className='btn' sx={{ fontSize: "1em", }}>3</Item></Grid>
+        <Grid xs={4} component="button" className='btn-container' onClick={() => { setKeyWord(keyWord + "4") }}><Item className='btn' sx={{ fontSize: "1em", }}>4</Item></Grid>
+        <Grid xs={4} component="button" className='btn-container' onClick={() => { setKeyWord(keyWord + "5") }}><Item className='btn' sx={{ fontSize: "1em", }}>5</Item></Grid>
+        <Grid xs={4} component="button" className='btn-container' onClick={() => { setKeyWord(keyWord + "6") }}><Item className='btn' sx={{ fontSize: "1em", }}>6</Item></Grid>
+        <Grid xs={4} component="button" className='btn-container' onClick={() => { setKeyWord(keyWord + "7") }}><Item className='btn' sx={{ fontSize: "1em", }}>7</Item></Grid>
+        <Grid xs={4} component="button" className='btn-container' onClick={() => { setKeyWord(keyWord + "8") }}><Item className='btn' sx={{ fontSize: "1em", }}>8</Item></Grid>
+        <Grid xs={4} component="button" className='btn-container' onClick={() => { setKeyWord(keyWord + "9") }}><Item className='btn' sx={{ fontSize: "1em", }}>9</Item></Grid>
+        <Grid xs={4} component="button" className='btn-container' onClick={() => { setKeyWord(keyWord + "0") }}><Item className='btn' sx={{ fontSize: "1em" }}>0</Item></Grid>
+        <Grid xs={4} component="button" className='btn-container' onClick={() => { setKeyWord(keyWord.slice(0, -1)) }}><Item className='btn'><BackspaceIcon sx={{ verticalAlign: "bottom", fontSize: "1.43rem" }} /></Item></Grid>
+        <Grid xs={4} component="button" className='btn-container' onClick={() => { keyboardAnimation("hide"); searchData() }}><Item className='btn'><SearchIcon sx={{ verticalAlign: "bottom", fontSize: "1.43rem" }} /></Item></Grid>
       </Grid>
-
     </Box>
   </>
   )

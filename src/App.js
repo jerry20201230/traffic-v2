@@ -21,6 +21,7 @@ import { BusRoot } from './pages/BusRoot';
 import { PlanRoot } from './pages/Plan';
 import { useEffect } from 'react';
 import { Welcome } from './pages/Welcome';
+import { BusRoute } from './pages/BusRoute';
 
 function App() {
   const CURRENT_VER = "1.0.3"
@@ -47,7 +48,7 @@ function App() {
           <Route path='/bus'>
             <Route index element=<BusRoot />></Route>
             <Route path='station/*' element=<HsrStation />></Route>
-            <Route path='route/*' element=<HsrTrain />></Route>
+            <Route path='route/*' element=<BusRoute />></Route>
           </Route>
 
           <Route path='/bike'>

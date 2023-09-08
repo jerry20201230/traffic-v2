@@ -42,3 +42,7 @@
   box-shadow: none;
 
 }
+
+.btn-container {
+  border: 0;
+}

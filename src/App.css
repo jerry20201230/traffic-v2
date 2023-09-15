@@ -43,6 +43,14 @@
 
 }
 
-.btn-container {
+.btn-container-1 {
   border: 0;
+  width: 33.33%;
+  height: 25%;
+}
+
+.btn-container-2 {
+  border: 0;
+  width: 50%;
+  height: 25%;
 }

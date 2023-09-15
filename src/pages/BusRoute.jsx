@@ -25,18 +25,44 @@ import { Link } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 
 export function BusRoute() {
 
   const [routeData, setRouteData] = React.useState([])
-  const [searchResult, setSearchResult] = React.useState([])
-  const [busDataUI, setBusDataUI] = React.useState(<></>)
+  const [searchResult, setSearchResult] = React.useState([
+    {
+      route: "",
+      from: "",
+      to: "",
+      city: "",
+      uid: ""
+    }
+  ])
+  const [countdown, setCountdown] = React.useState(60)
 
   function UrlParam(name) {
     var url = new URL(window.location.href),
       result = url.searchParams.get(name);
     return result
   }
+
+  function createData(station, estimateTime, plateNumb,) {
+    return { station, estimateTime, plateNumb };
+  }
+
+  var rows = [
+    createData('Frozen yoghurt', 159, 6.0,),
+    createData('Ice cream sandwich', 237, 9.0),
+    createData('Eclair', 262, 16.0),
+    createData('Cupcake', 305, 3.7),
+    createData('Gingerbread', 356, 16.0),
+  ];
 
   React.useEffect(() => {
     var currentRouteList = [
@@ -65,27 +91,8 @@ export function BusRoute() {
                 uid: res2[j].RouteUID
               }
 
-              console.log(currentRouteList)
+              console.log(currentRouteList, res2[j])
               setSearchResult(currentRouteList)
-
-              setBusDataUI(
-                <>
-                  <TopBar title={currentRouteList[0].route + " - " + currentRouteList[0].city + "公車"} />
-                  <Card sx={{ m: 0, pt: 0 }}>
-                    <CardContent>
-                      <Typography variant="h5" component="div">
-                        {currentRouteList[0].route}
-                      </Typography>
-                      <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                        {currentRouteList[0].from} - {currentRouteList[0].to}<br />
-                        {currentRouteList[0].city}
-                      </Typography>
-                      <Typography variant="body2" component="div">
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </>
-              )
             }
           }
         }, { useLocalCatch: true })
@@ -104,25 +111,6 @@ export function BusRoute() {
 
             }
             setSearchResult(currentRouteList)
-            setBusDataUI(
-              <>
-                <TopBar title={currentRouteList[0].route + " - " + currentRouteList[0].city} />
-                <Card sx={{ m: 0, pt: 0 }}>
-                  <CardContent>
-                    <Typography variant="h5" component="div">
-                      {currentRouteList[0].route}
-                    </Typography>
-                    <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                      {currentRouteList[0].from} - {currentRouteList[0].to}<br />
-                      {currentRouteList[0].city}
-                    </Typography>
-                    <Typography variant="body2" component="div">
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </>
-            )
-
           }
         }
       }, { useLocalCatch: true })
@@ -134,7 +122,50 @@ export function BusRoute() {
   return (
     <>
       <Box sx={{ p: 3 }}>
-        {busDataUI}
+        <TopBar title={searchResult[0].route + " - " + searchResult[0].city === "公路客運" ? searchResult[0].city : searchResult[0].city + "公車"} />
+        <Card sx={{ m: 0, pt: 0 }}>
+          <CardContent>
+            <Typography variant="h5" component="div">
+              {searchResult[0].route}
+            </Typography>
+            <Typography sx={{ mb: 1.5 }} color="text.secondary">
+              {searchResult[0].from} - {searchResult[0].to}<br />
+              {searchResult[0].city}
+            </Typography>
+          </CardContent>
+        </Card>
+        <p></p>
+        <Card sx={{ m: 0, pt: 0 }}>
+          <CardContent>
+            <Typography variant="h5" component="div">
+              即時資料
+            </Typography>
+            <Typography sx={{ mb: 1.5 }} color="text.secondary">
+            </Typography>
+
+            <Typography variant="body2" component="div">
+              <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+
+                  <TableBody>
+                    {rows.map((row) => (
+                      <TableRow
+                        key={row.station}
+                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                      >
+                        <TableCell component="th" scope="row">
+                          {row.estimateTime}
+                        </TableCell>
+                        <TableCell component="th" scope="row">{row.station}</TableCell>
+                        <TableCell component="th" scope="row">{row.plateNumb}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Typography>
+          </CardContent>
+        </Card>
       </Box>
     </>
   )

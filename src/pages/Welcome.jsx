@@ -39,6 +39,8 @@ export function Welcome({ next, title, CURRENT_VER }) {
         "https://tdx.transportdata.tw/api/basic/v2/Bus/Route/City/LienchiangCounty?%24format=JSON",
         "https://tdx.transportdata.tw/api/basic/v2/Bus/Route/InterCity?%24format=JSON",
 
+
+
     ]
     var item = 0
     var [summery, setSummery] = React.useState("正在準備更新...")

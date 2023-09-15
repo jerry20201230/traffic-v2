@@ -237,26 +237,26 @@ export function BusRoot() {
     <Box ref={keyboard} sx={{ position: "fixed", bottom: "0", textAlign: "center", width: "100%", userSelect: "none", display: "flex", pr: 0, background: grey[200], borderRadius: "5px 5px 0 0" }}></Box>
     <Box ref={keyboard} sx={{ position: "fixed", bottom: "0", textAlign: "center", width: "100%", userSelect: "none", display: "flex", pr: 0, background: grey[200], borderRadius: "5px 5px 0 0", display: (radioValue === "route" ? "flex" : "none"), transform: "translateY(120%)" }}>
       <Grid container spacing={2} sx={{ p: 2, maxWidth: "40%", flexGrow: 1, flexShrink: 1 }}>
-        <Grid xs={6} component="button" className='btn-container-2' onClick={() => { setKeyWord(keyWord + "紅") }}><Item className='btn' sx={{ fontSize: "1em", backgroundColor: red[500], color: "#fff" }}>紅</Item></Grid>
-        <Grid xs={6} component="button" className='btn-container-2' onClick={() => { setKeyWord(keyWord + "黃") }}><Item className='btn' sx={{ fontSize: "1em", backgroundColor: yellow[500] }}>黃</Item></Grid>
-        <Grid xs={6} component="button" className='btn-container-2' onClick={() => { setKeyWord(keyWord + "藍") }}><Item className='btn' sx={{ fontSize: "1em", backgroundColor: blue[500], color: "#fff" }}>藍</Item></Grid>
-        <Grid xs={6} component="button" className='btn-container-2' onClick={() => { setKeyWord(keyWord + "綠") }}><Item className='btn' sx={{ fontSize: "1em", backgroundColor: green[500], color: "#fff" }}>綠</Item></Grid>
-        <Grid xs={6} component="button" className='btn-container-2' onClick={() => { setKeyWord(keyWord + "橘") }}><Item className='btn' sx={{ fontSize: "1em", backgroundColor: orange[500] }}>橘</Item></Grid>
-        <Grid xs={6} component="button" className='btn-container-2' onClick={() => { setKeyWord(keyWord + "棕") }}><Item className='btn' sx={{ fontSize: "1em", backgroundColor: brown[500], color: "#fff" }}>棕</Item></Grid>
-        <Grid xs={6} component="button" className='btn-container-2' onClick={() => { keyboardAnimation("hide") }}><Item className='btn' sx={{ fontSize: "1em", }}><ExpandMoreIcon /></Item></Grid>
+        <Grid xs={6} component="button" className='btn-container-2' onClick={() => { setKeyWord(keyWord + "紅") }}><Item className='btn' sx={{ fontSize: "1.20em", backgroundColor: red[500], color: "#fff" }}>紅</Item></Grid>
+        <Grid xs={6} component="button" className='btn-container-2' onClick={() => { setKeyWord(keyWord + "黃") }}><Item className='btn' sx={{ fontSize: "1.20em", backgroundColor: yellow[500] }}>黃</Item></Grid>
+        <Grid xs={6} component="button" className='btn-container-2' onClick={() => { setKeyWord(keyWord + "藍") }}><Item className='btn' sx={{ fontSize: "1.20em", backgroundColor: blue[500], color: "#fff" }}>藍</Item></Grid>
+        <Grid xs={6} component="button" className='btn-container-2' onClick={() => { setKeyWord(keyWord + "綠") }}><Item className='btn' sx={{ fontSize: "1.20em", backgroundColor: green[500], color: "#fff" }}>綠</Item></Grid>
+        <Grid xs={6} component="button" className='btn-container-2' onClick={() => { setKeyWord(keyWord + "橘") }}><Item className='btn' sx={{ fontSize: "1.20em", backgroundColor: orange[500] }}>橘</Item></Grid>
+        <Grid xs={6} component="button" className='btn-container-2' onClick={() => { setKeyWord(keyWord + "棕") }}><Item className='btn' sx={{ fontSize: "1.20em", backgroundColor: brown[500], color: "#fff" }}>棕</Item></Grid>
+        <Grid xs={6} component="button" className='btn-container-2' onClick={() => { keyboardAnimation("hide") }}><Item className='btn' sx={{ fontSize: "1.43rem", }}><ExpandMoreIcon sx={{ fontSize: "1.43rem", }} /></Item></Grid>
         <Grid xs={6} component="button" className='btn-container-2' onClick={() => { setKeyWordInputReadonly(!keyWordInputReadonly); if (keyWordInputReadonly) { busKeywordRef.current.focus(); busKeywordRef.current.click(); keyboardAnimation("hide") } }}><Item className='btn'><KeyboardIcon sx={{ verticalAlign: "bottom", fontSize: "1.43rem" }} color={(keyWordInputReadonly ? "inherit" : "primary")} /></Item></Grid>
       </Grid>
       <Grid container spacing={2} sx={{ p: 2, pl: 0, flexGrow: 1, flexShrink: 1 }}>
-        <Grid xs={4} component="button" className='btn-container-1' onClick={() => { setKeyWord(keyWord + "1") }}><Item className='btn' sx={{ fontSize: "1em", }}>1</Item></Grid>
-        <Grid xs={4} component="button" className='btn-container-1' onClick={() => { setKeyWord(keyWord + "2") }}><Item className='btn' sx={{ fontSize: "1em", }}>2</Item></Grid>
-        <Grid xs={4} component="button" className='btn-container-1' onClick={() => { setKeyWord(keyWord + "3") }}><Item className='btn' sx={{ fontSize: "1em", }}>3</Item></Grid>
-        <Grid xs={4} component="button" className='btn-container-1' onClick={() => { setKeyWord(keyWord + "4") }}><Item className='btn' sx={{ fontSize: "1em", }}>4</Item></Grid>
-        <Grid xs={4} component="button" className='btn-container-1' onClick={() => { setKeyWord(keyWord + "5") }}><Item className='btn' sx={{ fontSize: "1em", }}>5</Item></Grid>
-        <Grid xs={4} component="button" className='btn-container-1' onClick={() => { setKeyWord(keyWord + "6") }}><Item className='btn' sx={{ fontSize: "1em", }}>6</Item></Grid>
-        <Grid xs={4} component="button" className='btn-container-1' onClick={() => { setKeyWord(keyWord + "7") }}><Item className='btn' sx={{ fontSize: "1em", }}>7</Item></Grid>
-        <Grid xs={4} component="button" className='btn-container-1' onClick={() => { setKeyWord(keyWord + "8") }}><Item className='btn' sx={{ fontSize: "1em", }}>8</Item></Grid>
-        <Grid xs={4} component="button" className='btn-container-1' onClick={() => { setKeyWord(keyWord + "9") }}><Item className='btn' sx={{ fontSize: "1em", }}>9</Item></Grid>
-        <Grid xs={4} component="button" className='btn-container-1' onClick={() => { setKeyWord(keyWord + "0") }}><Item className='btn' sx={{ fontSize: "1em" }}>0</Item></Grid>
+        <Grid xs={4} component="button" className='btn-container-1' onClick={() => { setKeyWord(keyWord + "1") }}><Item className='btn' sx={{ fontSize: "1.20em", }}>1</Item></Grid>
+        <Grid xs={4} component="button" className='btn-container-1' onClick={() => { setKeyWord(keyWord + "2") }}><Item className='btn' sx={{ fontSize: "1.20em", }}>2</Item></Grid>
+        <Grid xs={4} component="button" className='btn-container-1' onClick={() => { setKeyWord(keyWord + "3") }}><Item className='btn' sx={{ fontSize: "1.20em", }}>3</Item></Grid>
+        <Grid xs={4} component="button" className='btn-container-1' onClick={() => { setKeyWord(keyWord + "4") }}><Item className='btn' sx={{ fontSize: "1.20em", }}>4</Item></Grid>
+        <Grid xs={4} component="button" className='btn-container-1' onClick={() => { setKeyWord(keyWord + "5") }}><Item className='btn' sx={{ fontSize: "1.20em", }}>5</Item></Grid>
+        <Grid xs={4} component="button" className='btn-container-1' onClick={() => { setKeyWord(keyWord + "6") }}><Item className='btn' sx={{ fontSize: "1.20em", }}>6</Item></Grid>
+        <Grid xs={4} component="button" className='btn-container-1' onClick={() => { setKeyWord(keyWord + "7") }}><Item className='btn' sx={{ fontSize: "1.20em", }}>7</Item></Grid>
+        <Grid xs={4} component="button" className='btn-container-1' onClick={() => { setKeyWord(keyWord + "8") }}><Item className='btn' sx={{ fontSize: "1.20em", }}>8</Item></Grid>
+        <Grid xs={4} component="button" className='btn-container-1' onClick={() => { setKeyWord(keyWord + "9") }}><Item className='btn' sx={{ fontSize: "1.20em", }}>9</Item></Grid>
+        <Grid xs={4} component="button" className='btn-container-1' onClick={() => { setKeyWord(keyWord + "0") }}><Item className='btn' sx={{ fontSize: "1.20em" }}>0</Item></Grid>
         <Grid xs={4} component="button" className='btn-container-1' onClick={() => { setKeyWord(keyWord.slice(0, -1)) }}><Item className='btn'><BackspaceIcon sx={{ verticalAlign: "bottom", fontSize: "1.43rem" }} /></Item></Grid>
         <Grid xs={4} component="button" className='btn-container-1' onClick={() => { keyboardAnimation("hide"); searchData() }}><Item className='btn'><SearchIcon sx={{ verticalAlign: "bottom", fontSize: "1.43rem" }} /></Item></Grid>
       </Grid>

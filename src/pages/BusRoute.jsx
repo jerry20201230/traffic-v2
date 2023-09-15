@@ -5,8 +5,6 @@ import { NativeSelect, Box, InputLabel, Paper, TextField, Button } from '@mui/ma
 import getData from '../getData'
 import SearchAnything from '../searchAnything'
 import { styled } from '@mui/material/styles';
-import BackspaceIcon from '@mui/icons-material/Backspace';
-import KeyboardIcon from '@mui/icons-material/Keyboard';
 import SearchIcon from '@mui/icons-material/Search';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
@@ -31,10 +29,17 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import { AppBar, Toolbar } from '@mui/material'
+import LinearProgress from '@mui/material/LinearProgress';
+import BoltIcon from '@mui/icons-material/Bolt';
+
 
 export function BusRoute() {
 
   const [routeData, setRouteData] = React.useState([])
+  const [busDirection, setBusDirect] = React.useState(0)
   const [searchResult, setSearchResult] = React.useState([
     {
       route: "",
@@ -44,12 +49,20 @@ export function BusRoute() {
       uid: ""
     }
   ])
-  const [countdown, setCountdown] = React.useState(60)
+
+  const [progress, setProgress] = React.useState(0);
+  const [countdown, setCountdown] = React.useState(0)
+
+  const [pageTitle, setPageTitle] = React.useState("")
 
   function UrlParam(name) {
     var url = new URL(window.location.href),
       result = url.searchParams.get(name);
     return result
+  }
+
+  const handleBusDirectChange = (e, n) => {
+    setBusDirect(n)
   }
 
   function createData(station, estimateTime, plateNumb,) {
@@ -63,6 +76,32 @@ export function BusRoute() {
     createData('Cupcake', 305, 3.7),
     createData('Gingerbread', 356, 16.0),
   ];
+
+  function cityName2Id(n) {
+    var a = []
+    var b = []
+    getData("https://tdx.transportdata.tw/api/basic/v2/Basic/City?%24format=JSON", function (res) {
+      console.log(res)
+      a.push("請選擇縣市")
+      b.push("null")
+      for (let i = 0; i < res.length; i++) {
+        a.push(res[i].CityName)
+        b.push(res[i].City)
+      }
+      a.push("公路客運")
+      b.push("interBus")
+      return (b[a.indexOf(n)])
+    }, { useLocalCatch: true })
+  }
+
+
+
+  function getBusData() {
+    getData(`https://tdx.transportdata.tw/api/basic/v2/Bus/EstimatedTimeOfArrival/City/${cityName2Id(searchResult[0].city)}/900?%24format=JSON`, function (res) {
+      console.log(res)
+
+    }, { useLocalCatch: false })
+  }
 
   React.useEffect(() => {
     var currentRouteList = [
@@ -93,6 +132,7 @@ export function BusRoute() {
 
               console.log(currentRouteList, res2[j])
               setSearchResult(currentRouteList)
+              break
             }
           }
         }, { useLocalCatch: true })
@@ -111,18 +151,48 @@ export function BusRoute() {
 
             }
             setSearchResult(currentRouteList)
+            break
           }
         }
       }, { useLocalCatch: true })
 
     }, { useLocalCatch: true })
+
   }, [])
 
+  React.useEffect(() => {
+    console.log(searchResult)
+    setPageTitle(searchResult[0].route + " - " + (searchResult[0].city === "公路客運" ? searchResult[0].city : searchResult[0].city) + "公車")
+  }, [searchResult])
+
+
+  React.useEffect(() => {
+    if (countdown === 0) {
+      getBusData()
+      setCountdown(15)
+    } else if (countdown > 0) {
+      setProgress((15 - countdown) * (100 / 15))
+    } else {
+
+    }
+  }, [countdown]);
+
+  React.useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCountdown((prevCountdown) => prevCountdown - 1);
+    }, 1000);
+
+    // 组件卸载时清除定时器
+    return () => {
+      clearInterval(intervalId);
+    };
+
+  }, []);
 
   return (
     <>
       <Box sx={{ p: 3 }}>
-        <TopBar title={searchResult[0].route + " - " + searchResult[0].city === "公路客運" ? searchResult[0].city : searchResult[0].city + "公車"} />
+        <TopBar title={pageTitle} />
         <Card sx={{ m: 0, pt: 0 }}>
           <CardContent>
             <Typography variant="h5" component="div">
@@ -144,9 +214,23 @@ export function BusRoute() {
             </Typography>
 
             <Typography variant="body2" component="div">
-              <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
 
+
+              <ToggleButtonGroup
+                color="primary"
+                value={busDirection}
+                exclusive
+                onChange={handleBusDirectChange}
+                aria-label="Platform"
+              >
+                <ToggleButton value={0}>往{searchResult[0].from}</ToggleButton>
+                <ToggleButton value={1}>往{searchResult[0].to}</ToggleButton>
+              </ToggleButtonGroup>
+              <p></p>
+
+
+              <TableContainer component={Paper}>
+                <Table>
                   <TableBody>
                     {rows.map((row) => (
                       <TableRow
@@ -167,6 +251,19 @@ export function BusRoute() {
           </CardContent>
         </Card>
       </Box>
+
+
+      <AppBar position="fixed" color="secondary" sx={{ top: 'auto', bottom: 0, height: 'auto', display: (countdown < 0 ? "none" : "unset") }} >
+        <Toolbar>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            <BoltIcon sx={{ verticalAlign: 'middle' }} /> 公車即時資料 / {countdown}秒
+            <Box sx={{ width: '100%' }}>
+              <LinearProgress variant="determinate" value={progress} />
+            </Box>
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <Toolbar />
     </>
   )
 }

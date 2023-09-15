@@ -156,7 +156,8 @@ function TopBar({ title }) {
             </nav>
 
 
-            <nav aria-label="" style={{ position: "absolute", bottom: 0, width: "100%" }}>
+
+            <nav aria-label="" style={{ position: "sticky", bottom: 0, background: "#FFF" }}>
               <Divider />
               <List>
                 <ListItem disablePadding>
